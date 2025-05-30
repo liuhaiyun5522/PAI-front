@@ -1,0 +1,10 @@
+import request from '@/utils/request'
+//获取知识库列表
+export const getuserList = (data:any)=>request.get<any>('/admin/users',{params:data})
+
+//新建知识库
+export const createknowledgeabse = (data:any)=>request.post<any>('/knowledge/create_database',data)
+
+//获取知识库文件列表
+export const getknowledgeFiles = (data:any)=>request.post<any>('/knowledge/get_files',data)
+

@@ -1,0 +1,336 @@
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: calc(100vh - 80px);
+  @media (max-width: 768px) {
+    height: calc(100vh - 50px);
+  }
+  .chat-message-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 0 10px;
+    p {
+      color: #97a1b7;
+      text-align: center;
+    }
+
+    .chat-message {
+      font-size: 16px;
+      margin-bottom: 20px;
+
+      .chat-message-content-user {
+        display: flex;
+        color: #444;
+        padding: 10px 20px;
+        font-size: 15px;
+        align-items: center;
+        margin-left: -45px;
+        margin-top: 15px;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .markdown-font-span {
+        display: block;
+        overflow-wrap: break-word;
+
+        .table {
+          /* 添加你的表格样式 */
+          width: 100%;
+          border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+          border: 1px solid #ddd;
+          padding: 8px;
+          line-height: 1.42857143;
+          vertical-align: top;
+        }
+      }
+    }
+    @media (max-width: 768px) {
+      padding: 15px 0 0;
+    }
+  }
+
+  .chat-input {
+    width: var(--message-list-width);
+    margin: 0 auto 12px;
+    padding: 10px 15px;
+    border-radius: 15px;
+    border: 1px solid #163C32 ;
+    max-width: var(--message-list-max-width);
+    .el-input {
+      font-size: 16px;
+      transition: height 0.4s;
+      background: none;
+    }
+    &-bottom{
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    &-button{
+      display: flex;
+      align-items: center;
+      .el-button{
+        img{
+          width: 15px;
+          margin-right: 14px;
+        }
+      }
+    }
+    @media (max-width: 768px) {
+      margin: 10px auto;
+    }
+  }
+  .chat-img{
+    height: 26px;
+    margin-left: 20px;
+    cursor: pointer;
+    &.disabled{
+      opacity: 0.3;
+    }
+  }
+  .file-icon .chat-img{
+    margin-top: 4px;
+  }
+  .chat-select{
+    :deep(.el-select__wrapper){
+      box-shadow: none;
+    }
+    :deep(.el-select__placeholder,.el-select__caret){
+      color: #101010 ;
+    }
+  }
+  :deep(.autoresize-textarea) {
+    font-size: 15px;
+    .el-textarea__inner {
+      box-sizing: border-box;
+      resize: none;
+      /* 禁用手动调整大小 */
+      overflow-y: auto;
+      width: 100%;
+      border: none;
+      box-shadow: none;
+      background: transparent;
+    }
+  }
+
+  :deep(.code-block-body) {
+    background-color: #f3f3f3;
+  }
+
+  .edit-item {
+    display: flex;
+    color: #101010;
+    max-width: var(--message-list-max-width);
+    width: var(--message-list-width);
+    margin: 0 auto 18px;
+    &-content{
+      width: 90%;
+    }
+    &-img {
+      width: 45px;
+      object-fit: contain;
+      margin-right: 8px;
+    }
+
+    .markdown-font-span {
+      font-size: 16px;
+      padding: 10px 0;
+      border-radius: 6px;
+    }
+
+    &-time{
+      color:#012A2D;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    &-1 {
+      flex-direction: row-reverse;
+      text-align: right;
+      img {
+        margin-left: 8px;
+      }
+
+      .markdown-font-span {
+        padding: 10px 15px;
+        background: #E9EDEF;
+        text-align: left;
+        display: inline-block;
+      }
+    }
+    &-2{
+      .markdown-font-span{
+        padding-top: 0;
+        padding-bottom: 10px;
+      }
+    }
+
+    &-icon{
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      border-top: 1px solid #538184;
+      margin-top: 5px;
+      padding-top: 5px;
+      img,.edit-item-svg{
+        width: 18px;
+        cursor: pointer;
+        margin: 7px 15px 0 0;
+      }
+    }
+    &-tip{
+      text-align: center;
+      color: #012A2D;
+      padding: 4px 8px;
+      display: inline-block;
+      font-size: 13px;
+      border-radius: 15px;
+      margin-bottom: 13px;
+      .el-icon{
+        vertical-align: -2px;
+      }
+    }
+    &-source{
+      &{
+        color:#778E9C;
+        font-size: 12px;
+        flex: 1;
+        font-weight: normal;
+      }
+      ::v-deep(a){
+        text-decoration: none;
+        font-weight: bold;
+        &:-webkit-any-link {
+          color:#778E9C;
+        }
+      }
+      &-content{
+        display: flex;
+        margin-top: 10px;
+        color: #012A2D;
+        font-size: 12px;
+        font-weight: Bold;
+      }
+    }
+    :deep(.edit-item-analysis){
+      color: #778E9C;
+      font-size: 13px;
+      margin-bottom: 12px;
+      img{
+        width: 13px;
+        vertical-align: middle;
+        margin-right: 5px;
+      }
+    }
+    &-loading{
+      &{
+        color: #778E9C;
+        font-size: 13px;
+        padding-top: 8px;
+        margin-top: 5px;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      &-container{
+        height: 40px;
+        position: relative;
+        overflow: hidden;
+        .slide-enter-active,
+        .slide-leave-active {
+          transition: all 0.8s ease;
+        }
+
+        .slide-enter-from {
+          transform: translateY(100%);
+        }
+
+        .slide-leave-to {
+          transform: translateY(-100%);
+        }
+      }
+      &-content{
+        position: relative;
+        height: 100%;
+      }
+      img{
+        vertical-align: -3px;
+        margin-right: 10px;
+        width: 20px;
+      }
+    }
+  }
+
+  .loading-dots {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 10px;
+  }
+
+  .dot {
+    width: 5px;
+    height: 5px;
+    background: #2a654d;
+    border-radius: 50%;
+    animation: scaleUp 0.8s ease-in-out infinite;
+  }
+
+  .dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes scaleUp {
+    0%, 100% {
+      transform: scale(1);
+    }
+    20% {
+      transform: scale(1.5);
+    }
+  }
+  .edit-again{
+    //background: #F4F6F7;
+    color: #012A2D;
+    font-size: 13px;
+    //padding: 10px 8px;
+    margin-bottom: 8px;
+    margin-top: 10px;
+    &-icon{
+      margin-right: 6px;
+      vertical-align: -3px;
+      width: 13px;
+    }
+    &-span{
+      background: #D9EAE6;
+      color: #012A2D;
+      margin-right: 14px;
+      margin-top: 8px;
+      border-radius: 20px;
+      padding: 8px 10px;
+      display: inline-block;
+      cursor: pointer;
+
+      &:hover{
+        background: #BFDDD6;
+      }
+    }
+    &-btn{
+      height: 26px !important;
+      border-radius: 13px;
+      font-size: 13px;
+      svg{
+        width: 17px;
+        margin-right: 5px;
+      }
+    }
+  }
+}

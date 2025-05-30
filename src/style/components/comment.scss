@@ -1,0 +1,126 @@
+.comment {
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+
+  &-container {
+    //max-width: 1350px;
+    margin: 0 auto;
+    padding: 20px 30px 10px;
+  }
+
+  &-title {
+    color: var(--el-text-color-regular);
+    background: var(--el-fill-color-blank);
+    padding: 12px 17px;
+  }
+
+  &-form {
+    margin-top: 19px;
+
+    .el-form {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .el-select {
+      width: 180px;
+      @media (max-width: 1400px) {
+        width: 130px;
+      }
+    }
+
+    .el-input {
+      width: 300px;
+      @media (max-width: 1400px) {
+        width: 250px;
+      }
+    }
+  }
+
+  &-tag {
+    font-size: 14px;
+    border-radius: 8px;
+
+    svg {
+      width: 20px !important;
+      height: 20px !important;
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+  }
+
+
+
+  &-optimize {
+    :deep(.el-checkbox__input.is-checked .el-checkbox__inner) {
+      background: #169BD5;
+
+    }
+    :deep(.el-checkbox__input.is-checked .el-checkbox__inner:after) {
+      border-color: #fff;
+    }
+    :deep(.el-checkbox__input .el-checkbox__inner) {
+      width: 16px;
+      height: 16px;
+    }
+
+    :deep(.el-checkbox__input:not(.is-checked) .el-checkbox__inner){
+      background: #fff;
+      box-shadow: 0px 0px 0px 1px #012A2D33;
+    }
+  }
+}
+
+.coll {
+  .comment-form .el-form {
+    flex-wrap: nowrap;
+  }
+}
+
+//缓存弹窗
+:deep(.dialog-cache) {
+  @media (max-width: 1000px) {
+    width: 80%;
+  }
+
+  .el-form-item__label {
+    font-weight: 700;
+  }
+  .el-dialog__footer{
+    margin-top: -20px;
+  }
+
+  .cache {
+    &-input {
+      flex: 1;
+      margin-right: 10px;
+    }
+
+    &-item {
+      display: flex;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    &-source {
+      &-item {
+        margin-bottom: 10px;
+        background: var(--el-fill-color-blank);
+        border-radius: 8px;
+        width: 100%;
+        padding: 12px 10px;
+
+        .el-form-item {
+          width: 100%;
+          &__label{
+            font-weight: 400;
+          }
+        }
+
+        .el-input__wrapper, .el-button {
+          background: #fff;
+        }
+      }
+    }
+  }
+}

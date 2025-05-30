@@ -1,0 +1,296 @@
+.database{
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  &-container{
+    max-width: 1350px;
+    margin: 0 auto;
+    padding: 20px 30px 10px;
+    @media (max-width: 768px) {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  }
+  &-title{
+    color: #163C32;
+    display: flex;
+    justify-content: space-between;
+  }
+  &-content{
+    //display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    //margin: 0 -35px;
+  }
+  &-col{
+    //width: calc(33.333% - 70px);
+    //margin: 0 35px 50px;
+    margin-top:40px ;
+    @media (max-width: 768px) {
+      margin-top: 20px;
+    }
+  }
+  &-box{
+    padding: 25px 26px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    @media (max-width: 768px) {
+      box-shadow: 0px 2px 12px 0px rgba(206,206,206,1);
+      border: 1px solid rgba(234,239,238,1);
+    }
+    &:hover{
+      box-shadow: 0px 2px 12px 0px rgba(206,206,206,1);
+      border: 1px solid rgba(234,239,238,1);
+    }
+    &[collapse="true"]{
+      padding: 20px 20px;
+    }
+    &-top{
+      display: flex;
+      margin-bottom: 15px;
+      min-height: 130px;
+      max-width: 290px;
+    }
+    &-icon{
+      background: #31705E;
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
+      display: inline-block;
+      text-align: center;
+      line-height: 56px;
+      margin-right: 20px;
+      svg{
+        width: 25px;
+        vertical-align: middle;
+      }
+    }
+    &-title{
+      font-size: 18px;
+      font-weight: bold;
+    }
+    &-desc{
+      //color: rgba(49,112,94,1);
+      color: #4F4F4F;
+      margin-top: 6px;
+      font-size: 14px;
+      display: -webkit-box;        /* 使用旧版弹性盒子模型 */
+      -webkit-box-orient: vertical; /* 文本垂直排列 */
+      -webkit-line-clamp: 4;        /* 限制显示行数 */
+      overflow: hidden;             /* 隐藏超出内容 */
+      text-overflow: ellipsis;     /* 超出部分显示省略号 */
+    }
+    &-right{
+      flex: 1;
+    }
+    &-time{
+      color: #31705E;
+      font-size: 12px;
+    }
+    &-bottom{
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+  ::v-deep(.database-dialog){
+    .el-dialog__title{
+      color: #163B30;
+      font-weight: bold;
+    }
+    @media (max-width: 768px) {
+      width: 90%;
+    }
+  }
+  ::v-deep(.database-form){
+    .el-form-item__label{
+      color: #163C30;
+      font-weight: bold;
+    }
+    .el-input__wrapper,.el-textarea__inner{
+      box-shadow: none;
+      background-color: rgb(243, 243, 243);
+    }
+  }
+
+  &-setting{
+    &-top{
+      margin: 28px 0;
+      display: flex;
+      @media (max-width: 768px) {
+        flex-wrap: wrap;
+      }
+      .database-box-top{
+        min-height: auto;
+        margin-bottom: 40px;
+      }
+    }
+    &-search{
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 25px;
+    }
+    &-icon{
+      width: 20px;
+      margin-right: 5px;
+      vertical-align: -4px;
+    }
+    &-bottom{
+      margin: 40px 0 30px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      @media (max-width: 768px) {
+        margin-top: 20px;
+        justify-content: flex-end;
+      }
+    }
+    &-button{
+      box-shadow: 0px 2px 6px 0px rgba(206, 206, 206, 0.4);
+      border: 1px solid rgba(234, 239, 238, 1);
+      .el-button:not(:last-child){
+        border-right: 1px solid rgba(234, 239, 238, 1);
+      }
+      .el-icon{
+        font-size: 17px;
+        margin-right: 6px;
+        margin-top: -2px;
+      }
+      @media (max-width: 768px) {
+        display: flex;
+        margin-bottom: 20px;
+        .el-button{
+          padding-left: 15px;
+          padding-right: 15px;
+        }
+      }
+    }
+    &-span{
+      background-color: rgba(49,112,94,1);
+      color: #fff;
+      width: 22px;
+      height: 22px;
+      display: inline-block;
+      line-height: 22px;
+      text-align: center;
+      margin-right: 8px;
+    }
+  }
+  &-url{
+    position: relative;
+    flex: 1;
+    margin-left: 6%;
+    padding-left: 4%;
+    &:before{
+      content: "";
+      width: 1px;
+      height: 80%;
+      background: rgba(234,239,238,1);
+      top: 10px;
+      left: 0;
+      position: absolute;
+    }
+    .el-button{
+      margin-right: 15px;
+    }
+    &-warn{
+      font-size: 12px;
+      color: #31705E;
+      line-height: 1.2;
+      margin: 8px 0;
+    }
+    @media (max-width: 768px) {
+      margin-left: 0;
+      padding-left: 0;
+      &:before{
+        content: none;
+      }
+    }
+  }
+  ::v-deep(.database-url){
+    .el-form-item{
+      margin-bottom: 6px;
+    }
+    .el-input{
+      margin-bottom: 8px;
+    }
+    .el-input__wrapper{
+      border-radius: 10px;
+    }
+  }
+  ::v-deep(.database-tabs){
+    margin-top: 20px;
+    .el-tabs__header{
+      margin-bottom: 0;
+    }
+    .el-tabs__item{
+      border-bottom: none;
+      color: #101010;
+      &.is-active{
+        color: #31705E;
+        font-weight: bold;
+      }
+    }
+  }
+  &-tabs{
+    &-content{
+      border-radius: 10px;
+      border: 1px solid rgba(187,187,187,1);
+      padding: 18px;
+    }
+    &-total{
+      color: #5A5E66;
+      margin-right: 30px;
+      font-weight: bold;
+    }
+    &-box{
+      border-radius: 10px;
+      border: 1px solid rgba(234,239,238,1);
+      padding: 10px 20px 20px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    &-tag{
+      width: 86px;
+      height: 25px;
+      line-height: 23px;
+      background-color: rgba(253,246,236,1);
+      text-align: center;
+      margin-bottom: 20px;
+      display: inline-block;
+    }
+    &-detail{
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2; /* 限制文本显示为2行 */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 23px;
+    }
+    .database-form{
+      margin-bottom: 10px;
+    }
+  }
+  ::v-deep(.database-drawer){
+    min-width: 400px;
+    .el-drawer__header{
+      color: #000000;
+      align-items: flex-start;
+      margin-bottom: 0;
+    }
+    .el-drawer__body{
+      padding-top: 5px;
+    }
+  }
+  &-drawer{
+    &-title{
+      color: #163D32;
+      font-weight: bold;
+      margin-right: 30px;
+    }
+  }
+
+}

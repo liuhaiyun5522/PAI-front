@@ -1,0 +1,242 @@
+#app {
+
+  .el-select__wrapper.is-focused {
+    box-shadow: 0 0 0 1px rgba(1, 42, 45, 0.50);
+  }
+
+  .el-checkbox__inner:after {
+    border-width: 2px;
+    height: 8px;
+    left: 6px;
+    top: 2px;
+  }
+
+  .el-checkbox.el-checkbox--large .el-checkbox__inner {
+    width: 16px;
+    height: 16px;
+  }
+
+  .el-checkbox__input.is-indeterminate .el-checkbox__inner:before {
+    top: 7px;
+  }
+
+  .el-form-item--large .el-form-item__label {
+    height: var(--el-component-size-large);
+    line-height: var(--el-component-size-large);
+  }
+
+  .el-select--large .el-select__wrapper {
+    height: var(--el-component-size-large);
+  }
+
+  .el-table__header {
+    font-size: 16px;
+  }
+
+  .el-pagination {
+    .btn-prev {
+      margin-right: 12px;
+    }
+
+    .btn-next {
+      margin-left: 12px;
+    }
+
+    .el-pager li {
+      margin: 0 7px;
+      background: transparent;
+
+      &.is-active {
+        background: rgba(128, 187, 173, 0.6);
+      }
+    }
+  }
+
+  .el-alert--success.is-light, .el-alert--success.is-light .el-alert__description {
+    color: #012A2D;
+  }
+
+  .el-radio.el-radio--large .el-radio__label{
+    font-size: 16px;
+  }
+  .el-radio__input.is-checked .el-radio__inner {
+    background: var(--el-color-success);
+    border-color: var(--el-color-success);
+  }
+  .el-button:focus-visible{
+    outline: none;
+  }
+}
+body{
+  .dialog-style{
+    padding: 0;
+    .el-dialog__headerbtn {
+      .el-dialog__close{
+        font-size: 24px;
+        margin-top: 20px;
+      }
+      &:hover{
+        .el-dialog__close{
+          color: #fff;
+        }
+      }
+    }
+    .el-dialog__header{
+      padding: 18px 30px;
+      background: var(--el-color-primary);
+      font-weight: 700;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      .el-dialog__title{
+        color: #fff;
+      }
+
+    }
+    .el-dialog__body{
+      padding: 18px 25px;
+    }
+    .el-dialog__footer{
+      padding: 0px 25px 25px;
+    }
+  }
+  .drawer-style{
+    .el-drawer__header{
+      padding: 18px 30px;
+      margin-bottom: 0;
+      background: var(--el-color-primary);
+      font-weight: 700;
+      .el-drawer__title,.el-drawer__close{
+        color: #fff;
+      }
+    }
+  }
+}
+
+.overflow-auto {
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 20px 30px 10px;
+}
+
+.table {
+  &-content {
+    background: #F4F6F7;
+    padding: 10px 20px 0;
+    border-radius: 20px;
+
+    :deep(.el-table__inner-wrapper:before) {
+      background-color: #F4F6F7;
+    }
+
+    :deep(.el-table .el-table__cell) {
+      padding: 15px 0;
+    }
+  }
+
+  &-bottom {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+}
+
+
+.delete-content {
+  text-align: center;
+  font-size: 20px;
+  color: #778E9C;
+  font-weight: 700;
+  margin: 40px 0;
+
+  img {
+    width: 80px;
+    margin-bottom: 20px;
+  }
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.page-title {
+  color: var(--el-text-color-regular);
+  background: var(--el-fill-color-blank);
+  padding: 12px 17px;
+}
+
+//进度条通知
+.progress-notification{
+  &-content{
+    position: fixed;
+    bottom: 16px;
+    padding: 9px;
+    border: none;
+    border-radius: 35px;
+    box-shadow: 0px 4px 6px 2px rgba(0, 0, 0, 0.1);
+    background: rgb(244, 246, 247);
+    overflow: visible;
+    width: 600px;
+    padding-right: 20px;
+    //// 每个通知的垂直间距
+    //$vertical-spacing: 16px;
+    //
+    //// 动态计算位置（示例第3个通知）
+    //&:nth-child(1) { bottom: $vertical-spacing; z-index: 2002; }
+    //&:nth-child(2) { bottom: calc(#{$vertical-spacing} + 84px); z-index: 2001; }
+    //&:nth-child(3) { bottom: calc(#{$vertical-spacing} + 168px); z-index: 2000; }
+
+  }
+
+  .el-notification__group{
+    display: flex;
+    width: 100%;
+  }
+  .el-progress{
+    flex: 1;
+  }
+  &-name{
+    margin-right: 20px;
+  }
+  &-status{
+    color: #032842;
+    font-size: 14px;
+    margin-left: 4px;
+  }
+  &-close{
+    position: absolute;
+    right: -6px;
+    top: -2px;
+    cursor: pointer;
+  }
+  /* 进入动画 */
+  .slide-right-enter-active {
+    transition: all 0.3s ease-in-out;
+    transform: translateX(0);
+  }
+  .slide-right-enter-from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  /* 离开动画 */
+  .slide-right-leave-active {
+    transition: all 0.2s ease-out;
+  }
+  .slide-right-leave-to {
+    transform: translateX(20%);
+    opacity: 0;
+  }
+}
+
+.ask-tooltip{
+  color: #538184;
+}

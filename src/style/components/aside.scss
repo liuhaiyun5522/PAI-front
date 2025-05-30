@@ -1,0 +1,52 @@
+.aside {
+  &-icon {
+    //width: 22px;
+    width: 100%;
+    padding: 6px 10px;
+    border-radius: 10px;
+    margin-bottom:10px;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    svg,img {
+      width: 24px;
+      height: auto;
+    }
+    .aside-text{
+      margin-left: 20px;
+      flex: 1;
+    }
+    &.active,&:hover {
+      background: #ffffff;
+    }
+  }
+  &-history-icon{
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    border-radius: 4px;
+    text-align: center;
+    &:hover{
+      background: #53818480;
+    }
+  }
+  &.coll{
+    &:not(.sm-show){
+      .aside-icon{
+        width: 44px;
+        .aside-text{
+          display: none;
+        }
+        svg ,img{
+          width: 100%;
+        }
+      }
+      .aside-history-icon{
+        display: none
+      }
+    }
+
+  }
+}

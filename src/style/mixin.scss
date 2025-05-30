@@ -1,0 +1,172 @@
+.common-layout{
+    background-color: #F1F4F7;
+    height: 100vh;
+    font-size: 16px;
+}
+
+/* 修改滚动条的宽度 */
+::-webkit-scrollbar {
+    width: 4px; /* 纵向滚动条的宽度 */
+    height: 4px; /* 横向滚动条的高度 */
+}
+
+/* 滚动条轨道部分 */
+::-webkit-scrollbar-track {
+    background-color:rgba(#f0f0f0,0.3) ;
+    border-radius: 10px;
+}
+
+/* 滚动条滑块部分 */
+::-webkit-scrollbar-thumb {
+    background-color: #D2D2D8;
+    border-radius: 10px;
+}
+
+/* 鼠标悬停在滑块上时 */
+::-webkit-scrollbar-thumb:hover {
+    background-color: #c3c3c7;
+}
+
+*{
+    box-sizing: border-box;
+}
+p{
+    margin: 0;
+}
+.aside-tooltip{
+    border-radius: 10px;
+    font-weight: bold;
+    color: #163B30;
+    padding: 4px 10px;
+    line-height: 16px;
+    left: 6px !important;
+    .el-popper__arrow{
+        display: none;
+    }
+}
+:root {
+    --el-color-primary: #012A2D ;
+    --el-color-primary-light-3: #17E88F;
+    --el-color-primary-light-5: rgba(49, 112, 94, 0.59);
+    --el-color-primary-light-9: rgba(49, 112, 94, 0.1);
+    --el-color-primary-dark-2: #2c6252;
+    --el-text-color-primary:#163B30;
+    --el-text-color-regular:#012A2D;
+    --el-text-color-secondary:#012A2D;
+    --el-color-info:#CAD1D3;
+    --el-color-info-light-3:#F4F6F7;
+    --el-color-success:#80BBAD;
+    --el-color-success-light-3:#538184;
+    --el-color-success-light-5: #DADFE0;
+    --el-color-success-light-9: #E6F1EF;
+    --el-color-danger:#EC4D4D;
+    --el-color-warning:#E3BB6F;
+    --message-list-max-width: 80%;
+    --message-list-width: calc(100% - 80px);
+    --el-border-radius-base:8px;
+    --el-fill-color-blank:#F4F6F7;
+    --el-border-color:rgba(1, 42, 45, 0.20);
+    //--el-bg-color:#F4F6F7;
+    --el-disabled-text-color:#778E9C;
+
+    @media (max-width: 768px) {
+        --message-list-max-width: 98%;
+        --message-list-width: calc(100% - 16px);
+    }
+    --el-component-size-large:45px;
+    --el-component-size:36px;
+    .el-button:not(.el-button--small):not(.el-button--large){
+        height: var(--el-component-size);
+    }
+    .el-button--large{
+        --el-button-size:var(--el-component-size-large)
+    }
+    --el-border-color-lighter:rgba(0, 0, 0,0.2);
+    .el-form-item--large{
+        --font-size:16px;
+    }
+    .el-button--success{
+        --el-button-text-color:var(--el-color-black)
+    }
+    .el-checkbox{
+        //--el-checkbox-bg-color:var(--el-color-white);
+        --el-checkbox-bg-color:var(--el-color-success);
+        --el-checkbox-checked-bg-color:var(--el-color-success);
+        --el-checkbox-input-border:var(--el-color-success);
+        --el-checkbox-input-width:16px;
+        --el-checkbox-input-height:16px;
+    }
+    .el-button{
+        --el-border-radius-base:10px;
+    }
+    .el-button.is-disabled{
+        color:var(--el-disabled-text-color)
+    }
+    .el-button.is-loading{
+        background:  rgba(119, 142, 156,0.5);
+        border-color: #DADFE0;
+    }
+    .el-button--primary{
+        --el-button-disabled-bg-color:#DADFE0;
+        --el-button-disabled-border-color:#DADFE0;
+    }
+    .el-button--success.is-plain{
+        --el-button-bg-color:var(--el-color-white);
+        --el-button-border-color:var(--el-color-white);
+        --el-button-text-color:#778E9C;
+    }
+    .el-button--danger{
+        --el-button-bg-color:#778E9C;
+        --el-button-border-color:#778E9C;
+        --el-button-hover-bg-color:var(--el-color-danger);
+        --el-button-hover-border-color:var(--el-color-danger);
+        --el-button-disabled-bg-color:#DADFE0;
+        --el-button-disabled-border-color:#DADFE0;
+    }
+    .el-button--danger.is-plain{
+        --el-button-bg-color:var(--el-color-white);
+        --el-button-border-color:var(--el-color-white);
+        --el-button-text-color:#778E9C;
+    }
+    .el-button--warning{
+        --el-button-hover-bg-color:#EFDF53;
+        --el-button-hover-border-color:#EFDF53;
+    }
+    .el-button--warning.is-plain{
+        --el-button-bg-color:var(--el-color-white);
+        --el-button-border-color:var(--el-color-white);
+        --el-button-text-color:#778E9C;
+    }
+    .el-button--info.is-plain{
+        --el-button-border-color:var(--el-color-info-light-3);
+        --el-button-bg-color:var(--el-color-info-light-3);
+        --el-button-hover-bg-color:var(--el-color-white);
+        --el-button-hover-border-color:var(--el-color-white);
+        &:active{
+            background-color: var(--el-color-white);
+            border-color: var(--el-color-white);
+        }
+    }
+    .el-button--info{
+        --el-button-text-color:var(--el-color-black);
+        --el-button-hover-text-color:var(--el-color-black);
+    }
+    .el-table{
+        --el-table-tr-bg-color:#F4F6F7;
+        --el-table-header-bg-color:#F4F6F7;
+    }
+    .el-input{
+        --el-input-border-radius:8px;
+    }
+    .el-switch{
+        //--el-switch-on-color: var(--el-color-white);
+        --el-switch-on-color: #80BBAD;
+        --el-switch-off-color: #80BBAD4D;
+    }
+    .el-radio{
+        --el-radio-input-border-color:var(--el-color-success);
+    }
+    .el-message--success{
+        --el-message-text-color: #10a581;
+    }
+}

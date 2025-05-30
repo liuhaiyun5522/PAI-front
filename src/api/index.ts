@@ -1,0 +1,21 @@
+import request from '@/utils/request'
+export interface loginForm {
+    userid:string
+    password:string
+    language: string
+  }
+  export interface loginResultData{
+    code:any,
+    data:any
+  }
+  
+//登录
+export const login = (data:loginForm)=>request.post<any,loginResultData>('/user/login',data)
+
+
+//token验证
+export const verifyToken = ()=>request.post<any>('/verify_token')
+//获取用户信息
+export const getUserInfo = ()=>request.post<any>('/get_current_user_info')
+//获取公司组织架构
+export const getCompanyOrg = ()=>request.get<any>('/sys_admin/get_dept_user_tree')

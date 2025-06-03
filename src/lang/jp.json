@@ -1,6 +1,37 @@
 {
-  "start":"スタート  PAI",
+  "start": "スタート  PAI",
+  "add": "新規作成",  
+  "userManagement": "ユーザー管理",
+  "knowledgebaseManagement": "ナレッジベース管理",
+  "BasefileManagement": "ナレッジベース管理--",
+  "knowledgemng": {
+    "rename": "名前を変更",
+    "delete": "削除"
+  },
 
+
+  "Basetable": {
+    "upload": "ファイルアップロード",
+    "filename": "ファイル名",
+    "filesize": "サイズ",
+    "updatetime": "更新日時",
+    "filestatus": "状態",
+    "tool": "操作"
+  },
+  "usermng": {
+    "add": "新規",
+    "export": "エクスポート",
+    "department": "部門",
+    "status": "状態",
+    "addtime": "新規時間",
+    "name": "ユーザー名",
+    "pic": "アイコン",
+    "email": "メール",
+    "password": "パスワード",
+    "position": "職務",
+    "permission": "権限",
+    "tool": "操作"
+  },
   "fileSuggest": "最大100MBまでのファイルをサポート",
   "enterQuestion": "ご質間の内容に応じて、AIが自動的に最適な社内情報を参照するようになりました。今後は、部門を選ばずそのままご質間ください。",
   "downloadNewFile": "新しいファイルをダウンロード",
@@ -16,7 +47,6 @@
   "deleteTip2": "削除に成功しました",
   "aiTip": "本回答は、CBRE 規定に基づき AI が作成したものです。関連部門の公式な見解と異なる場合は、そちらを優先してください。",
   "databaseTitle": "キャッシュ管理",
-  "add": "新規作成",
   "update": "最新アップデート",
   "addDatabase": "ナレッジベース新規作成",
   "renameDatabase": "ナレッジベースの名前変更",
@@ -60,41 +90,17 @@
   "export": "エクスポート",
   "exportAll": "一括エクスポート",
   "deleteTip3": "本当に削除しますか？\n削除後はリカバリ不可！",
-  "userManagement": "ユーザー管理",
-  "knowledgebaseManagement": "ナレッジベース管理",
-  "BasefileManagement": "ナレッジベース管理--",
+
   "searchPlaceholder2": "検索する内容を入力してください",
   "agent": "Agent",
   "workSpace": "WorkSpace",
   "history": "履歴記録",
   "personalCenter": "個人アカウント",
-  "grandManagement":"バックグランド管理",
+  "grandManagement": "バックグランド管理",
   "updateTip": "更新に成功しました",
   "confirm2": "確  認",
   "required": "内容を入力してください",
   "addSuccess": "新規成功",
-  "Basetable": {
-    "upload": "ファイルアップロード",
-      "filename": "ファイル名",
-      "filesize": "サイズ",
-      "updatetime": "更新日時",
-      "filestatus": "状態",
-      "tool": "操作"
-    },
-  "usermng": {
-    "add": "新規",
-    "export": "エクスポート",
-    "department": "部門",
-    "status": "状態",
-    "addtime": "新規時間",
-    "name": "ユーザー名",
-    "pic": "アイコン",
-    "email": "メール",
-    "password": "パスワード",
-    "position": "職務",
-    "permission":"権限",
-    "tool": "操作"
-  },
   "workspace": {
     "mySpace": "My Space",
     "sharedSpace": "共有された Space",

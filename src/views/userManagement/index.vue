@@ -152,21 +152,188 @@ const total = ref(0);       // 总条数
 const fullData = ref([]);   // 所有数据
 const tableData = ref([]);  // 当前页显示的数据
 
-// 假数据 - 共计 28 条
-const allData = ref(
-  Array.from({ length: 28 }, (_, i) => ({
-    id: `${i + 1}`,
-    username: `用户${i + 1}`,
-    pic: '1',
-    status: '1',
-    userid: `user${i + 1}@example.com`,
+const allData = ref([
+  {
+    id: '1',
+    username: '张三',
+    pic: 'avatar1.png',
+    status: '已上传',
+    userid: 'zhangsan@example.com',
+    permissionLevel: 1,
+    password: '123456',
+    position: '开发',
+    department: '开发部',
+    addtime: '2024-05-01 10:00:00'
+  },
+  {
+    id: '2',
+    username: '李四',
+    pic: 'avatar2.png',
+    status: '上传中',
+    userid: 'lisi@example.com',
     permissionLevel: 0,
-    password: '******',
-    position: ['开发', '设计', '测试', '管理'][i % 4],
-    department: ['开发部', '设计部', '测试部', '管理部'][i % 4],
-    addtime: `2024-05-${(i % 30 + 1).toString().padStart(2, '0')} 10:00:00`
-  }))
-);
+    password: 'abcdef',
+    position: '设计',
+    department: '设计部',
+    addtime: '2024-05-02 10:00:00'
+  },
+  {
+    id: '3',
+    username: '王五',
+    pic: 'avatar3.png',
+    status: '正在排队',
+    userid: 'wangwu@example.com',
+    permissionLevel: 1,
+    password: '654321',
+    position: '测试',
+    department: '测试部',
+    addtime: '2024-05-03 10:00:00'
+  },
+  {
+    id: '4',
+    username: '赵六',
+    pic: 'avatar4.png',
+    status: '上传失败',
+    userid: 'zhaoliu@example.com',
+    permissionLevel: 0,
+    password: 'pass123',
+    position: '管理',
+    department: '管理部',
+    addtime: '2024-05-04 10:00:00'
+  },
+  {
+    id: '5',
+    username: '孙七',
+    pic: 'avatar5.png',
+    status: '已上传',
+    userid: 'sunqi@example.com',
+    permissionLevel: 1,
+    password: 'sunqi2024',
+    position: '开发',
+    department: '开发部',
+    addtime: '2024-05-05 10:00:00'
+  },
+  {
+    id: '1',
+    username: '张三',
+    pic: 'avatar1.png',
+    status: '已上传',
+    userid: 'zhangsan@example.com',
+    permissionLevel: 1,
+    password: '123456',
+    position: '开发',
+    department: '开发部',
+    addtime: '2024-05-01 10:00:00'
+  },
+  {
+    id: '2',
+    username: '李四',
+    pic: 'avatar2.png',
+    status: '上传中',
+    userid: 'lisi@example.com',
+    permissionLevel: 0,
+    password: 'abcdef',
+    position: '设计',
+    department: '设计部',
+    addtime: '2024-05-02 10:00:00'
+  },
+  {
+    id: '3',
+    username: '王五',
+    pic: 'avatar3.png',
+    status: '正在排队',
+    userid: 'wangwu@example.com',
+    permissionLevel: 1,
+    password: '654321',
+    position: '测试',
+    department: '测试部',
+    addtime: '2024-05-03 10:00:00'
+  },
+  {
+    id: '4',
+    username: '赵六',
+    pic: 'avatar4.png',
+    status: '上传失败',
+    userid: 'zhaoliu@example.com',
+    permissionLevel: 0,
+    password: 'pass123',
+    position: '管理',
+    department: '管理部',
+    addtime: '2024-05-04 10:00:00'
+  },
+  {
+    id: '5',
+    username: '孙七',
+    pic: 'avatar5.png',
+    status: '已上传',
+    userid: 'sunqi@example.com',
+    permissionLevel: 1,
+    password: 'sunqi2024',
+    position: '开发',
+    department: '开发部',
+    addtime: '2024-05-05 10:00:00'
+  },
+  {
+    id: '1',
+    username: '张三',
+    pic: 'avatar1.png',
+    status: '已上传',
+    userid: 'zhangsan@example.com',
+    permissionLevel: 1,
+    password: '123456',
+    position: '开发',
+    department: '开发部',
+    addtime: '2024-05-01 10:00:00'
+  },
+  {
+    id: '2',
+    username: '李四',
+    pic: 'avatar2.png',
+    status: '上传中',
+    userid: 'lisi@example.com',
+    permissionLevel: 0,
+    password: 'abcdef',
+    position: '设计',
+    department: '设计部',
+    addtime: '2024-05-02 10:00:00'
+  },
+  {
+    id: '3',
+    username: '王五',
+    pic: 'avatar3.png',
+    status: '正在排队',
+    userid: 'wangwu@example.com',
+    permissionLevel: 1,
+    password: '654321',
+    position: '测试',
+    department: '测试部',
+    addtime: '2024-05-03 10:00:00'
+  },
+  {
+    id: '4',
+    username: '赵六',
+    pic: 'avatar4.png',
+    status: '上传失败',
+    userid: 'zhaoliu@example.com',
+    permissionLevel: 0,
+    password: 'pass123',
+    position: '管理',
+    department: '管理部',
+    addtime: '2024-05-04 10:00:00'
+  },
+  {
+    id: '5',
+    username: '孙七',
+    pic: 'avatar5.png',
+    status: '已上传',
+    userid: 'sunqi@example.com',
+    permissionLevel: 1,
+    password: 'sunqi2024',
+    position: '开发',
+    department: '开发部',
+    addtime: '2024-05-05 10:00:00'
+  }
+]);
 
 
 // 表头翻译
@@ -248,17 +415,17 @@ onMounted(() => {
   position: absolute;
   right: 15px;
   top: -55px;
-  background-color: #34A0E9;
+  background-color: #FF9D2D;
   border-radius: 10px;
   width: 111px;
   height: 40px;
-  border-color: #34A0E9;
+  border-color: #FF9D2D;
   z-index: 11;
 
   &:hover,
   &:active {
-    background-color: #ADDEFF !important;
-    color: #1D5276 !important;
+    background-color: #FFCB8F !important;
+    color: #693F0E !important;
   }
 }
 

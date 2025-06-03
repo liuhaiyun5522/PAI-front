@@ -1,10 +1,10 @@
 <template>
     <div class="main">
         <div class="container">
-<!-- 左侧图片（绑定动态语言图片） -->
-<div class="left-panel">
-    <img :src="loginImage" alt="Login Image" />
-</div>
+            <!-- 左侧图片（绑定动态语言图片） -->
+            <div class="left-panel">
+                <img :src="loginImage" alt="Login Image" />
+            </div>
             <!-- 右侧登录面板 -->
             <div class="right-panel">
                 <!-- 语言切换 -->
@@ -79,7 +79,7 @@ function changeLanguage(lang) {
 // 登录图片根据语言切换
 const loginImage = computed(() =>
     locale.value === 'ja' ? new URL('@/assets/login-ja.jpg', import.meta.url).href :
-                            new URL('@/assets/login-zh.jpg', import.meta.url).href
+        new URL('@/assets/login-zh.jpg', import.meta.url).href
 )
 
 // 登录操作
@@ -199,23 +199,23 @@ const handleLogin = async () => {
     }
 
     .login-button {
-    margin-top: 30px;
-    width: 700px;
-    height: 80px;
-    background-color: #34A0E9;
-    border: none;
-    border-radius: 20px;
-    color: white;
-    font-size: 28px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
+        margin-top: 30px;
+        width: 700px;
+        height: 80px;
+        background-color: #34A0E9;
+        border: none;
+        border-radius: 20px;
+        color: white;
+        font-size: 28px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
 
-    &:hover,
-    &:active {
-        background-color: #ADDEFF;
-        color: #1D5276;
+        &:hover,
+        &:active {
+            background-color: #ADDEFF;
+            color: #1D5276;
+        }
     }
-}
 
 
     .password-field {

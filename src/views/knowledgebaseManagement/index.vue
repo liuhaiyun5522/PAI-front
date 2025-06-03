@@ -1,12 +1,11 @@
 <template>
   <div class="knowledge-list">
-    <el-button class="primary-button" @click="dialogVisible = true">
+    <el-button class="primary-button"  type="primary" @click="dialogVisible = true">
       <el-icon>
         <Plus />
       </el-icon>
       {{ t('add') }}
     </el-button>
-
     <!-- 弹窗 -->
     <el-dialog v-model="dialogVisible" :title="t('addDatabase')" width="900px" :show-close="true" class="custom-dialog">
 
@@ -36,26 +35,44 @@
       </template>
     </el-dialog>
 
-
     <div class="card" v-for="item in knowledgeList" :key="item.id" @click="goToCardDetail(item)"
       @mouseover="hovered = true" @mouseleave="hovered = false">
-      <div class="card-content">
+      <div class="card-inner" @click="goToCardDetail(item)">
         <div class="card-top">
           <img class="card-img" src="@/assets/knowledgebase/card-img.jpg" alt="card image" />
           <div class="card-text">
-            <h3 class="card-title">{{ item.name }}</h3>
+            <p class="card-title">{{ item.name }}</p>
             <p class="card-description">{{ item.description }}</p>
           </div>
         </div>
+
         <div class="card-bottom">
-        <p class="card-time">{{ formatDate(item.create_time) }}</p>
-        <el-icon @click.stop="openPopover(item)">
-          <MoreFilled />
-        </el-icon>
-        <el-popover trigger="click" v-if="popoverItemId === item.id" placement="bottom">
-          <el-button @click="rename(item)">{{ t('rename') }}</el-button>
-          <el-button @click="deleteItem(item)">{{ t('delete') }}</el-button>
-        </el-popover>
+          <p class="card-time">{{ formatDate(item.create_time) }}</p>
+
+          <el-dropdown trigger="click">
+            <span class="el-dropdown-link" @click.stop>
+              <el-icon class="more-icon">
+                <MoreFilled />
+              </el-icon>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item @click="rename(item)">
+                  <el-icon>
+                    <RenameIcon />
+                  </el-icon>
+                  <span style="margin-left: 5px;"> {{ t('rename') }}</span>
+                </el-dropdown-item>
+
+                <el-dropdown-item @click="confirmDelete(item)" divided>
+                  <el-icon>
+                    <DeleteIcon />
+                  </el-icon>
+                  <span style="margin-left: 5px;"> {{ t('delete') }}</span>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </div>
       </div>
     </div>
@@ -63,8 +80,9 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
-import { ElMessage } from 'element-plus';
-import { getknowledgeList, createknowledgeabse } from '@/api/knowledgebaseMange';
+import { getknowledgeList, createknowledgeabse, dropknowledgeabse } from '@/api/knowledgebaseMange';
+import RenameIcon from '@/assets/icon-rename.svg?component';
+import DeleteIcon from '@/assets/icon-delete2.svg?component';
 import { useRouter } from 'vue-router';
 import useStore from '@/store';
 import { useI18n } from 'vue-i18n';
@@ -132,8 +150,42 @@ const rename = (item) => {
   popoverItemId.value = null; // 关闭弹窗
 };
 
-const deleteItem = (item) => {
-  alert(`删除：${item.name}`);
+
+// 确认删除函数
+const confirmDelete = (item) => {
+    // 弹出确认框
+    ElMessageBox.confirm(
+        `确定要删除知识库 "${name}" 吗？`,
+        // $languageStore.getMessage('knowledge_del_notice'),
+        // '警告',
+        {
+            confirmButtonText: `ok`,
+            cancelButtonText: `no`,
+            type: 'warning',
+        }
+    ).then(async () => {
+        // 用户确认删除
+        await deleteItem(item);
+    }).catch(() => {
+        // 用户取消删除
+        console.log('取消删除');
+    });
+};
+
+
+const deleteItem = async (item) => {
+  console.log(item)
+  try {
+    const payload = {
+      name:item.name,
+      userid: "1"
+    };
+    const response = await dropknowledgeabse(payload);
+    console.log('删除知识库成功:', response.data);
+    await init(); // 重新获取知识库列表
+  } catch (error) {
+    console.error('Error deleting knowledge base:', error);
+  }
   popoverItemId.value = null; // 关闭弹窗
 };
 
@@ -155,16 +207,13 @@ onMounted(() => {
   position: absolute;
   right: 15px;
   top: 20px;
-  background-color: #34A0E9;
   border-radius: 10px;
   width: 111px;
   height: 40px;
-  border-color: #34A0E9;
   z-index: 11;
 
   &:hover,
   &:active {
-    background-color: #ADDEFF !important;
     color: #1D5276 !important;
   }
 }
@@ -261,17 +310,22 @@ onMounted(() => {
   padding: 24px;
   position: relative;
   box-sizing: border-box;
-
+  border: 2px solid #F1F4F7;
   &:hover {
     border: 2px solid #8cc7f0;
   }
 
-  .card-content {
+  .card-inner {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
+    box-sizing: border-box;
+    cursor: pointer;
+    position: relative; // 确保内容层建立新的层叠上下文 
+    z-index: 2; // 确保内容层在背景层之上 
   }
+
 
   .card-top {
     display: flex;
@@ -287,35 +341,49 @@ onMounted(() => {
   .card-text {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-  }
+    align-items: flex-start;
+    flex-grow: 1;
+    overflow: hidden;
+    color: #1D5276;
+    padding: 8px;
 
-  .card-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
+    .card-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
 
-  .card-description {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 8px;
+    .card-description {
+      font-size: 14px;
+    }
   }
 
   .card-bottom {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: -5%;
+
+    .more-icon {
+      cursor: pointer;
+      border-radius: 4px;
+      padding: 5px;
+      font-size: 30px;
+      // transition: background-color 0.3s ease;
+
+      &:hover,
+      &:active {
+        background-color: #F1F4F7; // 或者 #e0e0e0 也不错
+      }
+    }
+
   }
 
   .card-time {
     font-size: 12px;
-    color: #888;
+    color: #AFBCCD;
   }
 
-  .el-icon {
-    cursor: pointer;
-  }
 
   .el-popover {
     padding: 10px;

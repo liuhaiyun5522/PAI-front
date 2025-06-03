@@ -45,10 +45,10 @@ p{
     }
 }
 :root {
-    --el-color-primary: #012A2D ;
-    --el-color-primary-light-3: #17E88F;
+    --el-color-primary: #34A0E9 ;
+    --el-color-primary-light-3: #ADDEFF;
     --el-color-primary-light-5: rgba(49, 112, 94, 0.59);
-    --el-color-primary-light-9: rgba(49, 112, 94, 0.1);
+    --el-color-primary-light-9: #F1F4F7;
     --el-color-primary-dark-2: #2c6252;
     --el-text-color-primary:#163B30;
     --el-text-color-regular:#012A2D;
@@ -107,6 +107,7 @@ p{
         border-color: #DADFE0;
     }
     .el-button--primary{
+        --el-button-hover-text-color:#1D5276;
         --el-button-disabled-bg-color:#DADFE0;
         --el-button-disabled-border-color:#DADFE0;
     }
@@ -168,5 +169,8 @@ p{
     }
     .el-message--success{
         --el-message-text-color: #10a581;
+    }
+    .el-dropdown__popper{
+        --el-dropdown-menuItem-hover-color:#012A2D;
     }
 }

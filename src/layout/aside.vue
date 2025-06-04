@@ -14,9 +14,8 @@
         </div>
 
         <!-- History Button -->
-        <div class="aside-icon mt-10" :class="{ active: historyFlag || historyHovering }"
-          @click="toggleHistory, goPage('history')" @mouseenter="historyHovering = true"
-          @mouseleave="historyHovering = false">
+        <div class="aside-icon mt-10" :class="{ active: historyFlag || historyHovering }" @click="toggleHistory"
+          @mouseenter="historyHovering = true" @mouseleave="historyHovering = false">
           <div class="history-icon"></div>
           <span class="aside-text">{{ t('history') }}</span>
           <span class="aside-history-icon" @click.stop="toggleHistory">
@@ -30,17 +29,18 @@
         </div>
       </div>
 
-      <div class="history-tree">
-
+      <div class="history-tree" v-if="historyFlag">
+        <Menuu />
       </div>
 
+
       <div class="buttom-func">
-        <div class="nav-button"  @click="goPage('userManagement')"  :class="{ active: aaaHovering }" @mouseenter="aaaHovering = true"
-          @mouseleave="aaaHovering = false">
+        <div class="nav-button" @click="goPage('userManagement')" :class="{ active: aaaHovering }"
+          @mouseenter="aaaHovering = true" @mouseleave="aaaHovering = false">
           {{ t('userManagement') }}
         </div>
-        <div class="nav-button" @click="goPage('knowledgebaseManagement')"  :class="{ active: bbbHovering }" @mouseenter="bbbHovering = true"
-          @mouseleave="bbbHovering = false">
+        <div class="nav-button" @click="goPage('knowledgebaseManagement')" :class="{ active: bbbHovering }"
+          @mouseenter="bbbHovering = true" @mouseleave="bbbHovering = false">
           {{ t('knowledgebaseManagement') }}
         </div>
         <!-- <span class="version-text">
@@ -51,9 +51,15 @@
 
       <div class="user">
         <div class="userbutton">
+          <div class="user-icon"></div>
           <span>
+            <!-- admin -->
             {{ useMenu.userInfo.userName }}
           </span>
+          <div class="user-tool"  @click="goPage('setpage')">
+            <img :src="usertool" alt="">
+          </div>
+
         </div>
       </div>
     </div>
@@ -66,7 +72,8 @@ import { useGoPageHandler } from '@/hooks/useMenuFun.js';
 import LogoWhite from '@/assets/logo-white.svg';
 import { useRouter, useRoute } from 'vue-router';
 import useStore from '@/store';
-import { changeGlobalNodesTarget } from 'element-plus/es/utils';
+import Menuu from '@/layout/components/menu/submenu.vue'
+import usertool from '@/assets/user-tool.jpg'
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 const { useMenu } = useStore();
@@ -97,8 +104,6 @@ function goPage(pageName: string) {
 </script>
 
 
-
-
 <style lang="scss" scoped>
 .aside {
   width: 260px;
@@ -106,6 +111,8 @@ function goPage(pageName: string) {
   border-radius: 20px;
   background-image: url('./../assets/left.png');
   background-size: cover;
+  display: flex;
+  flex-direction: column;
 
   .logo-class {
     display: flex;
@@ -122,7 +129,8 @@ function goPage(pageName: string) {
     padding: 20px 13px 0;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    flex-grow: 1; // 关键：使内容区域撑满
+    overflow: hidden; // 防止外溢
   }
 
   .aside-icon {
@@ -191,21 +199,24 @@ function goPage(pageName: string) {
   }
 
   .history-tree {
-    // background-color: aqua;
+    flex-shrink: 0;
     width: 100%;
-    height: 55vh;
+    max-height: 46vh; // 控制最大高度
+    overflow-y: auto;
+    margin-top: 10px;
+    padding: 0px 15px;
   }
 
   .buttom-func {
-    // 保持原有样式
     width: 100%;
-    height: 15vh;
-    border-bottom: 1px solid #FFFFFF;
+    height: 17vh;
+    border-bottom: 1px solid #ffffff;
+    // padding-top: 10px;
+    margin-top: auto; // 固定到底部关键
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    position: relative;
 
     .nav-button {
       font-size: 16px;
@@ -230,7 +241,6 @@ function goPage(pageName: string) {
       }
     }
 
-    /* 让 version 1.0.0 在右下角 */
     span.version-text {
       bottom: 5px;
       right: 10px;
@@ -241,9 +251,7 @@ function goPage(pageName: string) {
     }
   }
 
-
   .user {
-    // background-color: rgb(82, 93, 68);
     width: 100%;
     height: 8vh;
     padding: 10px;
@@ -258,8 +266,45 @@ function goPage(pageName: string) {
       border-radius: 100px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      // justify-content: center;
       color: #fff;
+
+      .user-icon {
+        width: 17px;
+        height: 17px;
+        margin-left: 20px;
+        mask-repeat: no-repeat;
+        mask-size: contain;
+        background-color: #fff;
+        mask-image: url('@/assets/user.svg');
+      }
+
+      span {
+        margin-left: 10px;
+      }
+
+      .user-tool {
+        width: 40px;
+        height: 40px;
+        margin-left: 70px;
+        background-color: transparent;
+        border-radius: 50%;
+        cursor: pointer;
+
+        img {
+          width: 18px;
+          height: 18px;
+          margin-left: 11px;
+          margin-top: 11px;
+
+        }
+
+        &:hover,
+        &:active {
+          background-color: #62A3CF;
+        }
+      }
+
     }
   }
 }

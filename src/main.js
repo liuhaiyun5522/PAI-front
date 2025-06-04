@@ -39,15 +39,16 @@ const i18n = createI18n({
   legacy: false,
   messages: {
     ja:jp,
-    zhCn:zh
+    'zh-CN':zh
     // jp, // 日文资源
     // zh  // 中文资源
   }
 })
-import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
-import ja from 'element-plus/dist/locale/ja.mjs'
+import elementPlusJaLocale from 'element-plus/dist/locale/ja.mjs'
+import elementPlusZhCnLocale from 'element-plus/dist/locale/zh-cn.mjs'
+
 app.use(router).use(i18n).use(ElementPlus,{
-  locale:localeLang=='ja'?ja:zhCn
+  locale: localeLang === 'ja' ? elementPlusJaLocale : elementPlusZhCnLocale
 }).use(pinia).mount('#app')
 
 import './style.scss'

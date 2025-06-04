@@ -1,15 +1,35 @@
 {
   "start": "スタート  PAI",
-  "add": "新規作成",  
+  "add": "新規作成",
   "userManagement": "ユーザー管理",
   "knowledgebaseManagement": "ナレッジベース管理",
   "BasefileManagement": "ナレッジベース管理--",
+  "setpage": "設定",
+  "login": {
+    "title": "ログイン",
+    "prompt": "IDとパスワードを入力してください",
+    "userIdLabel": "ID",
+    "passwordLabel": "パスワード",
+    "userIdPlaceholder": "ユーザーID",   
+    "passwordPlaceholder": "パスワード", 
+    "selectLanguagePlaceholder": "言語を選択",
+    "loginFailed": "ログインに失敗しました",
+    "userOrPasswordIncorrect": "ユーザー名またはパスワードが存在しません",
+    "loginError": "ログインエラー",
+    "networkError": "ネットワーク接続に失敗しました。設定を確認してください。",
+    "loginSuccessMessage": "ログインに成功しました。リダイレクトしています..."
+  },
+  "settings": {
+    "logout": "ログアウト",
+    "account": "アカウント",
+    "save": "保 存",
+    "language": "言語",
+    "userlang": "ユーザー表示の言語"
+  },
   "knowledgemng": {
     "rename": "名前を変更",
     "delete": "削除"
   },
-
-
   "Basetable": {
     "upload": "ファイルアップロード",
     "filename": "ファイル名",
@@ -90,7 +110,6 @@
   "export": "エクスポート",
   "exportAll": "一括エクスポート",
   "deleteTip3": "本当に削除しますか？\n削除後はリカバリ不可！",
-
   "searchPlaceholder2": "検索する内容を入力してください",
   "agent": "Agent",
   "workSpace": "WorkSpace",

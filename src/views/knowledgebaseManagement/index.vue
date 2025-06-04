@@ -86,7 +86,6 @@ import DeleteIcon from '@/assets/icon-delete2.svg?component';
 import { useRouter } from 'vue-router';
 import useStore from '@/store';
 import { useI18n } from 'vue-i18n';
-
 const { t } = useI18n();
 const { useMenu } = useStore();
 
@@ -208,7 +207,7 @@ onMounted(() => {
   right: 15px;
   top: 20px;
   border-radius: 10px;
-  width: 111px;
+  width: auto;
   height: 40px;
   z-index: 11;
 

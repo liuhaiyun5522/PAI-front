@@ -48,9 +48,9 @@ export const constantRoute = [
       
       //历史记录页面
       {
-        path: "/history",
-        name: "history",
-        component: () => import('@/views/history/index.vue'),
+        path: "/setpage",
+        name: "setpage",
+        component: () => import('@/views/setpage/index.vue'),
       },
       //agent
       {

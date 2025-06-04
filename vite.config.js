@@ -84,10 +84,11 @@ export default defineConfig(({command})=>{
       host: "0.0.0.0",
       open: true,
       cors:true,//允许跨域
-      allowedHosts:['askme2.cbredata.com'],
+      // allowedHosts:['askme2.cbredata.com'],
       proxy: {
         "/api": {
           target: "http://13.112.150.251:8009/api",//目标后端服务器地址
+          // target: "http://13.112.150.251:11451/api",//目标后端服务器地址
           changeOrigin: true,
           bypass(req, res, options) {
             const proxyURL = options.target + options.rewrite(req.url);

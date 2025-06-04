@@ -4,12 +4,32 @@
   "userManagement": "用户管理",
   "knowledgebaseManagement": "知识库管理",
   "BasefileManagement": "知识库管理--",
-
+  "setpage": "设置",
+  "login": {
+    "title": "登录",
+    "prompt": "请输入您的ID和密码",
+    "userIdLabel": "ID",
+    "selectLanguagePlaceholder": "选择语言",
+    "loginFailed": "登录失败",
+    "userOrPasswordIncorrect": "用户名或密码不存在",
+    "loginError": "登录错误",
+    "passwordLabel": "密码",
+    "networkError": "网络连接失败，请检查您的网络设置。",
+    "userIdPlaceholder": "用户ID", 
+    "loginSuccessMessage": "登录成功，正在跳转...",
+    "passwordPlaceholder": "密码" 
+  },
+  "settings": {
+    "logout": "退出登录",
+    "account": "账户",
+    "save": "保 存",
+    "language": "界面语言",
+    "userlang": "用户显示界面语言"
+  },
   "knowledgemng": {
     "rename": "重命名",
     "delete": "删除"
   },
-  
   "Basetable": {
     "upload": "上传文件",
     "filename": "文件名称",
@@ -28,7 +48,7 @@
     "pic": "头像",
     "email": "邮箱",
     "password": "密码",
-    "position": "职务",
+    "position": "职位",
     "permission": "权限",
     "tool": "操作"
   },

@@ -186,18 +186,19 @@ import IconDelete from "@/assets/icon-delete2.svg"
 <style lang="scss" scoped>
 .aside {
   &-date {
-    margin: 10px 0;
-    font-size: 16px;
+    margin: 5px 5px;
+    font-size: 14px;
     color: #1D5276;
   }
 
   &-title {
-    padding: 10px 20px;
+    padding: 10px 15px;
     border-radius: 8px;
     cursor: pointer;
     position: relative;
     padding-right: 40px;
-    font-size: 14px;
+    font-size: 13px;
+    width: 210px;
     color: rgba(29, 82, 118, 0.5);
 
     &-text{

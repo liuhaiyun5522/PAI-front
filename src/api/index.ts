@@ -16,6 +16,7 @@ export const login = (data:loginForm)=>request.post<any,loginForm>('/user/login'
 export const logout = ()=>request.post<any,loginResultData>('/user/logout')
 
 
+
 //token验证
 export const verifyToken = ()=>request.post<any>('/verify_token')
 //获取用户信息

@@ -53,7 +53,7 @@
         <div class="userbutton">
           <div class="user-icon"></div>
           <span>
-            <!-- admin -->
+            admin
             {{ useMenu.userInfo.userName }}
           </span>
           <div class="user-tool"  @click="goPage('setpage')">
@@ -270,6 +270,7 @@ function goPage(pageName: string) {
       border-radius: 100px;
       display: flex;
       align-items: center;
+      position: relative;
       // justify-content: center;
       color: #fff;
 
@@ -288,26 +289,27 @@ function goPage(pageName: string) {
       }
 
       .user-tool {
-        width: 40px;
-        height: 40px;
-        margin-left: 70px;
-        background-color: transparent;
-        border-radius: 50%;
-        cursor: pointer;
+  position: absolute; // ✅ 关键
+  right: 10px;         // ✅ 距右边10px
+  top: 50%;
+  transform: translateY(-50%); // ✅ 垂直居中
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border-radius: 50%;
+  cursor: pointer;
 
-        img {
-          width: 18px;
-          height: 18px;
-          margin-left: 11px;
-          margin-top: 11px;
+  img {
+    width: 18px;
+    height: 18px;
+    margin: 11px; // ✅ 居中图标
+  }
 
-        }
-
-        &:hover,
-        &:active {
-          background-color: #62A3CF;
-        }
-      }
+  &:hover,
+  &:active {
+    background-color: #62A3CF;
+  }
+}
 
     }
   }

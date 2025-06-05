@@ -7,10 +7,10 @@
   "setpage": "設定",
   "login": {
     "title": "ログイン",
-    "prompt": "IDとパスワードを入力してください",
-    "userIdLabel": "ID",
+    "prompt": "メールとパスワードを入力してください",
+    "userIdLabel": "メール",
     "passwordLabel": "パスワード",
-    "userIdPlaceholder": "ユーザーID",   
+    "userIdPlaceholder": "ユーザーメール",   
     "passwordPlaceholder": "パスワード", 
     "selectLanguagePlaceholder": "言語を選択",
     "loginFailed": "ログインに失敗しました",

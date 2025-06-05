@@ -3,7 +3,6 @@ import request from '@/utils/request'
 export interface loginForm {
     userid:string
     password:string
-    language: string
   }
   export interface loginResultData{
     code:any,
@@ -11,7 +10,7 @@ export interface loginForm {
   }
   
 //登录
-export const login = (data:loginForm)=>request.post<any,loginResultData>('/user/login',data)
+export const login = (data:loginForm)=>request.post<any,loginForm>('/user/login',data)
 
 //用户登出
 export const logout = ()=>request.post<any,loginResultData>('/user/logout')

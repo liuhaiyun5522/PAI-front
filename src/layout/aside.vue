@@ -67,7 +67,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref ,onMounted} from 'vue';
 import { useGoPageHandler } from '@/hooks/useMenuFun.js';
 import LogoWhite from '@/assets/logo-white.svg';
 import { useRouter, useRoute } from 'vue-router';
@@ -85,6 +85,10 @@ const historyHovering = ref(false);
 const aaaHovering = ref(false);
 const bbbHovering = ref(false);
 const $router = useRouter();
+
+onMounted(()=>{
+ console.log(useMenu.userInfo.userName)
+})
 
 function handleClick(event: Event) {
   useGoDialog();

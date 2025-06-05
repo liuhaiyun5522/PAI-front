@@ -47,7 +47,7 @@
       background: transparent;
 
       &.is-active {
-        background: rgba(128, 187, 173, 0.6);
+        background: #ADDEFF;
       }
     }
   }
@@ -87,6 +87,7 @@ body{
       font-weight: 700;
       border-top-left-radius: 8px;
       border-top-right-radius: 8px;
+
       .el-dialog__title{
         color: #fff;
       }

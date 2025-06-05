@@ -51,7 +51,7 @@ p{
     --el-color-primary-light-9: #F1F4F7;
     --el-color-primary-dark-2: #2c6252;
     --el-text-color-primary:#163B30;
-    --el-text-color-regular:#012A2D;
+    --el-text-color-regular:#1D5276;
     --el-text-color-secondary:#012A2D;
     --el-color-info:#CAD1D3;
     --el-color-info-light-3:#F4F6F7;
@@ -64,7 +64,7 @@ p{
     --message-list-max-width: 80%;
     --message-list-width: calc(100% - 80px);
     --el-border-radius-base:8px;
-    --el-fill-color-blank:#F4F6F7;
+    --el-fill-color-blank:#ffffff;
     --el-border-color:rgba(1, 42, 45, 0.20);
     //--el-bg-color:#F4F6F7;
     --el-disabled-text-color:#778E9C;
@@ -81,7 +81,7 @@ p{
     .el-button--large{
         --el-button-size:var(--el-component-size-large)
     }
-    --el-border-color-lighter:rgba(0, 0, 0,0.2);
+    --el-border-color-lighter:#ffffff;
     .el-form-item--large{
         --font-size:16px;
     }
@@ -157,12 +157,12 @@ p{
         --el-table-header-bg-color:#F4F6F7;
     }
     .el-input{
-        --el-input-border-radius:8px;
+        --el-input-border-radius:6px;
     }
     .el-switch{
         //--el-switch-on-color: var(--el-color-white);
-        --el-switch-on-color: #80BBAD;
-        --el-switch-off-color: #80BBAD4D;
+        --el-switch-on-color: #AFBCCD;
+        --el-switch-off-color: #34A0E9;
     }
     .el-radio{
         --el-radio-input-border-color:var(--el-color-success);

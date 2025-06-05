@@ -26,11 +26,11 @@
         </div>
       </div>
 
-      <div class="history-tree" v-if="historyFlag">
+      <div :class="['history-tree', { 'no-bottom-func': !showBottomFunc }]" v-if="historyFlag">
         <Menuu />
       </div>
 
-      <div class="buttom-func">
+      <div class="buttom-func" v-if="useMenu.userInfo.userPermissionLevel === 1">
         <div class="nav-button" @click="goPage('userManagement')">
           <Usermng></Usermng>
           <span>
@@ -54,7 +54,7 @@
       <div class="layout-user-info">
         <div class="user-info-button">
           <Iconuser />
-          <span>admin {{ useMenu.userInfo.userName }}</span>
+          <span>{{ useMenu.userInfo.userName }}</span>
           <div class="user-tool" @click="goPage('setpage')">
             <Icontool />
           </div>
@@ -67,7 +67,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useGoPageHandler } from '@/hooks/useMenuFun.js';
+import { profile } from '@/api/index';
 import LogoWhite from '@/assets/logo-white.svg';
 import { useRouter } from 'vue-router';
 import useStore from '@/store';
@@ -78,9 +78,10 @@ import Icontool from '@/assets/user-tool.svg';
 import Usermng from '@/assets/usermng.svg';
 import Knowledgemng from '@/assets/knowledgemng.svg';
 import Menuu from '@/layout/components/menu/submenu.vue';
+import { useMenuStore } from '@/store/modules/useMenu'
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
-
+const menuStore = useMenuStore()
 const { useMenu } = useStore();
 const historyFlag = ref(false);
 const $router = useRouter();
@@ -92,6 +93,20 @@ const toggleHistory = () => {
 const goPage = (pageName: string) => {
   $router.push({ name: pageName });
 }
+
+const init = async () => {
+  const res = await profile();
+  menuStore.userInfo = {
+    userId: res.data.userId,
+    userName: res.data.userName,
+    userEmail: res.data.userName,
+    userPermissionLevel: res.data.permissionLevel
+  }
+}
+
+onMounted(() => {
+  init()
+})
 
 </script>
 
@@ -157,6 +172,10 @@ const goPage = (pageName: string) => {
       margin-top: 10px;
       padding: 0 15px;
       flex-shrink: 0;
+
+      &.no-bottom-func {
+        max-height: calc(100vh - 310px);
+      }
     }
 
     .buttom-func {
@@ -229,6 +248,7 @@ const goPage = (pageName: string) => {
 
         span {
           margin-left: 10px;
+          font-size: 14px;
         }
 
         .user-tool {

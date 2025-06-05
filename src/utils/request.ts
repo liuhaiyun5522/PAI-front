@@ -30,10 +30,10 @@ request.interceptors.response.use(
         return response
     },
     (error) => {
-        if(error.status == 401){
-          localStorage.removeItem("token")
-           window.location.href = import.meta.env.VITE_LOGIN_URL
-        }
+        // if(error.status == 401){
+        //   localStorage.removeItem("token")
+        //    window.location.href = import.meta.env.VITE_LOGIN_URL
+        // }
         return Promise.reject(error)
     }
 )

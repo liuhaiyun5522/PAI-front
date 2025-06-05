@@ -14,9 +14,8 @@
       {{ t('export') }}
     </el-button>
     <!-- 弹窗 -->
-    <el-dialog v-model="dialogVisible" :title="t('addDatabase')" width="900px" :show-close="true" class="custom-dialog">
+    <el-dialog v-model="dialogVisible" :title="t('usermng.adduser')" width="900px" :show-close="true" class="custom-dialog">
       <div class="dialog-body">
-        <div class="line"></div>
         <div class="form-section">
           <label class="form-label">{{ t('formName') }}<span style="color: red">*</span></label>
           <el-input v-model="createName" :placeholder="t('namePlaceholder')" class="custom-input short" />
@@ -33,89 +32,58 @@
         </div>
       </template>
     </el-dialog>
-
-    <!-- 顶部区域 -->
+    <!--顶部 筛选栏 -->
     <div class="top-section">
-      <el-row :gutter="10">
-        <!-- 搜索框 -->
-        <el-col :span="5">
-          <div class="field-group">
-            <el-input v-model="searchText" placeholder="请输入搜索内容" class="search-input">
-              <template #suffix>
-                <el-icon>
-                  <Search />
-                </el-icon>
-              </template>
-            </el-input>
-          </div>
-        </el-col>
-        <el-col :span="5">
-          <div class="field-group status-upload">
-            <label class="field-label">{{ t('usermng.department') }}</label>
-            <el-select v-model="selectedStatus" placeholder="请选择状态" class="status-select">
-              <el-option label="全部" value="全部" />
-              <el-option label="开发部" value="开发部" />
-              <el-option label="设计部" value="设计部" />
-              <el-option label="测试部" value="测试部" />
-              <el-option label="管理部" value="管理部" />
-            </el-select>
-          </div>
-        </el-col>
-        <!-- 状态选择 -->
-        <el-col :span="6">
-          <div class="field-group status-upload">
-            <label class="field-label">{{ t('usermng.status') }}</label>
-            <el-select v-model="selectedStatus" placeholder="请选择状态" class="status-select">
-              <el-option label="全部" value="全部" />
-              <el-option label="已上传" value="已上传" />
-              <el-option label="上传中" value="上传中" />
-              <el-option label="正在排队" value="正在排队" />
-              <el-option label="上传失败" value="上传失败" />
-            </el-select>
-          </div>
-        </el-col>
-        <!-- 时间选择器 -->
-        <el-col :span="8">
-          <div class="field-group">
-            <label class="field-label">{{ t('usermng.addtime') }}</label>
-            <el-date-picker v-model="value2" type="datetimerange" start-placeholder="开始时间" end-placeholder="结束时间"
-              format="YYYY-MM-DD HH:mm:ss" class="date-picker" />
-          </div>
-        </el-col>
-      </el-row>
+      <el-form label-position="left" label-width="auto" :inline="true" size="large">
+        <el-form-item>
+          <el-input v-model="selectedStatus" style="width: 330px;height: 40px; " :placeholder="t('inputTip')">
+            <template #suffix>
+              <el-icon color="#000000" size="15" class="cursor-pointer">
+                <Search />
+              </el-icon>
+            </template>
+          </el-input>
+        </el-form-item>
+
+        <el-form-item :label="t('usermng.addtime')">
+          <el-date-picker v-model="value2" style="width: 300px;height: 40px;" type="datetimerange"
+            :start-placeholder="t('usermng.starttime')" :end-placeholder="t('usermng.endtime')"
+            format="YYYY-MM-DD HH:mm:ss" class="date-picker" />
+        </el-form-item>
+      </el-form>
     </div>
     <!-- 表格区域 -->
-    <el-table :data="tableData" class="table-section">
-      <el-table-column prop="id" label="ID" min-width="5%" />
-      <el-table-column prop="username" :label="tableLabels.name" min-width="10%" />
-      <el-table-column prop="pic" :label="tableLabels.pic" min-width="10%" align="center" />
-      <el-table-column prop="userid" :label="tableLabels.email" min-width="25%" align="center" />
-      <el-table-column prop="password" :label="tableLabels.password" min-width="10%" align="center" />
-      <el-table-column prop="position" :label="tableLabels.position" min-width="10%" />
-      <el-table-column prop="department" :label="tableLabels.department" min-width="10%" align="center" />
-      <el-table-column prop="status" :label="tableLabels.status" min-width="10%" align="center" />
-      <el-table-column prop="permissionLevel" :label="tableLabels.permission" min-width="10%" align="center" >
+    <el-table :data="tableData" class="table-section" style="width: 100%;">
+      <el-table-column prop="userId" label="ID" min-width="8" align="center" />
+      <el-table-column prop="username" :label="t('usermng.name')" min-width="10" align="center" />
+      <el-table-column prop="email" :label="t('usermng.email')" min-width="20" align="center" />
+      <el-table-column prop="createdAt" :label="t('usermng.addtime')" min-width="20" align="center">
         <template #default="scope">
-      <span>管理员</span>
-      <el-switch
-        v-model="scope.row.permissionLevel"
-        :active-value="1"
-        :inactive-value="0"
-        active-color="#13ce66"
-        inactive-color="#ff4949"
-        @change="handlePermissionChange(scope.row)"
-      />
-    </template>
+          {{ formatDateTime(scope.row.createdAt) }}
+        </template>
       </el-table-column>
-      <el-table-column prop="addtime" :label="tableLabels.addtime" min-width="15%" align="center" />
-      <el-table-column :label="tableLabels.tool" min-width="10%" align="center">
+      <el-table-column prop="lastLogin" :label="t('usermng.lastlogintime')" min-width="20" align="center">
         <template #default="scope">
-          <el-icon @click="handleDelete(scope.$index)" size="18px">
-            <Delete />
-          </el-icon>
-          <el-icon @click="handleDownload(scope.row)" size="18px">
-            <Download />
-          </el-icon>
+          {{ formatDateTime(scope.row.lastLogin) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="permissionLevel" :label="t('usermng.permission')" min-width="10" align="center">
+        <template #default="scope">
+          <span> {{ t('usermng.mng') }}</span>
+          <el-switch v-model="scope.row.permissionLevel" size="small" :active-value="1" :inactive-value="0" active-color="#13ce66"
+            inactive-color="#ff4949" @change="handlePermissionChange(scope.row)" />
+        </template>
+      </el-table-column>/>
+      <el-table-column :label="t('usermng.tool')" min-width="12" align="center">
+        <template #default="scope">
+          <div class="action-buttons">
+            <div class="icon-wrapper" @click="handleEdit(scope.$index)">
+              <tableedit></tableedit>
+            </div>
+            <div class="icon-wrapper" @click="handleDelete(scope.$index)">
+              <tabledelete></tabledelete>
+            </div>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -124,7 +92,6 @@
       <el-pagination background layout="total, prev, pager, next" :total="fullData.length" :page-size="pageSize"
         :current-page="currentPage" @current-change="handleCurrentChange" />
     </div>
-
   </div>
 </template>
 
@@ -135,6 +102,8 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import useStore from '@/store';
 import { getuserList } from '@/api/userManage';
+import tableedit from '@/assets/usermng/edit.svg';
+import tabledelete from '@/assets/usermng/delete.svg';
 const { t } = useI18n();
 const { useMenu } = useStore();
 const $router = useRouter();
@@ -145,6 +114,9 @@ const createIntro = ref('');
 const searchText = ref('');
 const value2 = ref('');
 const selectedStatus = ref('');
+
+
+
 const currentPage = ref(1); // 当前页码
 const pageSize = 10;        // 每页条数
 const total = ref(0);       // 总条数
@@ -152,210 +124,120 @@ const total = ref(0);       // 总条数
 const fullData = ref([]);   // 所有数据
 const tableData = ref([]);  // 当前页显示的数据
 
+// 时间格式转换函数
+const formatDateTime = (dateString) => {
+  if (!dateString) return '';
+  
+  try {
+    // 处理 ISO 8601 格式: 2025-06-05T15:31:42 或 2025-06-05T15:31:42.123Z
+    const date = new Date(dateString);
+    
+    // 检查日期是否有效
+    if (isNaN(date.getTime())) {
+      return dateString; // 如果转换失败，返回原字符串
+    }
+    
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    
+    return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+  } catch (error) {
+    console.error('日期格式转换错误:', error);
+    return dateString; // 出错时返回原字符串
+  }
+};
+
+const init = async () => {
+  try {
+    const res = await getuserList({
+      page: currentPage.value,
+      pageSize: pageSize,
+      // permissionLevel: None
+    })
+    if (res) {
+      console.log(res.data.data.users)
+      fullData.value = res.data.data.users;
+      updateTableData();
+    } else {
+      // ElMessage.error(t('login.loginFailed'))
+    }
+
+  } catch (error) {
+    const msg = error.response?.status === 500
+    console.log(error)
+  }
+};
+
 const allData = ref([
   {
-    id: '1',
+    userId: '100008',
     username: '张三',
-    pic: 'avatar1.png',
-    status: '已上传',
-    userid: 'zhangsan@example.com',
-    permissionLevel: 1,
-    password: '123456',
-    position: '开发',
-    department: '开发部',
-    addtime: '2024-05-01 10:00:00'
+    email: 'zhangsan@example.com',
+    createdAt: '2024-05-01 10:00:00',
+    lastLogin: '2024-05-01 10:00:00',
+    permissionLevel: "1"
   },
   {
-    id: '2',
-    username: '李四',
-    pic: 'avatar2.png',
-    status: '上传中',
-    userid: 'lisi@example.com',
-    permissionLevel: 0,
-    password: 'abcdef',
-    position: '设计',
-    department: '设计部',
-    addtime: '2024-05-02 10:00:00'
-  },
-  {
-    id: '3',
-    username: '王五',
-    pic: 'avatar3.png',
-    status: '正在排队',
-    userid: 'wangwu@example.com',
-    permissionLevel: 1,
-    password: '654321',
-    position: '测试',
-    department: '测试部',
-    addtime: '2024-05-03 10:00:00'
-  },
-  {
-    id: '4',
-    username: '赵六',
-    pic: 'avatar4.png',
-    status: '上传失败',
-    userid: 'zhaoliu@example.com',
-    permissionLevel: 0,
-    password: 'pass123',
-    position: '管理',
-    department: '管理部',
-    addtime: '2024-05-04 10:00:00'
-  },
-  {
-    id: '5',
-    username: '孙七',
-    pic: 'avatar5.png',
-    status: '已上传',
-    userid: 'sunqi@example.com',
-    permissionLevel: 1,
-    password: 'sunqi2024',
-    position: '开发',
-    department: '开发部',
-    addtime: '2024-05-05 10:00:00'
-  },
-  {
-    id: '1',
+    userId: '100008',
     username: '张三',
-    pic: 'avatar1.png',
-    status: '已上传',
-    userid: 'zhangsan@example.com',
-    permissionLevel: 1,
-    password: '123456',
-    position: '开发',
-    department: '开发部',
-    addtime: '2024-05-01 10:00:00'
+    email: 'zhangsan@example.com',
+    createdAt: '2024-05-01 10:00:00',
+    lastLogin: '2024-05-01 10:00:00',
+    permissionLevel: "1"
   },
   {
-    id: '2',
-    username: '李四',
-    pic: 'avatar2.png',
-    status: '上传中',
-    userid: 'lisi@example.com',
-    permissionLevel: 0,
-    password: 'abcdef',
-    position: '设计',
-    department: '设计部',
-    addtime: '2024-05-02 10:00:00'
-  },
-  {
-    id: '3',
-    username: '王五',
-    pic: 'avatar3.png',
-    status: '正在排队',
-    userid: 'wangwu@example.com',
-    permissionLevel: 1,
-    password: '654321',
-    position: '测试',
-    department: '测试部',
-    addtime: '2024-05-03 10:00:00'
-  },
-  {
-    id: '4',
-    username: '赵六',
-    pic: 'avatar4.png',
-    status: '上传失败',
-    userid: 'zhaoliu@example.com',
-    permissionLevel: 0,
-    password: 'pass123',
-    position: '管理',
-    department: '管理部',
-    addtime: '2024-05-04 10:00:00'
-  },
-  {
-    id: '5',
-    username: '孙七',
-    pic: 'avatar5.png',
-    status: '已上传',
-    userid: 'sunqi@example.com',
-    permissionLevel: 1,
-    password: 'sunqi2024',
-    position: '开发',
-    department: '开发部',
-    addtime: '2024-05-05 10:00:00'
-  },
-  {
-    id: '1',
+    userId: '100008',
     username: '张三',
-    pic: 'avatar1.png',
-    status: '已上传',
-    userid: 'zhangsan@example.com',
-    permissionLevel: 1,
-    password: '123456',
-    position: '开发',
-    department: '开发部',
-    addtime: '2024-05-01 10:00:00'
+    email: 'zhangsan@example.com',
+    createdAt: '2024-05-01 10:00:00',
+    lastLogin: '2024-05-01 10:00:00',
+    permissionLevel: "1"
   },
   {
-    id: '2',
-    username: '李四',
-    pic: 'avatar2.png',
-    status: '上传中',
-    userid: 'lisi@example.com',
-    permissionLevel: 0,
-    password: 'abcdef',
-    position: '设计',
-    department: '设计部',
-    addtime: '2024-05-02 10:00:00'
+    userId: '100008',
+    username: '张三',
+    email: 'zhangsan@example.com',
+    createdAt: '2024-05-01 10:00:00',
+    lastLogin: '2024-05-01 10:00:00',
+    permissionLevel: "1"
   },
   {
-    id: '3',
-    username: '王五',
-    pic: 'avatar3.png',
-    status: '正在排队',
-    userid: 'wangwu@example.com',
-    permissionLevel: 1,
-    password: '654321',
-    position: '测试',
-    department: '测试部',
-    addtime: '2024-05-03 10:00:00'
+    userId: '100008',
+    username: '张三',
+    email: 'zhangsan@example.com',
+    createdAt: '2024-05-01 10:00:00',
+    lastLogin: '2024-05-01 10:00:00',
+    permissionLevel: "1"
   },
   {
-    id: '4',
-    username: '赵六',
-    pic: 'avatar4.png',
-    status: '上传失败',
-    userid: 'zhaoliu@example.com',
-    permissionLevel: 0,
-    password: 'pass123',
-    position: '管理',
-    department: '管理部',
-    addtime: '2024-05-04 10:00:00'
+    userId: '100008',
+    username: '张三',
+    email: 'zhangsan@example.com',
+    createdAt: '2024-05-01 10:00:00',
+    lastLogin: '2024-05-01 10:00:00',
+    permissionLevel: "1"
   },
   {
-    id: '5',
-    username: '孙七',
-    pic: 'avatar5.png',
-    status: '已上传',
-    userid: 'sunqi@example.com',
-    permissionLevel: 1,
-    password: 'sunqi2024',
-    position: '开发',
-    department: '开发部',
-    addtime: '2024-05-05 10:00:00'
+    userId: '100008',
+    username: '张三',
+    email: 'zhangsan@example.com',
+    createdAt: '2024-05-01 10:00:00',
+    lastLogin: '2024-05-01 10:00:00',
+    permissionLevel: "1"
+  },
+  {
+    userId: '100008',
+    username: '张三',
+    email: 'zhangsan@example.com',
+    createdAt: '2024-05-01 10:00:00',
+    lastLogin: '2024-05-01 10:00:00',
+    permissionLevel: "1"
   }
 ]);
-
-
-// 表头翻译
-const tableLabels = {
-  name: t('usermng.name'),
-  pic: t('usermng.pic'),
-  email: t('usermng.email'),
-  password: t('usermng.password'),
-  position: t('usermng.position'),
-  department: t('usermng.department'),
-  status: t('usermng.status'),
-  permission: t('usermng.permission'),
-  addtime: t('usermng.addtime'),
-  tool: t('usermng.tool')
-
-};
-// // 模拟获取数据（你可以换成真实的 getknowledgeList 请求）
-// const fetchTableData = async () => {
-//   // 这里用模拟数据替代
-//   const res = await getuserList({ page: currentPage.value, pageSize: pageSize,permissionLevel:0 }); // 替换为真实请求
-//   console.log(res)
-// };
 
 const updateTableData = () => {
   const start = (currentPage.value - 1) * pageSize;
@@ -368,17 +250,15 @@ const handleCurrentChange = (val) => {
   updateTableData();
 };
 
-
-const  handlePermissionChange =(row) =>{
-    console.log(`用户 ${row.name} 权限变为：${row.permissionLevel}`);
-    // 可以在这里调用API更新数据库中的权限状态
-  }
+const handlePermissionChange = (row) => {
+  console.log(`用户 ${row.name} 权限变为：${row.permissionLevel}`);
+}
 
 onMounted(() => {
-  fullData.value = allData.value; // 如果你后续用 getuserList，这里可以替换掉
-  updateTableData(); // 初始化分页显示
+  init();
+  // fullData.value = allData.value;
+  updateTableData();
 });
-
 
 </script>
 
@@ -386,97 +266,223 @@ onMounted(() => {
 .user-list {
   padding: 15px 20px;
   position: relative;
+  height: 90vh; // 固定高度
   max-height: 90vh;
   display: flex;
   flex-direction: column;
-}
 
-.add-button {
-  color: #FFFFFF;
-  position: absolute;
-  right: 150px;
-  top: -55px;
-  background-color: #34A0E9;
-  border-radius: 10px;
-  width: 111px;
-  height: 40px;
-  border-color: #34A0E9;
-  z-index: 11;
+  .add-button {
+    color: #FFFFFF;
+    position: absolute;
+    right: 150px;
+    top: -55px;
+    background-color: #34A0E9;
+    border-radius: 10px;
+    width: 111px;
+    height: 40px;
+    border-color: #34A0E9;
+    z-index: 11;
 
-  &:hover,
-  &:active {
-    background-color: #ADDEFF !important;
-    color: #1D5276 !important;
+    &:hover,
+    &:active {
+      background-color: #ADDEFF !important;
+      color: #1D5276 !important;
+    }
   }
-}
 
-.export-button {
-  color: #FFFFFF;
-  position: absolute;
-  right: 15px;
-  top: -55px;
-  background-color: #FF9D2D;
-  border-radius: 10px;
-  width: 111px;
-  height: 40px;
-  border-color: #FF9D2D;
-  z-index: 11;
+  .export-button {
+    color: #FFFFFF;
+    position: absolute;
+    right: 15px;
+    top: -55px;
+    background-color: #FF9D2D;
+    border-radius: 10px;
+    width: 111px;
+    height: 40px;
+    border-color: #FF9D2D;
+    z-index: 11;
 
-  &:hover,
-  &:active {
-    background-color: #FFCB8F !important;
-    color: #693F0E !important;
+    &:hover,
+    &:active {
+      background-color: #FFCB8F !important;
+      color: #693F0E !important;
+    }
   }
-}
 
-.top-section {
-  width: 100%;
-  box-sizing: border-box;
-}
+  .custom-dialog {
+  border-radius: 20px !important;
 
-.field-group {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+//   .el-dialog__header {
+//   border-bottom: 1px solid #dcdfe6; /* Element Plus 默认分割线色 */
+// }
+//   .el-dialog__body {
+//     padding: 30px 0;
+//     height: 300px;
+//     box-sizing: border-box;
+//   }
 
-.field-label {
-  width: 70px;
-  text-align: right;
-  margin-right: 10px;
-  color: #333;
-  flex-shrink: 0;
-}
-
-.status-upload {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.upload-btn {
-  margin-left: 10px;
-}
-
-
-.table-section {
-  flex: 1; // 让表格区域自适应剩余空间
-  overflow: auto;
-  max-height: 80vh;
-  margin-top: 10px;
-  background-color: white;
-  border-radius: 10px;
-
-  :deep(.el-table__body),
-  :deep(.el-table__header),
-  :deep(.el-table__cell) {
-    background-color: white !important;
+  .form-section {
+    width: 800px;
+    margin: 0 auto 30px auto;
+    display: flex;
+    flex-direction: column;
   }
-}
 
-.pagination {
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
+  .form-label {
+    font-size: 16px;
+    margin-bottom: 10px;
+    text-align: left;
+    font-weight: bold;
+    color: #000000;
+  }
+
+  .custom-input {
+    background-color: #f1f4f7;
+    border-radius: 8px;
+
+    &.short .el-input__wrapper {
+      height: 150px; // 原来是100px + 50px
+      display: flex;
+      align-items: center;
+      background-color: #f1f4f7;
+      border-radius: 8px;
+    }
+
+    &.long .el-textarea__inner {
+      height: 200px !important; // 原来是150px + 50px
+      background-color: #f1f4f7;
+      border-radius: 8px;
+    }
+  }
+
+  .dialog-footer {
+    padding: 0px 30px;
+    margin-top: -20px; // 往上挪一点
+  }
+
+  .dialog-footer-container {
+    width: 800px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -10px;
+    margin-bottom: 20px;
+  }
+
+  .confirm-button {
+    background-color: #34A0E9;
+    color: #FFFFFF;
+    border-radius: 6px;
+    width: 110px;
+    height: 40px;
+    border: none;
+    transition: all 0.3s ease;
+
+    &:hover,
+    &:active {
+      background-color: #ADDEFF !important;
+      color: #1D5276 !important;
+    }
+  }
+
+}
+  ::v-deep(.el-form-item__label) {
+    font-size: 16px;
+    color: #012A2D;
+  }
+
+  .top-section{
+    height: 40px;
+  }
+  
+  .table-section {
+    flex: 1; // 让表格区域自适应剩余空间
+    overflow: auto;
+    // max-height: 80vh;
+    background-color: white;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-top: 10px; 
+    margin-bottom: 10px; 
+    
+    :deep(.el-table__body),
+    :deep(.el-table__header),
+    :deep(.el-table__cell) {
+      background-color: white !important;
+    }
+    
+    // 设置表格行高为50px
+    :deep(.el-table__row) {
+      height: 50px !important;
+    }
+    
+    // 设置表格单元格高度和垂直居中
+    :deep(.el-table__cell) {
+      height: 59px !important;
+      padding: 0 !important;
+      
+      .cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+        line-height: 50px;
+      }
+    }
+    
+    // 设置表头行高
+    :deep(.el-table__header-wrapper .el-table__row) {
+      height: 50px !important;
+    }
+    
+    // 设置表头单元格
+    :deep(.el-table__header .el-table__cell) {
+      height: 50px !important;
+      padding: 0 !important;
+      
+      .cell {
+        height: 50px;
+        line-height: 50px;
+      }
+    }
+    .action-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .icon-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 30px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      
+      &:hover {
+        background-color: #F1F4F7;
+      }
+      
+      &:active {
+        background-color: #F1F4F7;
+      }
+      
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+    
+  }
+
+  .pagination {
+    margin-top: auto; // 自动推到底部
+    display: flex;
+    justify-content: center;
+    height: 25px;
+  }
 }
 </style>

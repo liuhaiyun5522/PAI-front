@@ -8,7 +8,10 @@ export const useMenuStore = defineStore('useMenu', {
         menuList: ref ([] as Array<{ date: String, children: Array<{ id: String, title: String }> }>), // 存储动态路由配置
         pageKey:0,
         userInfo:{
-            user_type:'00'
+            userId:'',
+            userName:'',
+            userEmail:'',
+            userPermissionLevel:''
         },
     }),
     actions: {

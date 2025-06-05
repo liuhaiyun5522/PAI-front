@@ -51,7 +51,7 @@
       </span>
       <div class="whiteback language-box">
         <span>{{ t('settings.userlang') }}</span>
-        <el-select v-model="selectedLang" placeholder="请选择语言" class="lang-select">
+        <el-select v-model="selectedLang"  class="lang-select">
           <el-option label="中文" value="zh" />
           <el-option label="日本語" value="ja" />
           <el-option label="English" value="en" />
@@ -85,7 +85,7 @@ const iconSrc = computed(() =>
 const handleLogout = async () => {
   try {
     const res = await logout();
-    if (res?.message === 'Logout successful') {
+    if (res) {
       localStorage.removeItem('token');
       console.log('token after removal:', localStorage.getItem('token')); // 打印确认是否删除
       ElMessage.success('退出登录成功');

@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 95px);
   @media (max-width: 768px) {
     height: calc(100vh - 50px);
   }
@@ -58,13 +58,14 @@
     width: var(--message-list-width);
     margin: 0 auto 12px;
     padding: 10px 15px;
-    border-radius: 15px;
-    border: 1px solid #163C32 ;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.4) ;
+    background-color: #FFF;
     max-width: var(--message-list-max-width);
     .el-input {
       font-size: 16px;
       transition: height 0.4s;
-      background: none;
+      
     }
     &-bottom{
       display: flex;

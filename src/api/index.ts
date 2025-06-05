@@ -15,10 +15,11 @@ export const login = (data:loginForm)=>request.post<any,loginForm>('/user/login'
 //用户登出
 export const logout = ()=>request.post<any,loginResultData>('/user/logout')
 
+//获取用户信息，token验证
+export const profile = ()=>request.get<any,loginResultData>('/user/profile')
 
 
-//token验证
-export const verifyToken = ()=>request.post<any>('/verify_token')
+
 //获取用户信息
 export const getUserInfo = ()=>request.post<any>('/get_current_user_info')
 //获取公司组织架构

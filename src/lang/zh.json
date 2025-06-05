@@ -43,17 +43,24 @@
     "export": " 导出",
     "department": "部门",
     "status": "状态",
-    "addtime": "添加时间",
+    "addtime": "创建时间",
+    "lastlogintime": "最后登录时间",
+    "starttime": "开始时间",
+    "endtime": "结束时间",
     "name": "用户名",
     "pic": "头像",
     "email": "邮箱",
     "password": "密码",
     "position": "职位",
     "permission": "权限",
-    "tool": "操作"
+    "tool": "操作",
+    "inputTip": "请输入内容进行检索",
+    "mng": "管理员",
+    "adduser": "添加用户"
+    
   },
   "fileSuggest": "支持100MB以内的文件",
-  "enterQuestion": "根据您的问题内容，AI会自动参照最合适的公司内部信息。今后无需选择部内，直接提问即可。",
+  "enterQuestion": "输入您的问题，shift+Enter换行...",
   "downloadNewFile": "下载新文件",
   "copyTip1": "复制成功",
   "copyTip2": "复制失败",
@@ -177,6 +184,5 @@
     "image": "相关图像",
     "contentEdit": "内容编辑"
   },
-  "inputTip": "请输入内容",
   "empty": "这里什么都没有。「<span class=\"empty-add\">新建span>」单击按钮添加内容！"
 }

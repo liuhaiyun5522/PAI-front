@@ -1,37 +1,54 @@
 <template>
   <div class="user-list">
     <!-- 添加按钮 -->
-    <el-button class="add-button" @click="dialogVisible = true">
+    <el-button class="add-button" @click="addDialogVisible = true">
       <el-icon>
         <Plus />
       </el-icon>
       {{ t('add') }}
     </el-button>
-    <el-button class="export-button">
+    <el-button class="export-button" @click="exportToExcel()">
       <el-icon>
         <Plus />
       </el-icon>
       {{ t('export') }}
     </el-button>
+
+    <!-- 删除确认组件 -->
+    <Delete :dialogVisible="deleteDialogVisible" :deleteId="currentDeleteUser?.userId || ''"
+      @updateVisible="deleteDialogVisible = $event" @deleteConfirm="confirmDelete" />
+
     <!-- 弹窗 -->
-    <el-dialog v-model="dialogVisible" :title="t('usermng.adduser')" width="900px" :show-close="true" class="custom-dialog">
+    <el-dialog v-model="addDialogVisible" :title="t('usermng.adduser')" width="650px" :show-close="true"
+      class="custom-dialog">
       <div class="dialog-body">
         <div class="form-section">
-          <label class="form-label">{{ t('formName') }}<span style="color: red">*</span></label>
-          <el-input v-model="createName" :placeholder="t('namePlaceholder')" class="custom-input short" />
+          <label class="form-label">{{ t('usermng.name') }}</label>
+          <el-input v-model="addName" :placeholder="t('usermng.namePlaceHolder')" class="custom-input long" />
         </div>
         <div class="form-section">
-          <label class="form-label">{{ t('formDesc') }}</label>
-          <el-input v-model="createIntro" type="textarea" :rows="4" :placeholder="t('descPlaceholder')"
-            class="custom-input long" />
+          <label class="form-label">{{ t('usermng.email') }}<span style="color: red">*</span></label>
+          <el-input v-model="addEmail" :placeholder="t('usermng.emailPlaceHolder')" class="custom-input long" />
+        </div>
+
+        <div class="form-section">
+          <label class="form-label">{{ t('usermng.password') }}<span style="color: red">*</span></label>
+          <el-input v-model="addPassword" :placeholder="t('usermng.passwordPlaceHolder')" class="custom-input long" />
+        </div>
+        <div class="form-section">
+          <label class="form-label">{{ t('usermng.permission') }}<span style="color: red">*</span></label>
+          <el-select class="chat-select" v-model="llm_name" style="width: 190px;">
+            <el-option v-for="item in permission" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
         </div>
       </div>
       <template #footer>
         <div class="dialog-footer-container">
-          <el-button class="confirm-button" @click="handleConfirm">{{ t('confirm') }}</el-button>
+          <el-button class="confirm-button" @click="handleConfirm()">{{ t('confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
+
     <!--顶部 筛选栏 -->
     <div class="top-section">
       <el-form label-position="left" label-width="auto" :inline="true" size="large">
@@ -52,9 +69,10 @@
         </el-form-item>
       </el-form>
     </div>
+
     <!-- 表格区域 -->
-    <el-table :data="tableData" class="table-section" style="width: 100%;">
-      <el-table-column prop="userId" label="ID" min-width="8" align="center" />
+    <el-table :data="tableData" v-loading="loading" class="table-section" style="width: 100%;">
+      <el-table-column prop="userId" label="ID" min-width="10" align="center" />
       <el-table-column prop="username" :label="t('usermng.name')" min-width="10" align="center" />
       <el-table-column prop="email" :label="t('usermng.email')" min-width="20" align="center" />
       <el-table-column prop="createdAt" :label="t('usermng.addtime')" min-width="20" align="center">
@@ -70,23 +88,22 @@
       <el-table-column prop="permissionLevel" :label="t('usermng.permission')" min-width="10" align="center">
         <template #default="scope">
           <span> {{ t('usermng.mng') }}</span>
-          <el-switch v-model="scope.row.permissionLevel" size="small" :active-value="1" :inactive-value="0" active-color="#13ce66"
-            inactive-color="#ff4949" @change="handlePermissionChange(scope.row)" />
+          <el-switch v-model="scope.row.permissionLevel" size="small" :active-value="0" :inactive-value="1"
+            active-color="#13ce66" inactive-color="#ff4949" @change="handlePermissionChange(scope.row)" />
         </template>
-      </el-table-column>/>
-      <el-table-column :label="t('usermng.tool')" min-width="12" align="center">
+      </el-table-column>
+      <el-table-column :label="t('usermng.tool')" min-width="10" align="center">
         <template #default="scope">
           <div class="action-buttons">
-            <div class="icon-wrapper" @click="handleEdit(scope.$index)">
-              <tableedit></tableedit>
-            </div>
-            <div class="icon-wrapper" @click="handleDelete(scope.$index)">
+            <!-- 修改删除按钮点击事件 -->
+            <div class="icon-wrapper" @click="showDeleteDialog(scope.row)">
               <tabledelete></tabledelete>
             </div>
           </div>
         </template>
       </el-table-column>
     </el-table>
+
     <!-- 分页器 -->
     <div class="pagination">
       <el-pagination background layout="total, prev, pager, next" :total="fullData.length" :page-size="pageSize"
@@ -101,22 +118,26 @@ import { Plus, Search } from '@element-plus/icons-vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import useStore from '@/store';
-import { getuserList } from '@/api/userManage';
+import { getuserList, createuser, deleteuser, editeuserpermission } from '@/api/userManage';
 import tableedit from '@/assets/usermng/edit.svg';
 import tabledelete from '@/assets/usermng/delete.svg';
+import Delete from '@/components/Delete.vue'
+import * as XLSX from 'xlsx'
+import { saveAs } from 'file-saver'
 const { t } = useI18n();
 const { useMenu } = useStore();
 const $router = useRouter();
 
-const dialogVisible = ref(false);
-const createName = ref('');
-const createIntro = ref('');
+const addEmail = ref('');
+const addName = ref('');
+const addPassword = ref('');
+const llm_name = ref("0")
+const addDialogVisible = ref(false);
 const searchText = ref('');
 const value2 = ref('');
 const selectedStatus = ref('');
-
-
-
+const loading = ref(false)
+const deleteDialogVisible = ref(false)
 const currentPage = ref(1); // 当前页码
 const pageSize = 10;        // 每页条数
 const total = ref(0);       // 总条数
@@ -124,120 +145,64 @@ const total = ref(0);       // 总条数
 const fullData = ref([]);   // 所有数据
 const tableData = ref([]);  // 当前页显示的数据
 
+// 新增：保存当前要删除的用户信息
+const currentDeleteUser = ref(null);
+
+const permission = [
+  {
+    label: t('usermng.mng'), // 管理员
+    value: '1'
+  },
+  {
+    label: t('usermng.commonuser'), // 普通用户
+    value: '0'
+  }
+]
+
 // 时间格式转换函数
 const formatDateTime = (dateString) => {
   if (!dateString) return '';
-  
+
   try {
-    // 处理 ISO 8601 格式: 2025-06-05T15:31:42 或 2025-06-05T15:31:42.123Z
     const date = new Date(dateString);
-    
-    // 检查日期是否有效
     if (isNaN(date.getTime())) {
-      return dateString; // 如果转换失败，返回原字符串
+      return dateString;
     }
-    
+
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
-    
+
     return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
   } catch (error) {
     console.error('日期格式转换错误:', error);
-    return dateString; // 出错时返回原字符串
+    return dateString;
   }
 };
 
 const init = async () => {
   try {
+    loading.value = true
     const res = await getuserList({
       page: currentPage.value,
       pageSize: pageSize,
-      // permissionLevel: None
     })
-    if (res) {
+    if (res.data.data) {
       console.log(res.data.data.users)
       fullData.value = res.data.data.users;
       updateTableData();
+      loading.value = false
     } else {
       // ElMessage.error(t('login.loginFailed'))
     }
-
   } catch (error) {
     const msg = error.response?.status === 500
     console.log(error)
   }
 };
-
-const allData = ref([
-  {
-    userId: '100008',
-    username: '张三',
-    email: 'zhangsan@example.com',
-    createdAt: '2024-05-01 10:00:00',
-    lastLogin: '2024-05-01 10:00:00',
-    permissionLevel: "1"
-  },
-  {
-    userId: '100008',
-    username: '张三',
-    email: 'zhangsan@example.com',
-    createdAt: '2024-05-01 10:00:00',
-    lastLogin: '2024-05-01 10:00:00',
-    permissionLevel: "1"
-  },
-  {
-    userId: '100008',
-    username: '张三',
-    email: 'zhangsan@example.com',
-    createdAt: '2024-05-01 10:00:00',
-    lastLogin: '2024-05-01 10:00:00',
-    permissionLevel: "1"
-  },
-  {
-    userId: '100008',
-    username: '张三',
-    email: 'zhangsan@example.com',
-    createdAt: '2024-05-01 10:00:00',
-    lastLogin: '2024-05-01 10:00:00',
-    permissionLevel: "1"
-  },
-  {
-    userId: '100008',
-    username: '张三',
-    email: 'zhangsan@example.com',
-    createdAt: '2024-05-01 10:00:00',
-    lastLogin: '2024-05-01 10:00:00',
-    permissionLevel: "1"
-  },
-  {
-    userId: '100008',
-    username: '张三',
-    email: 'zhangsan@example.com',
-    createdAt: '2024-05-01 10:00:00',
-    lastLogin: '2024-05-01 10:00:00',
-    permissionLevel: "1"
-  },
-  {
-    userId: '100008',
-    username: '张三',
-    email: 'zhangsan@example.com',
-    createdAt: '2024-05-01 10:00:00',
-    lastLogin: '2024-05-01 10:00:00',
-    permissionLevel: "1"
-  },
-  {
-    userId: '100008',
-    username: '张三',
-    email: 'zhangsan@example.com',
-    createdAt: '2024-05-01 10:00:00',
-    lastLogin: '2024-05-01 10:00:00',
-    permissionLevel: "1"
-  }
-]);
 
 const updateTableData = () => {
   const start = (currentPage.value - 1) * pageSize;
@@ -250,15 +215,106 @@ const handleCurrentChange = (val) => {
   updateTableData();
 };
 
-const handlePermissionChange = (row) => {
-  console.log(`用户 ${row.name} 权限变为：${row.permissionLevel}`);
+// 修改权限变更处理函数
+const handlePermissionChange = async (row) => {
+  try {
+    const res = await editeuserpermission(row.userId, {
+      permissionLevel: row.permissionLevel,
+      reason: ""
+    });
+
+    if (res) {
+      console.log('权限修改成功:', res);
+    } else {
+      row.permissionLevel = row.permissionLevel === 1 ? 0 : 1;
+      ElMessage.error("修改失败");
+    }
+  } catch (error) {
+    row.permissionLevel = row.permissionLevel === 1 ? 0 : 1;
+    console.error('权限修改出错:', error);
+  }
+};
+
+// 创建用户确认按钮
+const handleConfirm = async () => {
+  try {
+    const res = await createuser({
+      email: addEmail.value,
+      username: addName.value,
+      password: addPassword.value,
+      permissionLevel: llm_name.value,
+    })
+    if (res) {
+      console.log(res)
+      addDialogVisible.value = false
+      // 清空表单
+      addEmail.value = '';
+      addName.value = '';
+      addPassword.value = '';
+      llm_name.value = "0";
+      init()
+    } else {
+      // 处理错误
+    }
+  } catch (error) {
+    const msg = error.response?.status === 500
+    console.log(error)
+  }
 }
+
+// 新增：显示删除确认对话框
+const showDeleteDialog = (user) => {
+  currentDeleteUser.value = user;
+  deleteDialogVisible.value = true;
+};
+
+// 新增：确认删除用户
+const confirmDelete = async () => {
+  if (!currentDeleteUser.value) return;
+
+  try {
+    console.log('删除用户ID:', currentDeleteUser.value.userId);
+    const res = await deleteuser(currentDeleteUser.value.userId);
+
+    if (res) {
+      console.log('删除成功:', res);
+      deleteDialogVisible.value = false;
+      currentDeleteUser.value = null;
+      init(); // 重新加载数据
+    } else {
+      // ElMessage.error('删除失败')
+    }
+  } catch (error) {
+    console.error('删除用户出错:', error);
+    // ElMessage.error('删除失败')
+  }
+};
 
 onMounted(() => {
   init();
-  // fullData.value = allData.value;
   updateTableData();
 });
+
+// 导出表格数据为 Excel
+const exportToExcel = () => {
+  // 构造数据：表头字段使用 t() 翻译
+  const data = fullData.value.map(item => ({
+    ID: item.userId,
+    [t('usermng.name')]: item.username,
+    [t('usermng.email')]: item.email,
+    [t('usermng.addtime')]: formatDateTime(item.createdAt),
+    [t('usermng.lastlogintime')]: formatDateTime(item.lastLogin),
+    [t('usermng.permission')]: item.permissionLevel === 1 ? t('usermng.mng') : t('usermng.commonuser'),
+  }));
+
+  const worksheet = XLSX.utils.json_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, t('usermng.userlist'));
+
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+  saveAs(blob, `${t('usermng.userlist')}.xlsx`);
+};
 
 </script>
 
@@ -310,91 +366,92 @@ onMounted(() => {
   }
 
   .custom-dialog {
-  border-radius: 20px !important;
+    border-radius: 20px !important;
 
-//   .el-dialog__header {
-//   border-bottom: 1px solid #dcdfe6; /* Element Plus 默认分割线色 */
-// }
-//   .el-dialog__body {
-//     padding: 30px 0;
-//     height: 300px;
-//     box-sizing: border-box;
-//   }
+    //   .el-dialog__header {
+    //   border-bottom: 1px solid #dcdfe6; /* Element Plus 默认分割线色 */
+    // }
+    //   .el-dialog__body {
+    //     padding: 30px 0;
+    //     height: 300px;
+    //     box-sizing: border-box;
+    //   }
 
-  .form-section {
-    width: 800px;
-    margin: 0 auto 30px auto;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .form-label {
-    font-size: 16px;
-    margin-bottom: 10px;
-    text-align: left;
-    font-weight: bold;
-    color: #000000;
-  }
-
-  .custom-input {
-    background-color: #f1f4f7;
-    border-radius: 8px;
-
-    &.short .el-input__wrapper {
-      height: 150px; // 原来是100px + 50px
+    .form-section {
+      width: 400px;
+      margin: 0 auto 30px auto;
       display: flex;
-      align-items: center;
+      flex-direction: column;
+    }
+
+    .form-label {
+      font-size: 16px;
+      margin-bottom: 10px;
+      text-align: left;
+      font-weight: bold;
+      color: #000000;
+    }
+
+    .custom-input {
       background-color: #f1f4f7;
       border-radius: 8px;
+
+      &.short .el-input__wrapper {
+        height: 150px; // 原来是100px + 50px
+        display: flex;
+        align-items: center;
+        background-color: #f1f4f7;
+        border-radius: 8px;
+      }
+
+      &.long .el-textarea__inner {
+        height: 200px !important; // 原来是150px + 50px
+        background-color: #f1f4f7;
+        border-radius: 8px;
+      }
     }
 
-    &.long .el-textarea__inner {
-      height: 200px !important; // 原来是150px + 50px
-      background-color: #f1f4f7;
-      border-radius: 8px;
+    .dialog-footer {
+      padding: 0px 30px;
+      margin-top: -20px;
     }
-  }
 
-  .dialog-footer {
-    padding: 0px 30px;
-    margin-top: -20px; // 往上挪一点
-  }
-
-  .dialog-footer-container {
-    width: 800px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: flex-end;
-    margin-top: -10px;
-    margin-bottom: 20px;
-  }
-
-  .confirm-button {
-    background-color: #34A0E9;
-    color: #FFFFFF;
-    border-radius: 6px;
-    width: 110px;
-    height: 40px;
-    border: none;
-    transition: all 0.3s ease;
-
-    &:hover,
-    &:active {
-      background-color: #ADDEFF !important;
-      color: #1D5276 !important;
+    .dialog-footer-container {
+      width: 550px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: flex-end;
+      margin-top: -10px;
+      margin-bottom: 20px;
     }
+
+    .confirm-button {
+      background-color: #34A0E9;
+      color: #FFFFFF;
+      border-radius: 6px;
+      width: 110px;
+      height: 40px;
+      border: none;
+      transition: all 0.3s ease;
+
+      &:hover,
+      &:active {
+        background-color: #ADDEFF !important;
+        color: #1D5276 !important;
+      }
+    }
+
   }
 
-}
   ::v-deep(.el-form-item__label) {
     font-size: 16px;
     color: #012A2D;
   }
 
-  .top-section{
+  .top-section {
     height: 40px;
   }
-  
+
   .table-section {
     flex: 1; // 让表格区域自适应剩余空间
     overflow: auto;
@@ -402,25 +459,28 @@ onMounted(() => {
     background-color: white;
     border-radius: 10px;
     font-size: 14px;
-    margin-top: 10px; 
-    margin-bottom: 10px; 
-    
+    margin-top: 10px;
+    margin-bottom: 10px;
+
     :deep(.el-table__body),
     :deep(.el-table__header),
     :deep(.el-table__cell) {
       background-color: white !important;
+      color: #000000 !important;
+      ;
     }
-    
+
     // 设置表格行高为50px
     :deep(.el-table__row) {
       height: 50px !important;
+
     }
-    
+
     // 设置表格单元格高度和垂直居中
     :deep(.el-table__cell) {
       height: 59px !important;
       padding: 0 !important;
-      
+
       .cell {
         display: flex;
         align-items: center;
@@ -429,53 +489,55 @@ onMounted(() => {
         line-height: 50px;
       }
     }
-    
+
     // 设置表头行高
     :deep(.el-table__header-wrapper .el-table__row) {
       height: 50px !important;
+
     }
-    
+
     // 设置表头单元格
     :deep(.el-table__header .el-table__cell) {
       height: 50px !important;
       padding: 0 !important;
-      
+
       .cell {
         height: 50px;
         line-height: 50px;
       }
     }
+
     .action-buttons {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
     }
-    
+
     .icon-wrapper {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 40px;
-      height: 30px;
+      width: 45px;
+      height: 35px;
       border-radius: 6px;
       cursor: pointer;
       transition: background-color 0.2s ease;
-      
+
       &:hover {
         background-color: #F1F4F7;
       }
-      
+
       &:active {
         background-color: #F1F4F7;
       }
-      
+
       svg {
-        width: 16px;
-        height: 16px;
+        width: 17px;
+        height: 17px;
       }
     }
-    
+
   }
 
   .pagination {

@@ -20,6 +20,7 @@
     "clipboard": "^2.0.11",
     "echarts": "^5.5.1",
     "element-plus": "^2.8.2",
+    "file-saver": "^2.0.5",
     "github-markdown-css": "^5.7.0",
     "hast-util-to-html": "^9.0.3",
     "highlight.js": "^11.10.0",
@@ -47,7 +48,8 @@
     "vue3-chat": "file:",
     "vue3-json-editor": "^1.1.5",
     "vue3-json-viewer": "^2.2.2",
-    "vue3-puzzle-vcode": "^1.1.7"
+    "vue3-puzzle-vcode": "^1.1.7",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/mathjax": "^0.0.40",

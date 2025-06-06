@@ -40,7 +40,7 @@
   },
   "usermng": {
     "add": "添 加",
-    "export": " 导出",
+    "export": " 导 出",
     "department": "部门",
     "status": "状态",
     "addtime": "创建时间",
@@ -56,7 +56,12 @@
     "tool": "操作",
     "inputTip": "请输入内容进行检索",
     "mng": "管理员",
-    "adduser": "添加用户"
+    "commonuser": "普通用户",
+    "adduser": "添加用户",
+    "namePlaceHolder": "请输入用户名",
+    "emailPlaceHolder": "请输入邮箱",
+    "passwordPlaceHolder": "请输入密码",
+    "userlist":"用户列表"
     
   },
   "fileSuggest": "支持100MB以内的文件",

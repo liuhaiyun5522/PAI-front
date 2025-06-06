@@ -56,7 +56,12 @@
     "tool": "操作",
     "inputTip": "検索する内容を入力してください",
     "mng": "管理者",
-    "adduser": "追加ユーザー"
+    "commonuser": "一般ユーザー",
+    "adduser": "追加ユーザー",
+    "namePlaceHolder": "ユーザー名を入力してください",
+    "emailPlaceHolder": "メールを入力してください",
+    "passwordPlaceHolder": "パスワードを入力してください",
+    "userlist":"ユーザーリスト"
   },
   "fileSuggest": "最大100MBまでのファイルをサポート",
   "enterQuestion": "ごを入力してください。Shift+Enterで改行...",

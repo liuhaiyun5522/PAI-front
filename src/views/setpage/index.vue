@@ -6,72 +6,85 @@
       {{ t('settings.logout') }}
     </el-button>
 
-    <div class="userform">
-      <span>
+    <div class="settings-section userform">
+      <span class="section-title">
         {{ t('settings.account') }}
       </span>
-      <div class="whiteback form-box">
+
+      <div class="fields-container">
         <div class="input-row">
           <div class="input-group">
-            <label>ID</label>
-            <el-input placeholder="请输入ID" required />
+            <label>{{ t('usermng.name') }}</label>
+            <el-input v-model="userInfo.username" :placeholder="t('settings.enterUsernamePlaceholder')">
+              <template #suffix>
+                <Edit2Icon class="custom-suffix-icon" />
+              </template>
+            </el-input>
           </div>
           <div class="input-group">
-            <label> {{ t('usermng.name') }}</label>
-            <el-input placeholder="请输入用户名" />
+            <label>{{ t('usermng.password') }}<span class="required-star">*</span></label>
+            <el-input v-model="userInfo.password" :placeholder="t('settings.enterPasswordPlaceholder')" :type="password"
+              show-password>
+              <template #suffix>
+                <Edit2Icon class="custom-suffix-icon" />
+              </template>
+            </el-input>
           </div>
-          <div class="input-group">
-            <label>{{ t('usermng.password') }}</label>
-            <el-input placeholder="请输入密码" type="password" required />
+          <div class="input-group input-group--borderless">
+            <label>{{ t('usermng.email') }}<span class="required-star">*</span></label>
+            <el-input v-model="userInfo.email" :placeholder="t('settings.enterEmailPlaceholder')" />
           </div>
         </div>
+
         <div class="input-row">
-          <div class="input-group">
-            <label>{{ t('usermng.email') }}</label>
-            <el-input placeholder="请输入邮箱" required />
-          </div>
-          <div class="input-group">
-            <label>{{ t('usermng.position') }}</label>
-            <el-input placeholder="请输入职位" required />
-          </div>
-          <div class="input-group">
-            <label>{{ t('usermng.department') }}</label>
-            <el-input placeholder="请输入部门" required />
+          <div class="input-group input-group--borderless">
+            <label>{{ t('settings.idLabel') }}<span class="required-star">*</span></label>
+            <el-input v-model="userInfo.id" placeholder="ID" />
           </div>
         </div>
+
         <div class="button-row">
-          <el-button class="save"> {{ t('settings.save') }}</el-button>
+          <el-button class="save-button"> {{ t('settings.save') }}</el-button>
         </div>
       </div>
     </div>
-
-    <div class="language">
-      <span>
+    <div class="settings-section language">
+      <span class="section-title">
         {{ t('settings.language') }}
       </span>
       <div class="whiteback language-box">
-        <span>{{ t('settings.userlang') }}</span>
-        <el-select v-model="selectedLang"  class="lang-select">
-          <el-option label="中文" value="zh" />
-          <el-option label="日本語" value="ja" />
-          <el-option label="English" value="en" />
+        <span class="language-label">{{ t('settings.userlang') }}</span>
+        <el-select v-model="selectedLang" :placeholder="t('settings.selectLanguagePlaceholder')" class="lang-select">
+          <el-option :label="t('settings.langChineseSimplified')" value="zh-CN" />
+          <el-option :label="t('settings.langJapanese')" value="ja" />
         </el-select>
       </div>
-
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import Edit2Icon from '@/assets/icon-edit2.svg'
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { logout } from '@/api/index';
 import { useI18n } from 'vue-i18n';
+
 const { t } = useI18n();
 const $router = useRouter();
-const dialogVisible = ref(false);
-const selectedLang = ref('');
+
+const userInfo = ref({
+  id: '',
+  username: '',
+  password: '',
+  email: '',
+  position: '',
+  department: ''
+});
+
+const selectedLang = ref('zh-CN');
+
 const isHovering = ref(false);
 const isClicking = ref(false);
 
@@ -81,159 +94,254 @@ const iconSrc = computed(() =>
     : new URL('@/assets/logout1.svg', import.meta.url).href
 );
 
-// 点击 logout 按钮的处理逻辑
 const handleLogout = async () => {
   try {
     const res = await logout();
-    if (res) {
+    if (res?.message === 'Logout successful') {
       localStorage.removeItem('token');
-      console.log('token after removal:', localStorage.getItem('token')); // 打印确认是否删除
-      ElMessage.success('退出登录成功');
+      ElMessage.success(t('settings.logoutSuccess'));
       $router.push({ name: 'login' });
     } else {
-      ElMessage.error('退出失败，请重试');
+      ElMessage.error(t('settings.logoutFailed'));
     }
   } catch (error) {
     console.error(error);
-    ElMessage.error('退出异常，请检查网络');
+    ElMessage.error(t('settings.logoutError'));
   }
 };
-
-
-onMounted(() => {
-  console.log('111:', localStorage.getItem('token')); // 打印确认是否删除
-})
-
 </script>
-
 
 <style scoped>
 .main {
-  height: 90vh;
-  padding: 30px 20px;
+  padding: 20px 16px;
+  background-color: #f0f2f5;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
-  .userform {
-    font-size: 18px;
-    color: #1D5276;
+.settings-section {
+  width: 100%;
+}
 
-    .whiteback.form-box {
-      margin-top: 2vh;
-      background-color: #FFF;
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 2vh;
-      padding: 20px;
+.section-title {
+  font-size: 20px;
+  font-weight: 400;
+  font-family: 'Microsoft YaHei';
+  color: #1D5276;
+  margin-top: 20px;
+  margin-bottom: 17px;
+  height: 26px;
+  display: block;
+  padding-left: 15px;
+}
 
-      .input-row {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-      }
+.whiteback {
+  background-color: #FFF;
+  border-radius: 10px;
+  /* padding: 20px; */
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+}
 
-      .input-group {
-        display: flex;
-        align-items: center;
-        margin-right: 20px;
-        height: 70px;
-        flex: 1;
-      }
+.userform .form-box {
+  /* background-color: #FFFFFF !important; */
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+  font-family: 'Microsoft YaHei';
+  font-size: 20px;
+}
 
-      .input-group label {
-        min-width: 60px;
-        margin-right: 10px;
-        color: #333;
-        font-weight: bold;
-        font-size: 14px;
-      }
+/*
+.avatar-container {
+  padding-top: 10px;
+  width: 100px;
+  height: 100px;
+  background: #FFFFFF;
+  padding: 5px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-      .input-group {
-        display: flex;
-        align-items: center;
-        margin-right: 20px;
-        height: 70px;
-        width: 100%;
-      }
+.avatar-background {
+  width: 70px;
+  height: 70px;
+  background-color: #AFBCCD;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
 
-      .input-group .el-input {
-        flex: 1;
-        height: 70px;
-      }
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background: #AFBCCD;
+}
+*/
 
-      .el-input__wrapper {
-        height: 70px !important;
-        align-items: center;
-      }
+.fields-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 46px;
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  padding: 34px;
+}
+
+.input-row {
+  display: flex;
+  gap: 80px;
+  /* 注意：宽度计算将基于此处的 80px */
+}
+
+.input-group {
+  /* 内部布局：标签和输入框在同一行 */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0px;
+
+  /* 统一宽度计算：此规则将作用于所有行的所有输入框组 */
+  flex-basis: calc((100% - 2 * 80px) / 3);
+  /* 使用 80px 的间距进行计算 */
+  flex-grow: 0;
+  /* 禁止拉伸 */
+  flex-shrink: 0;
+  /* 禁止收缩 */
+}
 
 
-      .button-row {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 10px;
-        margin-right: 20px;
+.input-group label {
+  font-size: 16px;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  width: 60px;
+  flex-shrink: 0;
+}
 
-        .save {
-          background-color: #FF9D2D;
-          border-color: #FF9D2D;
-          color: #FFFFFF;
+.required-star {
+  color: #F56C6C;
+  margin-left: 4px;
+}
 
-          &:hover,
-          &:active {
-            background-color: #FFCB8F !important;
-            color: #693F0E !important;
-          }
-        }
-      }
-    }
-  }
+.input-group .el-input {
+  height: 36px;
+  flex-grow: 1;
+  /* 让输入框填满 .input-group 内部的剩余空间 */
+}
 
-  .language {
-    font-size: 18px;
-    color: #1D5276;
+/* 这是所有输入框的默认样式 */
+.input-group :deep(.el-input__wrapper) {
+  border: 1px solid #1D5276;
+  border-radius: 6px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075);
+  background-color: #F1F4F7;
+  height: 100% !important;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
 
-    .whiteback.language-box {
-      margin-top: 2vh;
-      background-color: #FFF;
-      width: 100%;
-      height: 8vh;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
+/* (***这里是唯一的修改***) 这是无边框样式的最终修复版，它会覆盖上面的默认样式 */
+.input-group.input-group--borderless :deep(.el-input__wrapper) {
+  border: none;
+  box-shadow: none;
+  background-color: #f1f4f7;
+}
 
-      span {
-        font-size: 14px;
-      }
-    }
+.input-group .el-input .el-input__inner {
+  height: 100%;
+}
 
-    .lang-select {
-      width: 200px;
-    }
-  }
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.save-button {
+  background-color: #E8AF5F;
+  border-color: #E8AF5F;
+  color: #FFFFFF;
+  padding: 9px 34px;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+.save-button:hover,
+.save-button:active,
+.save-button:focus {
+  background-color: #fcae58 !important;
+  border-color: #fcae58 !important;
+  color: #FFFFFF !important;
+}
+
+.language .language-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  height: auto;
+}
+
+.language-label {
+  font-size: 16px;
+  color: #000000;
+}
+
+.lang-select {
+  width: 200px;
+}
+
+.lang-select .el-input__wrapper {
+  height: 36px !important;
+  border-radius: 4px;
 }
 
 .logout-button {
   color: #FFFFFF;
   position: absolute;
-  right: 15px;
-  top: 20px;
-  border-radius: 10px;
+  right: 30px;
+  top: 25px;
+  border-radius: 6px;
   width: auto;
-  height: 40px;
+  padding: 8px 15px;
+  height: auto;
   z-index: 11;
   background-color: #34A0E9;
+  border: none;
+  font-size: 14px;
+}
 
-  &:hover,
-  &:active {
-    color: #1D5276 !important;
-    background-color: #ADDEFF;
-  }
+.logout-button:hover,
+.logout-button:active,
+.logout-button:focus {
+  color: #FFFFFF !important;
+  background-color: #58b4f0 !important;
+}
 
-  .logout-icon {
-    width: 16px;
-    height: 16px;
-    margin-right: 5px;
-    vertical-align: middle;
-  }
+.logout-icon {
+  width: 14px;
+  height: 14px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+:deep(.el-input__inner::placeholder) {
+  color: #1D5276;
+  font-size: 10px;
+  font-family: "思源黑体";
+}
+
+:deep(.el-select .el-input__inner::placeholder) {
+  color: #A8ABB2;
+  font-size: 14px;
 }
 </style>

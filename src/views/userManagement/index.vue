@@ -49,11 +49,12 @@
       </template>
     </el-dialog>
 
-    <!--顶部 筛选栏 -->
+    <!-- 顶部 筛选栏 -->
     <div class="top-section">
       <el-form label-position="left" label-width="auto" :inline="true" size="large">
         <el-form-item>
-          <el-input v-model="selectedStatus" style="width: 330px;height: 40px; " :placeholder="t('inputTip')">
+          <el-input v-model="usernameFilter" style="width: 330px;height: 40px;" :placeholder="t('usermng.name')"
+            @input="filterTable">
             <template #suffix>
               <el-icon color="#000000" size="15" class="cursor-pointer">
                 <Search />
@@ -63,12 +64,13 @@
         </el-form-item>
 
         <el-form-item :label="t('usermng.addtime')">
-          <el-date-picker v-model="value2" style="width: 300px;height: 40px;" type="datetimerange"
+          <el-date-picker v-model="dateRange" style="width: 370px;height: 40px;" type="datetimerange"
             :start-placeholder="t('usermng.starttime')" :end-placeholder="t('usermng.endtime')"
-            format="YYYY-MM-DD HH:mm:ss" class="date-picker" />
+            format="YYYY-MM-DD HH:mm:ss" class="date-picker" @change="filterTable" />
         </el-form-item>
       </el-form>
     </div>
+
 
     <!-- 表格区域 -->
     <el-table :data="tableData" v-loading="loading" class="table-section" style="width: 100%;">
@@ -106,14 +108,14 @@
 
     <!-- 分页器 -->
     <div class="pagination">
-      <el-pagination background layout="total, prev, pager, next" :total="fullData.length" :page-size="pageSize"
+      <el-pagination background layout="total, prev, pager, next" :total="filteredData.length" :page-size="pageSize"
         :current-page="currentPage" @current-change="handleCurrentChange" />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { Plus, Search } from '@element-plus/icons-vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
@@ -124,6 +126,7 @@ import tabledelete from '@/assets/usermng/delete.svg';
 import Delete from '@/components/Delete.vue'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
+
 const { t } = useI18n();
 const { useMenu } = useStore();
 const $router = useRouter();
@@ -133,17 +136,17 @@ const addName = ref('');
 const addPassword = ref('');
 const llm_name = ref("0")
 const addDialogVisible = ref(false);
-const searchText = ref('');
-const value2 = ref('');
-const selectedStatus = ref('');
 const loading = ref(false)
 const deleteDialogVisible = ref(false)
 const currentPage = ref(1); // 当前页码
 const pageSize = 10;        // 每页条数
-const total = ref(0);       // 总条数
 
-const fullData = ref([]);   // 所有数据
-const tableData = ref([]);  // 当前页显示的数据
+// 筛选相关
+const usernameFilter = ref(''); // 用户名筛选
+const dateRange = ref('');      // 时间范围筛选
+
+const fullData = ref([]);       // 所有数据
+const tableData = ref([]);      // 当前页显示的数据
 
 // 新增：保存当前要删除的用户信息
 const currentDeleteUser = ref(null);
@@ -158,6 +161,30 @@ const permission = [
     value: '0'
   }
 ]
+
+// 计算过滤后的数据
+const filteredData = computed(() => {
+  let filtered = fullData.value;
+
+  // 按用户名筛选
+  if (usernameFilter.value) {
+    filtered = filtered.filter(user => 
+      user.username && user.username.toLowerCase().includes(usernameFilter.value.toLowerCase())
+    );
+  }
+
+  // 按时间范围筛选
+  if (dateRange.value && dateRange.value.length === 2) {
+    const [startDate, endDate] = dateRange.value;
+    filtered = filtered.filter(user => {
+      if (!user.createdAt) return false;
+      const userDate = new Date(user.createdAt);
+      return userDate >= startDate && userDate <= endDate;
+    });
+  }
+
+  return filtered;
+});
 
 // 时间格式转换函数
 const formatDateTime = (dateString) => {
@@ -204,10 +231,17 @@ const init = async () => {
   }
 };
 
+// 更新表格数据
 const updateTableData = () => {
   const start = (currentPage.value - 1) * pageSize;
   const end = start + pageSize;
-  tableData.value = fullData.value.slice(start, end);
+  tableData.value = filteredData.value.slice(start, end);
+};
+
+// 筛选表格数据
+const filterTable = () => {
+  currentPage.value = 1; // 重置到第一页
+  updateTableData();
 };
 
 const handleCurrentChange = (val) => {
@@ -292,13 +326,18 @@ const confirmDelete = async () => {
 
 onMounted(() => {
   init();
-  updateTableData();
 });
+
+// 监听 filteredData 变化，自动更新表格数据
+import { watch } from 'vue';
+watch(filteredData, () => {
+  updateTableData();
+}, { deep: true });
 
 // 导出表格数据为 Excel
 const exportToExcel = () => {
-  // 构造数据：表头字段使用 t() 翻译
-  const data = fullData.value.map(item => ({
+  // 使用过滤后的数据导出
+  const data = filteredData.value.map(item => ({
     ID: item.userId,
     [t('usermng.name')]: item.username,
     [t('usermng.email')]: item.email,

@@ -24,6 +24,15 @@
     "account": "账户",
     "save": "保 存",
     "language": "界面语言",
+    "idLabel": "ID",
+    "enterUsernamePlaceholder": "请输入用户名",
+    "enterPasswordPlaceholder": "请输入密码",
+    "enterEmailPlaceholder": "请输入邮箱",
+    "enterPositionPlaceholder": "请输入职位",
+    "enterDepartmentPlaceholder": "请输入部门",
+    "selectLanguagePlaceholder": "请选择语言", 
+    "langChineseSimplified": "简体中文",    
+    "langJapanese": "日文",              
     "userlang": "用户显示界面语言"
   },
   "knowledgemng": {

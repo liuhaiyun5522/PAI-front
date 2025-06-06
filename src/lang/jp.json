@@ -24,7 +24,15 @@
     "account": "アカウント",
     "save": "保 存",
     "language": "言語",
-    "userlang": "ユーザー表示の言語"
+    "userlang": "ユーザー表示の言語",
+    "enterUsernamePlaceholder": "请输入用户名",
+    "enterPasswordPlaceholder": "请输入密码",
+    "enterEmailPlaceholder": "请输入邮箱",
+    "enterPositionPlaceholder": "请输入职位",
+    "enterDepartmentPlaceholder": "请输入部门",
+    "selectLanguagePlaceholder": "请选择语言", 
+    "langChineseSimplified": "简体中文",    
+    "langJapanese": "日文"           
   },
   "knowledgemng": {
     "rename": "名前を変更",

@@ -46,11 +46,11 @@
 
     <!-- 表格区域 -->
     <el-table :data="tableData" style="width: 100%" class="table-section">
-      <el-table-column prop="name" :label="tableLabels.name" min-width="40%" />
-      <el-table-column prop="size" :label="tableLabels.size" min-width="15%" align="center" />
-      <el-table-column prop="updateTime" :label="tableLabels.updateTime" min-width="15%" align="center" />
-      <el-table-column prop="status" :label="tableLabels.status" min-width="25%" align="center" />
-      <el-table-column :label="tableLabels.action" min-width="10%" align="center">
+      <el-table-column prop="name" :label="tableLabels.name" min-width="40" align="center" />
+      <el-table-column prop="size" :label="tableLabels.size" min-width="15" align="center" />
+      <el-table-column prop="updateTime" :label="tableLabels.updateTime" min-width="15" align="center" />
+      <el-table-column prop="status" :label="tableLabels.status" min-width="25" align="center" />
+      <el-table-column :label="tableLabels.action" min-width="10" align="center">
         <template #default="scope">
           <el-icon @click="handleDelete(scope.$index)" size="18px">
             <Delete />

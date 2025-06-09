@@ -39,8 +39,11 @@
         <div class="input-row">
           <div class="input-group input-group--borderless">
             <label>{{ t('settings.idLabel') }}<span class="required-star">*</span></label>
-            <el-input v-model="userInfo.id" placeholder="ID" />
+            <el-input v-model="userInfo.id" :placeholder="t('settings.enterIDPlaceholder')" />
           </div>
+
+          <div class="input-group" style="visibility: hidden;"></div>
+          <div class="input-group" style="visibility: hidden;"></div>
         </div>
 
         <div class="button-row">
@@ -65,13 +68,13 @@
 
 <script setup>
 import Edit2Icon from '@/assets/icon-edit2.svg'
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { logout } from '@/api/index';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const $router = useRouter();
 
 const userInfo = ref({
@@ -83,7 +86,14 @@ const userInfo = ref({
   department: ''
 });
 
-const selectedLang = ref('zh-CN');
+const selectedLang = ref(localStorage.getItem('user-lang') || 'zh-CN');
+locale.value = selectedLang.value;
+
+watch(selectedLang, (newLang) => {
+  locale.value = newLang;
+  localStorage.setItem('user-lang', newLang);
+  ElMessage.success('语言切换成功');
+});
 
 const isHovering = ref(false);
 const isClicking = ref(false);
@@ -209,13 +219,10 @@ const handleLogout = async () => {
   align-items: center;
   gap: 0px;
 
-  /* 统一宽度计算：此规则将作用于所有行的所有输入框组 */
-  flex-basis: calc((100% - 2 * 80px) / 3);
-  /* 使用 80px 的间距进行计算 */
-  flex-grow: 0;
-  /* 禁止拉伸 */
-  flex-shrink: 0;
-  /* 禁止收缩 */
+  /* 使用 flex: 1 让每个组平分空间，变得灵活 */
+  flex: 1;
+  /* 这是一个 flex 布局中的好习惯，可以防止意外的溢出 */
+  min-width: 0;
 }
 
 
@@ -224,8 +231,11 @@ const handleLogout = async () => {
   color: #000000;
   display: flex;
   align-items: center;
-  width: 60px;
+  /* width: 60px; */
   flex-shrink: 0;
+  margin-right: 10px;
+  /* 防止标签文字换行 */
+  white-space: nowrap;
 }
 
 .required-star {

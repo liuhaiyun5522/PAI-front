@@ -46,7 +46,7 @@ export const constantRoute = [
         component: () => import('@/views/knowledgebaseManagement/base.vue'),
       },
       
-      //历史记录页面
+      //个人主页页面
       {
         path: "/setpage",
         name: "setpage",

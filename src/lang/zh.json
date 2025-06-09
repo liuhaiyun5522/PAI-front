@@ -70,7 +70,8 @@
     "namePlaceHolder": "请输入用户名",
     "emailPlaceHolder": "请输入邮箱",
     "passwordPlaceHolder": "请输入密码",
-    "userlist":"用户列表"
+    "userlist":"用户列表",
+    "enterIDPlaceholder": "请输入用户ID"
     
   },
   "fileSuggest": "支持100MB以内的文件",

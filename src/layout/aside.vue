@@ -29,37 +29,39 @@
       <div :class="['history-tree', { 'no-bottom-func': !showBottomFunc }]" v-if="historyFlag">
         <Menuu />
       </div>
-
-      <div class="buttom-func" v-if="useMenu.userInfo.userPermissionLevel === 1">
-        <div class="nav-button" @click="goPage('userManagement')">
-          <Usermng></Usermng>
-          <span>
-            {{ t('userManagement') }}
-          </span>
+      <div class="bottom">
+        <div class="buttom-func" v-if="useMenu.userInfo.userPermissionLevel === 1">
+          <div class="nav-button" @click="goPage('userManagement')">
+            <Usermng></Usermng>
+            <span>
+              {{ t('userManagement') }}
+            </span>
+          </div>
+          <div class="nav-button" @click="goPage('knowledgebaseManagement')">
+            <Knowledgemng></Knowledgemng>
+            <span>
+              {{ t('knowledgebaseManagement') }}
+            </span>
+          </div>
         </div>
-        <div class="nav-button" @click="goPage('knowledgebaseManagement')">
-          <Knowledgemng></Knowledgemng>
-          <span>
-            {{ t('knowledgebaseManagement') }}
-          </span>
+
+
+        <div class="version-text">
+          <span>version 1.0.0</span>
         </div>
-      </div>
 
 
-      <div class="version-text">
-        <span>version 1.0.0</span>
-      </div>
-
-
-      <div class="layout-user-info">
-        <div class="user-info-button">
-          <Iconuser />
-          <span>{{ useMenu.userInfo.userName }}</span>
-          <div class="user-tool" @click="goPage('setpage')">
-            <Icontool />
+        <div class="layout-user-info">
+          <div class="user-info-button">
+            <Iconuser />
+            <span>{{ useMenu.userInfo.userName }}</span>
+            <div class="user-tool" @click="goPage('setpage')">
+              <Icontool />
+            </div>
           </div>
         </div>
       </div>
+
     </div>
   </el-aside>
 </template>
@@ -128,6 +130,7 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100vh;
 
     // position: relative;
     .logo {
@@ -172,106 +175,114 @@ onMounted(() => {
       margin-top: 10px;
       padding: 0 15px;
       flex-shrink: 0;
+      flex: 1;
+      margin-bottom: 10px;
 
       &.no-bottom-func {
         max-height: calc(100vh - 310px);
       }
     }
 
-    .buttom-func {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: absolute;
-      bottom: 85px;
+    .bottom {
+      margin-top: auto;
 
-      .nav-button {
-        font-size: 16px;
-        width: 210px;
-        height: 45px;
-        padding: 5px 15px;
-        border-radius: 10px;
-        cursor: pointer;
+      .buttom-func {
         display: flex;
+        flex-direction: column;
         align-items: center;
-        transition: all 0.1s;
-        color: #1D5276;
-        margin-top: 5px;
+        justify-content: center;
+        // position: absolute;
+        bottom: 85px;
 
-        span {
-          margin-left: 12px;
-          flex: 1;
-        }
-
-        &:hover,
-        &.active {
-          background: #fff;
-          box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.15);
-          color: #1D5276;
-        }
-      }
-
-
-    }
-
-    .version-text {
-      position: absolute;
-      bottom: 65px;
-      width: 210px;
-      border-bottom: 1px solid #fff;
-
-      span {
-        font-size: 10px;
-        color: #1D5276;
-        margin-left: 140px;
-      }
-    }
-
-    .layout-user-info {
-      position: absolute;
-      bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      .user-info-button {
-        background-color: #79BFEE;
-        width: 210px;
-        height: 45px;
-        border-radius: 100px;
-        display: flex;
-        align-items: center;
-        color: #fff;
-        position: relative;
-        padding: 0px 20px;
-
-        span {
-          margin-left: 10px;
-          font-size: 14px;
-        }
-
-        .user-tool {
-          position: absolute;
-          right: 10px;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 30px;
-          height: 30px;
-          background-color: transparent;
-          border-radius: 50%;
+        .nav-button {
+          font-size: 16px;
+          width: 210px;
+          height: 45px;
+          padding: 5px 15px;
+          border-radius: 10px;
           cursor: pointer;
           display: flex;
           align-items: center;
-          justify-content: center;
+          transition: all 0.1s;
+          color: #1D5276;
+          margin-top: 5px;
+
+          span {
+            margin-left: 12px;
+            flex: 1;
+          }
 
           &:hover,
-          &:active {
-            background-color: #62A3CF;
+          &.active {
+            background: #fff;
+            box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.15);
+            color: #1D5276;
+          }
+        }
+
+
+      }
+
+      .version-text {
+        // position: absolute;
+        bottom: 65px;
+        width: 210px;
+        border-bottom: 1px solid #fff;
+        margin-bottom: 10px;
+
+        span {
+          font-size: 10px;
+          color: #1D5276;
+          margin-left: 140px;
+        }
+      }
+
+      .layout-user-info {
+        // position: absolute;
+        bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .user-info-button {
+          background-color: #79BFEE;
+          width: 210px;
+          height: 45px;
+          border-radius: 100px;
+          display: flex;
+          align-items: center;
+          color: #fff;
+          position: relative;
+          padding: 0px 20px;
+
+          span {
+            margin-left: 10px;
+            font-size: 14px;
+          }
+
+          .user-tool {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            background-color: transparent;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:hover,
+            &:active {
+              background-color: #62A3CF;
+            }
           }
         }
       }
     }
+
 
 
   }

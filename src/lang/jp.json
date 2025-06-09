@@ -37,7 +37,9 @@
   },
   "knowledgemng": {
     "rename": "名前を変更",
-    "delete": "削除"
+    "delete": "削除",
+    "renameDatabase": "ナレッジベースの名前変更",
+    "addDatabase": "ナレッジベース新規作成"
   },
   "Basetable": {
     "upload": "ファイルアップロード",
@@ -89,8 +91,8 @@
   "aiTip": "本回答は、CBRE 規定に基づき AI が作成したものです。関連部門の公式な見解と異なる場合は、そちらを優先してください。",
   "databaseTitle": "キャッシュ管理",
   "update": "最新アップデート",
-  "addDatabase": "ナレッジベース新規作成",
-  "renameDatabase": "ナレッジベースの名前変更",
+ 
+  
   "confirm": "確  認",
   "formName": "名称",
   "formDesc": "概要説明",

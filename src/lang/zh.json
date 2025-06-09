@@ -37,7 +37,9 @@
   },
   "knowledgemng": {
     "rename": "重命名",
-    "delete": "删除"
+    "delete": "删除",
+    "addDatabase": "新建知识库",
+  "renameDatabase": "重命名知识库"
   },
   "Basetable": {
     "upload": "上传文件",
@@ -90,8 +92,7 @@
   "aiTip": "本回答是根据CBRE规定由AI制作的。如果与相关部门的官方见解不同，请优先考虑那边。",
   "databaseTitle": "缓存管理",
   "update": "最新更新",
-  "addDatabase": "新建知识库",
-  "renameDatabase": "重命名知识库",
+  
   "confirm": "确定",
   "formName": "知识库名称",
   "formDesc": "说明",

@@ -1,13 +1,13 @@
 <template>
   <div class="knowledge-list">
-    <el-button class="primary-button" type="primary" @click="dialogVisible = true">
+    <el-button class="primary-button" type="primary" @click="openDialog(false, null)">
       <el-icon>
         <Plus />
       </el-icon>
       {{ t('add') }}
     </el-button>
     <!-- 弹窗 -->
-    <el-dialog v-model="dialogVisible" :title="t('addDatabase')" width="900px" :show-close="true" class="custom-dialog">
+    <el-dialog v-model="dialogVisible" :title="isRename ? t('knowledgemng.renameDatabase') : t('knowledgemng.addDatabase')" width="900px" :show-close="true" class="custom-dialog">
       <div class="dialog-body">
         <div class="line"></div>
         <div class="form-section">
@@ -50,7 +50,7 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item @click="rename(item)">
+                  <el-dropdown-item @click="openDialog(true, item)">
                     <el-icon>
                       <RenameIcon />
                     </el-icon>
@@ -74,7 +74,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { getknowledgeList, createknowledgeabse, dropknowledgeabse } from '@/api/knowledgebaseMange';
+import { getknowledgeList, createknowledgeabse, dropknowledgeabse  } from '@/api/knowledgebaseMange';
 import Delete from '@/components/Delete.vue';
 import RenameIcon from '@/assets/icon-rename.svg?component';
 import DeleteIcon from '@/assets/icon-delete2.svg?component';
@@ -91,6 +91,8 @@ const createIntro = ref('');
 const $router = useRouter();
 const deleteDialogVisible = ref(false);
 const currentDeleteItem = ref(null);
+const isRename = ref(false); // 标识是否是重命名操作
+const renameItem = ref(null); // 用于存储当前要重命名的项目
 
 const init = async () => {
   loading.value = true;
@@ -104,20 +106,46 @@ const formatDate = (date) => {
   return new Date(date).toLocaleString('zh-CN', options);
 };
 
+const openDialog = (isRenameFlag, item) => {
+  isRename.value = isRenameFlag;
+  if (isRenameFlag) {
+    renameItem.value = item;
+    createName.value = item.name;
+    createIntro.value = item.description;
+  } else {
+    renameItem.value = null;
+    createName.value = '';
+    createIntro.value = '';
+  }
+  dialogVisible.value = true;
+};
+
 const handleConfirm = async () => {
   if (!createName.value.trim()) {
     ElMessage.error(t('knowledgeNameRequired') || "知识库名称为必填项");
     return;
   }
-  const payload = {
-    name: createName.value,
-    description: createIntro.value,
-    userid: "1"
-  };
-  await createknowledgeabse(payload);
+
+  if (isRename.value) {
+    // 调用重命名接口
+    const payload = {
+      id: renameItem.value.id,
+      name: createName.value,
+      description: createIntro.value,
+      userid: "1"
+    };
+    // await updateknowledgeabse(payload);
+    console.log(payload)
+  } else {
+    // 调用新建接口
+    const payload = {
+      name: createName.value,
+      description: createIntro.value,
+      userid: "1"
+    };
+    await createknowledgeabse(payload);
+  }
   dialogVisible.value = false;
-  createName.value = '';
-  createIntro.value = '';
   init();
 };
 
@@ -132,10 +160,6 @@ const goToCardDetail = (item) => {
       time: item.create_time
     }
   });
-};
-
-const rename = (item) => {
-  alert(`重命名：${item.name}`);
 };
 
 const showDeleteDialog = (item) => {

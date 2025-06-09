@@ -287,7 +287,7 @@ function highlightBlock(str: string, lang: string) {
 
 const fileInput = ref<HTMLInputElement | null>(null);
 
-const ENV_WEBSOCKET_URL = import.meta.env.VITE_NODE_ENV
+const ENV_WEBSOCKET_URL = import.meta.env.VITE_NODE_ENV8009
 
 //上传文件点击
 function triggerFileUpload() {

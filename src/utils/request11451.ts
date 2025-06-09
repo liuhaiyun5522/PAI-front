@@ -3,13 +3,13 @@
 import axios from 'axios'
 
 // 创建axios实例
-const request = axios.create({
-    baseURL: import.meta.env.VITE_NODE_ENV, // url = base url + request url
+const request11451 = axios.create({
+    baseURL: import.meta.env.VITE_NODE_ENV11451, // url = base url + request url
     timeout: 50000,// 5s超时,
 })
 
 // 请求拦截器 一般写法模式
-request.interceptors.request.use(
+request11451.interceptors.request.use(
     (response) => {
         // @ts-ignore
       response.headers = {
@@ -25,7 +25,7 @@ request.interceptors.request.use(
 )
 
 // 响应拦截器
-request.interceptors.response.use(
+request11451.interceptors.response.use(
     (response) => {
         return response
     },
@@ -39,4 +39,4 @@ request.interceptors.response.use(
 )
 
 // 导出request
-export default request
+export default request11451

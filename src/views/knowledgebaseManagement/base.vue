@@ -51,15 +51,24 @@
       <el-table-column prop="updateTime" :label="tableLabels.updateTime" min-width="15" align="center" />
       <el-table-column prop="status" :label="tableLabels.status" min-width="25" align="center" />
       <el-table-column :label="tableLabels.action" min-width="10" align="center">
-        <template #default="scope">
+        <!-- <template #default="scope">
           <el-icon @click="handleDelete(scope.$index)" size="18px">
             <Delete />
           </el-icon>
           <el-icon @click="handleDownload(scope.row)" size="18px">
             <Download />
           </el-icon>
+        </template> -->
+        <template #default="scope">
+          <div class="action-buttons">
+            <!-- 修改删除按钮点击事件 -->
+            <div class="icon-wrapper" @click="showDeleteDialog(scope.row)">
+              <tabledelete></tabledelete>
+            </div>
+          </div>
         </template>
       </el-table-column>
+
     </el-table>
   </div>
 </template>
@@ -70,6 +79,7 @@ import { ref, onMounted } from 'vue'; // 添加 onMounted
 import { useRoute } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { Search, Delete, Download, Plus } from '@element-plus/icons-vue';
+import tabledelete from '@/assets/usermng/delete.svg';
 import { getknowledgeFiles } from '@/api/knowledgebaseMange';
 import { useI18n } from 'vue-i18n';
 
@@ -211,6 +221,35 @@ const handleDownload = (row) => {
   :deep(.el-table__header),
   :deep(.el-table__cell) {
     background-color: white !important;
+  }
+  .action-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+  .icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 35px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #F1F4F7;
+    }
+
+    &:active {
+      background-color: #F1F4F7;
+    }
+
+    svg {
+      width: 17px;
+      height: 17px;
+    }
   }
 }
 

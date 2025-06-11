@@ -2,7 +2,7 @@
   <div class="main">
     <el-button class="logout-button" @click="handleLogout" @mouseenter="isHovering = true"
       @mouseleave="isHovering = false" @mousedown="isClicking = true" @mouseup="isClicking = false">
-      <img :src="iconSrc" class="logout-icon" />
+      <LogoutIcon></LogoutIcon>
       {{ t('settings.logout') }}
     </el-button>
 
@@ -68,6 +68,7 @@
 
 <script setup>
 import Edit2Icon from '@/assets/icon-edit2.svg'
+import LogoutIcon from '@/assets/logout.svg'
 import { ref, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
@@ -97,12 +98,6 @@ watch(selectedLang, (newLang) => {
 
 const isHovering = ref(false);
 const isClicking = ref(false);
-
-const iconSrc = computed(() =>
-  isClicking.value || isHovering.value
-    ? new URL('@/assets/logout2.svg', import.meta.url).href
-    : new URL('@/assets/logout1.svg', import.meta.url).href
-);
 
 const handleLogout = async () => {
   try {
@@ -334,7 +329,7 @@ const handleLogout = async () => {
 .logout-button:hover,
 .logout-button:active,
 .logout-button:focus {
-  color: #FFFFFF !important;
+  color: #1D5276 !important;
   background-color: #58b4f0 !important;
 }
 

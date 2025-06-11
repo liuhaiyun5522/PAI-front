@@ -3,11 +3,11 @@
     <!-- 添加按钮 -->
     <el-button class="add-button" @click="addDialogVisible = true">
       <img :src="add2Icon" class="custom-svg-icon" alt="add" />
-      {{ t('add') }}
+      {{ t('usermng.add') }}
     </el-button>
     <el-button class="export-button" @click="exportToExcel()">
       <img :src="uploadIcon" class="custom-svg-icon" alt="Export" />
-      {{ t('export') }}
+      {{ t('usermng.export') }}
     </el-button>
 
     <!-- 删除确认组件 -->

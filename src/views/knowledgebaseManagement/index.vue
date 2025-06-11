@@ -94,9 +94,10 @@ const currentDeleteItem = ref(null);
 const isRename = ref(false); // 标识是否是重命名操作
 const renameItem = ref(null); // 用于存储当前要重命名的项目
 
+
 const init = async () => {
   loading.value = true;
-  const response = await getknowledgeList({ userid: "1" });
+  const response = await getknowledgeList();
   knowledgeList.value = response.data.message;
   loading.value = false;
 };

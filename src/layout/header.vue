@@ -1,5 +1,5 @@
 <template>
-  <el-header class="header">
+  <el-header class="header"  v-if="!(route.name === 'BasefileManagement' || route.name === 'listfileManagement')">
     <div class="title">  
       <img
         class="back"

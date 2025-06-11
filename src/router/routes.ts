@@ -19,10 +19,9 @@ export const constantRoute = [
     children: [
       // {
       //   path: "", // 空路径
-      //   name: "defaultPage",
-      //   redirect: { name: 'dialog' } // 命名路由跳转（无URL变化）
+      //   name: "login",
+      //   redirect: { name: 'login' } // 命名路由跳转（无URL变化）
       // },
-
       {
         path: "/dialog",
         name: "dialog",
@@ -45,7 +44,11 @@ export const constantRoute = [
         name: "BasefileManagement",
         component: () => import('@/views/knowledgebaseManagement/base.vue'),
       },
-      
+      {
+        path: "/knowledgebaseManagement/list",
+        name: "listfileManagement",
+        component: () => import('@/views/knowledgebaseManagement/list.vue'),
+      },
       //个人主页页面
       {
         path: "/setpage",

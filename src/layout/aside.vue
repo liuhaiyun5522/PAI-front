@@ -29,6 +29,7 @@
       <div :class="['history-tree', { 'no-bottom-func': !showBottomFunc }]" v-if="historyFlag">
         <Menuu />
       </div>
+      
       <div class="bottom">
         <div class="buttom-func" v-if="useMenu.userInfo.userPermissionLevel === 1">
           <div class="nav-button" @click="goPage('userManagement')">
@@ -50,16 +51,6 @@
           <span>version 1.0.0</span>
         </div>
 
-
-        <!-- <div class="layout-user-info">
-          <div class="user-info-button">
-            <Iconuser />
-            <span>{{ useMenu.userInfo.userName }}</span>
-            <div class="user-tool" @click="goPage('setpage')">
-              <Icontool />
-            </div>
-          </div>
-        </div> -->
          <div class="layout-user-info">
           <div class="user-info-button">
             <Iconuser class="user-avatar-icon" />

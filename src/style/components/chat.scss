@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  height: calc(100vh - 95px);
+  height: calc(100vh - 80px);
   @media (max-width: 768px) {
     height: calc(100vh - 50px);
   }
@@ -56,7 +56,7 @@
 
   .chat-input {
     width: var(--message-list-width);
-    margin: 0 auto 12px;
+    margin: 0 auto 0px;
     padding: 10px 15px;
     border-radius: 20px;
     border: 1px solid rgba(0, 0, 0, 0.4) ;
@@ -69,16 +69,21 @@
     }
     &-bottom{
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       align-items: center;
     }
+    
     &-button{
       display: flex;
       align-items: center;
+      font-size: 14px;
+
       .el-button{
+        margin-left: 10px;
         img{
           width: 15px;
           margin-right: 14px;
+         
         }
       }
     }

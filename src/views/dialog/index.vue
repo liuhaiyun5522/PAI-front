@@ -64,24 +64,25 @@
         class="autoresize-textarea" :autosize="{ minRows: 2, maxRows: 5 }" @keydown.ctrl.enter="handleKeydown" v-focus>
       </el-input>
       <div class="chat-input-bottom">
+        <el-select v-model="selectBase" :placeholder="t('selectBase')" style="width: 150px;">
+          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
         <div class="chat-input-button">
-          <el-select v-model="value" placeholder="Select" style="width: 150px;margin-right: 710px;">
-            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
-          </el-select>
+          <span>MCP Agent</span><el-switch v-model="MCPvalue" style="margin-left: 5px;" />
           <!--        todo 上传             -->
-          <!--          <el-tooltip class="item" effect="light" :content="t('fileSuggest')" placement="top">-->
-          <!--            <div class="file-icon" @click="triggerFileUpload">-->
-          <!--              <img class="chat-img" :src="iconFile" alt="">-->
-          <!--              <input type="file" ref="fileInput" @change="handleFileChange" style="display: none;"-->
-          <!--                     accept=".doc,.docx,.txt,.xls,.xlsx,.pdf" :max-file-size="104857600">-->
-          <!--            </div>-->
-          <!--          </el-tooltip>-->
+          <el-tooltip class="item" effect="light" :content="t('fileSuggest')" placement="top">
+            <div class="file-icon" @click="triggerFileUpload">
+              <img class="chat-img" :src="iconFile" alt="">
+              <input type="file" ref="fileInput" @change="handleFileChange" style="display: none;"
+                accept=".doc,.docx,.txt,.xls,.xlsx,.pdf" :max-file-size="104857600">
+            </div>
+          </el-tooltip>
+
           <el-tooltip class="item" effect="light" content="送信（Ctrl+Enter）" placement="top">
             <el-button :icon="IconSend" :disabled="!webSocket.isFinish" type="primary" @click="firstSend">
               {{ t('send') }}
             </el-button>
           </el-tooltip>
-
         </div>
       </div>
     </div>
@@ -96,7 +97,7 @@ import { useRoute } from 'vue-router';
 import { ElMessage } from 'element-plus'
 import { changeFilechat } from '@/utils/minio.js';
 import { getknowledgeList } from '@/api/knowledgebaseMange';
-import { getHistoryMessage, handleThumbsUp, historySaveList, getKnowledgeList } from "@/api/chat";
+import { getKnowledgeList } from "@/api/chat";
 import iconAi from '@/assets/icon-ai.png'
 import IconSend from '@/assets/icon-send.svg'
 import iconCopy from '@/assets/icon-copy.png'
@@ -114,30 +115,9 @@ import IconQuestion from '@/assets/icon-question.svg'
 import iconAnalysis from '@/assets/icon-analysis.png'
 import iconSearch from '@/assets/icon-search.svg'
 import { useI18n } from "vue-i18n";
-const value = ref('')
-
-const options = [
-  {
-    value: 'Option1',
-    label: 'Option1',
-  },
-  {
-    value: 'Option2',
-    label: 'Option2',
-  },
-  {
-    value: 'Option3',
-    label: 'Option3',
-  },
-  {
-    value: 'Option4',
-    label: 'Option4',
-  },
-  {
-    value: 'Option5',
-    label: 'Option5',
-  },
-]
+const selectBase = ref('')
+const options = ref([]); // 定义 options 为响应式数据
+const MCPvalue = ref(true)
 
 const { t } = useI18n();
 import { newline, filterObj, formatObj } from '@/utils'
@@ -196,8 +176,15 @@ const mockResponse = {
   ]
 }
 
-
 onMounted(async () => {
+  console.log(localStorage.getItem('token'))
+  const response = await getknowledgeList({ userid: "1" });
+  options.value = response.data.message.map(item => ({
+    value: item.name,
+    label: item.name
+  }));
+
+
   webSocket.inputMessage = '';
   webSocket.messageQueue = [];
   webSocket.isFinish = true;
@@ -226,32 +213,9 @@ const { useMenu } = useMenuStore();
 watch(() => webSocket.isFinish, (newVal) => {
   if (newVal == true) {
     // console.log ('调用存储历史接口')
-    saveHistory(true)
   }
 })
 import { v4 as uuidv4 } from 'uuid';
-
-//存储历史
-async function saveHistory(isCall: boolean) {
-  if (webSocket.doubleMessages.length > 0) {
-    if (!chatId.value) {
-      chatId.value = uuidv4()
-    }
-    const params = {
-      user_id: '',
-      history_json: JSON.stringify(webSocket.doubleMessages),
-      id: chatId.value || ''
-    }
-    console.log(params)
-    const res = await historySaveList(params)
-    if (res.data.status_code == '200') {
-      //存储后，调用获取历史列表
-      if (isCall) {
-        useMenu.getMenuList()
-      }
-    }
-  }
-}
 
 //获取来源
 function getSource(index: number) {
@@ -368,20 +332,33 @@ async function sendMessageButton(socket) {
       });
       historyList.value = history;
       //构建新消息 用户方
+      // const messgesUser = {
+      //   role: "user",
+      //   content: sendMsg.value,
+      //   time: webSocket.formatDate(new Date().getTime())
+      // }
       const messgesUser = {
-        role: "user",
-        content: sendMsg.value,
-        time: webSocket.formatDate(new Date().getTime())
+        question: sendMsg.value,
+        knowledge_name: selectBase.value,
+        history: [],
+        language: "Zh-cn",
+        talk_id: ""
       }
+
       //AI消息框架  AI消息再0.5s之后再添加
       const messgesAny = {
-        role: "ai",
-        content: '',
-        showChoose: !(selectKnowledge.value && selectKnowledge.value.length > 0),
-        time: webSocket.formatDate(new Date().getTime()),
-        loading: true, //loading是否展示
-        loadingIndex: 0,
-        chooseDisabled: false
+        // role: "ai",
+        // content: '',
+        // showChoose: !(selectKnowledge.value && selectKnowledge.value.length > 0),
+        // time: webSocket.formatDate(new Date().getTime()),
+        // loading: true, //loading是否展示
+        // loadingIndex: 0,
+        // chooseDisabled: false
+        question: sendMsg.value,
+        knowledge_name: selectBase.value,
+        history: [],
+        language: "Zh-cn",
+        talk_id: ""
       }
       webSocket.messageQueue.push(messgesUser);
       setTimeout(() => {
@@ -404,9 +381,11 @@ function firstSend() {
   console.log("222")
   sendMsg.value = formatObj(webSocket.inputMessage).trim()
   selectKnowledge.value = null
-  const socket = `${import.meta.env.VITE_NODE_WS + '/common_chat/111'}`
+  console.log(localStorage.getItem('token'))
+  const socket = `${import.meta.env.VITE_NODE_WS + '/knowledge/qa/' + localStorage.getItem('token')}`
   sendMessageButton(socket)
 }
+
 watch(() => webSocket.isConnected, (newVal) => {
   if (newVal == true) {
     setTimeout(() => {
@@ -418,9 +397,14 @@ watch(() => webSocket.isConnected, (newVal) => {
 //发送消息的构建
 function handleDialogWebsocket(history: any) {
   const message = {
+    // question: sendMsg.value,
+    // history,
+    // knowledge_list: selectKnowledge.value,
     question: sendMsg.value,
+    knowledge_name: selectBase.value,
     history,
-    knowledge_list: selectKnowledge.value,
+    language: "Zh-cn",
+    talk_id: ""
     // knowledge_id: knowledgeBase.value, //选定的知识库
     // knowledge_name: filterObj (knowledgeList.value, 'id', knowledgeBase.value).name  //选定的知识库
   }
@@ -429,33 +413,33 @@ function handleDialogWebsocket(history: any) {
 }
 
 //文件上传
-function handleFileChange(event: Event) {
-  const target = event.target as HTMLInputElement;
-  if (target.files && target.files.length > 0) {
-    const file = target.files[0];
-    if (file.size > 104857600) { // 100MB in bytes
-      alert(t('fileSuggest'));
-      return;
-    }
-    const originalFile = target.files[0];
-    const uniqueName = generateUniqueName();
-    // 创建一个新的 File 对象，使用唯一编码作为文件名
-    const newFile = new File([originalFile], uniqueName + originalFile.name.slice(originalFile.name.lastIndexOf('.')), {
-      type: originalFile.type
-    });
+// function handleFileChange(event: Event) {
+//   const target = event.target as HTMLInputElement;
+//   if (target.files && target.files.length > 0) {
+//     const file = target.files[0];
+//     if (file.size > 104857600) { // 100MB in bytes
+//       alert(t('fileSuggest'));
+//       return;
+//     }
+//     const originalFile = target.files[0];
+//     const uniqueName = generateUniqueName();
+//     // 创建一个新的 File 对象，使用唯一编码作为文件名
+//     const newFile = new File([originalFile], uniqueName + originalFile.name.slice(originalFile.name.lastIndexOf('.')), {
+//       type: originalFile.type
+//     });
 
-    const index = webSocket.doubleMessages.length;
-    const fileName = ref({ content: originalFile.name, role: 'user', fileFlag: '2', index: index })
-    webSocket.doubleMessages.push(fileName.value);
-    console.log(webSocket.doubleMessages);
+//     const index = webSocket.doubleMessages.length;
+//     const fileName = ref({ content: originalFile.name, role: 'user', fileFlag: '2', index: index })
+//     webSocket.doubleMessages.push(fileName.value);
+//     console.log(webSocket.doubleMessages);
 
-    webSocket.socket = import.meta.env.VITE_NODE_WS + '/file_chat/upload'
-    webSocket.connect(webSocket.socket)
-    //emit ('file-uploaded', originalFile.name); // 触发事件，将文件名传递给父组件
-    changeFilechat({ file: newFile }, null);
+//     webSocket.socket = import.meta.env.VITE_NODE_WS + '/file_chat/upload'
+//     webSocket.connect(webSocket.socket)
+//     //emit ('file-uploaded', originalFile.name); // 触发事件，将文件名传递给父组件
+//     changeFilechat({ file: newFile }, null);
 
-  }
-};
+//   }
+// };
 
 //监听 消息队列
 watch(() => webSocket.doubleMessages[webSocket.doubleMessages?.length - 1], () => {
@@ -487,15 +471,7 @@ function removeFirstAndLastPTags(content: any) {
   return md.render(result);
 }
 
-function findLastUserIndex(index: number) {
-  const arr = webSocket.messageQueue;
-  for (let i = index - 1; i >= 0; i--) {
-    if (arr[i].role === 'user') {
-      return i;
-    }
-  }
-  return - 1;
-}
+
 //自定义指令，输入框自动获取焦点
 const vFocus = {
   mounted: (el: any) => {

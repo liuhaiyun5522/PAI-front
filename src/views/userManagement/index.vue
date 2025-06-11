@@ -88,7 +88,7 @@
       <el-table-column prop="permissionLevel" :label="t('usermng.permission')" min-width="10" align="center">
         <template #default="scope">
           <span> {{ t('usermng.mng') }}</span>
-          <el-switch v-model="scope.row.permissionLevel" size="small" :active-value="0" :inactive-value="1"
+          <el-switch v-model="scope.row.permissionLevel" size="small" :active-value="1" :inactive-value="0"
             active-color="#13ce66" inactive-color="#ff4949" @change="handlePermissionChange(scope.row)" />
         </template>
       </el-table-column>

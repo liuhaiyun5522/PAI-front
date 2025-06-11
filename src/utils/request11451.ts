@@ -2,7 +2,7 @@
 // 引入axios封装
 import axios from 'axios'
 import router from '@/router' // 引入router实例
-
+import {ElMessage} from "element-plus";
 // 创建axios实例
 const request11451 = axios.create({
     baseURL: import.meta.env.VITE_NODE_ENV11451, // url = base url + request url
@@ -32,7 +32,7 @@ request11451.interceptors.response.use(
     },
     (error) => {
         if(error.status == 401){
-       
+            ElMessage.error('认证过期请重新登录');
             localStorage.removeItem("token")
             router.push({ name: 'login' });
         }

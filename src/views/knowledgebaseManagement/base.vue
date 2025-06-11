@@ -1,4 +1,19 @@
 <template>
+  
+   <el-header class="header"  >
+    <div class="title">  
+      <img
+        class="back"
+        :src="backIcon"
+        @mouseover="backIcon = backIconHover"
+        @mouseleave="backIcon = backIconDefault"
+        @click="goBack"
+      />
+      <span>{{t('knowledgebaseManagement')}}--{{ route.query.name }}</span>
+    </div>
+  </el-header>
+
+
   <div class="container">
     <!-- 顶部操作区域 -->
     <div class="top-section">
@@ -57,7 +72,8 @@
       @updateVisible="deleteDialogVisible = $event" @deleteConfirm="confirmDelete" />
 
     <!-- 表格区域 -->
-    <el-table :data="filteredTableData" style="width: 100%" v-loading="loading" class="table-section">
+    <el-table :data="filteredTableData" style="width: 100%" v-loading="loading" class="table-section"
+    @row-click="handleRowClick">
       <el-table-column prop="name" :label="t('Basetable.filename')" min-width="40">
         <template #default="scope">
           <!-- 修复文件图标不显示的问题 -->
@@ -103,6 +119,7 @@ import tabledownload from '@/assets/knowledgebase/download.svg';
 import { getknowledgeFiles, deleteFile, uploadFiles, } from '@/api/knowledgebaseMange';
 import { useI18n } from 'vue-i18n';
 import { KnowledgeUploadFile } from '@/utils/minio.js';
+import { useRouter } from 'vue-router';
 const { t } = useI18n();
 const route = useRoute();
 const loading = ref(false);
@@ -111,9 +128,14 @@ const searchText = ref('');
 const selectedStatus = ref('all');
 const value2 = ref([]);
 const tableData = ref([]);// 表格数据
-// 删除操作
-const deleteDialogVisible = ref(false);
+const $router = useRouter();
+const deleteDialogVisible = ref(false);// 删除操作
 const currentDeleteItem = ref(null);
+import backIcon1 from '@/assets/knowledgebase/back-icon1.jpg';
+import backIcon2 from '@/assets/knowledgebase/back-icon2.jpg';
+const backIconDefault = backIcon1;
+const backIconHover = backIcon2;
+const backIcon = ref(backIconDefault);
 
 // 文件类型图标映射
 import pdf from '@/assets/knowledgebase/pdf.png';
@@ -299,7 +321,7 @@ const handleUploadeFile = async () => {
 
 // 生命周期挂载时调用接口
 onMounted(() => {
-  console.log('接收到卡片信息：', cardInfo);
+  console.log('接收到卡片信息：', route);
   fetchTableData();
 });
 
@@ -342,9 +364,67 @@ const handleDownload = (row) => {
   ElMessage.info(`正在下载 ${row.name}`);
 };
 
+// 处理表格行点击事件
+const handleRowClick = (row) => {
+  console.log(row)
+  $router.push({
+    name: "listfileManagement",
+    query: {
+      header: row.name[0],
+      base:route.query.name
+    }
+  });
+};
+
+// 返回上一页
+const goBack = () => {
+  $router.back();
+  
+};
+
 </script>
 
 <style scoped lang="scss">
+.header {
+  position: relative;
+  height: 10vh;
+  display: flex;
+  position: absolute;
+  height: 10vh;
+  width: 100% ;
+  top: 0;
+  .back {
+    width: 28px;
+    height: 28px;
+    // background-color: #34A0E9;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+
+  .title {
+    height: 10vh;
+    width: 100%;
+    border-bottom: 1px solid #AFBCCD;
+    display: flex;
+    align-items: center;
+    color: #1D5276;
+    font-size: 18px;
+    font-weight: bold;
+    position: relative;
+  }
+
+  .primary-button {
+    color: #FFFFFF;
+    position: absolute;
+    right: 15px;
+    background-color: #34A0E9;
+    border-radius: 10px;
+    width: 111px;
+    height: 40px;
+    border-color: #34A0E9;
+  }
+}
 .container {
   padding: 4px 20px;
 }

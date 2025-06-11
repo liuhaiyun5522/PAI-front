@@ -61,24 +61,11 @@ const getDateText = (date: string) => {
   const dateMap: { [key: string]: string } = {
     'today': t('aside.today'),
     'yesterday': t('aside.yesterday'),
-    'week': t('aside.week'),
-    'month': t('aside.month')
+    'recent': t('aside.recent'),
+    'older': t('aside.older')
   }
   return dateMap[date] || date
 }
-
-// 方法2：使用计算属性（如果你想要响应式的多语言切换）
-const dateTextMap = computed(() => ({
-  'today': t('aside.today'),
-  'yesterday': t('aside.yesterday'),
-  'week': t('aside.week'),
-  'month': t('aside.month')
-}))
-
-// 如果使用计算属性，则用这个方法
-// const getDateText = (date: string) => {
-//   return dateTextMap.value[date] || date
-// }
 
 import { ElMessage, ElMessageBox } from 'element-plus'
 const handleCommand =  (command: string | number | object,id:string) => {

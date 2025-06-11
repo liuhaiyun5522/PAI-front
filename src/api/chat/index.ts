@@ -2,26 +2,24 @@ import request8009 from '@/utils/request8009'
 
 
 //获取历史对话列表
-export const historyGetList = (data:any)=>request8009.post<any>('/knowledge//get_talk_history_list',data)
+export const historyGetList = (data:any)=>request8009.post<any>('/knowledge/get_talk_history_list',data)
 
 //根据id获取历史记录
 export const getHistoryMessage = (data:any)=>request8009.post<any>('/knowledge/get_talkid_history',data)
 
 
+//获取知识库列表
+export const getKnowledgeList = ()=>request8009.post<any>('/knowledge/get_list')
 
 
 
-// //存储历史记录
-export const historySaveList = (data:any)=>request8009.post<any>('/history/insert_qa',data)
+
 
 //根据id删除历史记录
 export const deleteHistory = (data:any)=>request8009.post<any>('/history/delete',data)
 
 //根据对话重命名
 export const updateTitle = (data:any)=>request8009.post<any>('/history/update_title',data)
-
-//获取知识库列表
-export const getKnowledgeList = ()=>request8009.post<any>('/knowledge/get_list')
 
 //加载知识库内容
 export const selectKnowledge = (data:any)=>request8009.post<any>('/knowledge/select_knowledge',data)

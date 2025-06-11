@@ -10,22 +10,22 @@
           </div>
         </div>
         <!--    AI 回答    -->
-        <div v-else-if="items.role == 'any' || items.role == 'mul'" class="edit-item edit-item-2">
+        <div v-else-if="items.role == 'ai' || items.role == 'mul'" class="edit-item edit-item-2">
           <div :class="[{ 'hidden': items.role == 'mul' }]"><img class="edit-item-img" :src="iconAi"></div>
           <div class="edit-item-content">
-            <div class="edit-item-time" v-if="items.role == 'any'">Chat Bot {{ items.time }}</div>
+            <div class="edit-item-time" v-if="items.role == 'ai'">Chat Bot {{ items.time }}</div>
             <el-divider v-if="items.role == 'mul'" style="margin-top: 0; margin-bottom: 14px;" />
             <!--   AI思考时  loading展示       -->
             <div v-if="items.loading" class="edit-item-loading-container">
               <TransitionGroup name="slide" tag="div" class="edit-item-loading-content">
                 <div class="edit-item-loading" :key="0" v-show="items.loadingIndex == 0">
-                  <img :src="iconSearch" alt="">{{ t('dialog.answerLoading0') }}
+                  <img :src="iconSearch" alt="">{{ t('chat.loading') }}
                 </div>
-                <div class="edit-item-loading" :key="1" v-show="items.loadingIndex == 1">
+                <!-- <div class="edit-item-loading" :key="1" v-show="items.loadingIndex == 1">
                   <img :src="iconSearch" alt="">{{
-                    t('dialog.answerLoading1', { knowledgeList: (items.knowledge_name_list ? items.knowledge_name_list.join('、'):'')})
+                    t('chat.loading')
                   }}
-                </div>
+                </div> -->
                 <div class="edit-item-loading" v-for="n in [2, 3, 4]" :key="n" v-show="items.loadingIndex == n">
                   <img :src="iconSearch" alt="">{{ t('dialog.answerLoading' + n) }}
                 </div>
@@ -33,58 +33,26 @@
             </div>
             <!--    AI回答内容        -->
             <template v-else>
-              <div v-if="items.knowledge_name" class="edit-item-analysis">
+              <!-- <div v-if="items.knowledge_name" class="edit-item-analysis">
                 <img :src="iconAnalysis" alt="">{{ t('analysis', { name: items.knowledge_name }) }}
-              </div>
+              </div> -->
               <div class='markdown-font-span' style="line-height: 1.5; " v-html="removeFirstAndLastPTags(items.content)"
                 @change="scrollToBottom"></div>
-              <!--     AI全部回答完之后，展示出典，点赞，免责声明         -->
-              <template v-if="items.stop">
+
+              <template>
                 <div class="edit-item-icon">
-                  <img :src="iconMenuFill" v-show="items.showFlag" @click="getSource(index)" alt="">
-                  <img :src="iconMenu" v-show="!items.showFlag" @click="getSource(index)" alt="">
+                  <img :src="iconMenuFill" @click="getSource(index)" alt="">
+                  <img :src="iconMenu" @click="getSource(index)" alt="">
                   <img :src="iconCopy" @click="copyText(items.content)" alt="">
-                  <!--      点赞功能 【thumbsUp】 ok:点赞 ; ng:点踩;       -->
-                  <img :src="iconUpFill" v-show="items.thumbsUp == 'ok'" alt="">
-                  <img :src="iconUp" v-show="items.thumbsUp != 'ok'" @click="clickThumbsUp('ok', index)" alt="">
-                  <img :src="iconDownFill" v-show="items.thumbsUp == 'ng'">
-                  <img :src="iconDown" v-show="items.thumbsUp != 'ng'" @click="clickThumbsUp('ng', index)">
                 </div>
-                <template v-if="items.showFlag">
+                <!-- <template v-if="items.showFlag">
                   <div v-if="items.source" class="edit-item-source-content">
                     <span>{{ $t('source') }}</span>
                     <div class="edit-item-source" v-html="items.source"></div>
                   </div>
                   <div class="edit-item-source-content" v-else>{{ t('noSource') }}</div>
-                </template>
-                <!--     重新选择知识库        v-if="items.showChoose!=false"  -->
-                <div class="edit-item-choose edit-again">
-                  <!--                  <div class="edit-again">-->
+                </template> -->
 
-                  <div v-if="items.knowledge_name_list && items.knowledge_name_list.length > 1">
-                    <!--                    <span :class="[{'active':items.knowledge_list?.indexOf(kItem.name)>-1},'edit-again-span']"-->
-                    <!--                          v-for="kItem in knowledgeList"-->
-                    <!--                          @click="checkBase(kItem.name,index)">{{t('dialog.knowledge',{name: kItem.name}) }}</span>-->
-                    <!--                    </div>-->
-                    <span class="edit-again-span"
-                      v-for="kItem in items.knowledge_name_list.filter(item => item != items.knowledge_name)"
-                      @click="handleOtherBase(kItem, index)">
-                      <IconQuestion class="edit-again-icon"></IconQuestion>
-                      {{ t('dialog.knowledgeContent', { name: kItem }) }}
-                      <el-icon style="margin-left: 6px">
-                        <Right />
-                      </el-icon>
-                    </span>
-                  </div>
-                  <!--                  </div>-->
-                  <!--       重新发送           -->
-                  <!--                  <div style="text-align: right;">-->
-                  <!--                    <el-button type="success" size="mini" :disabled="!(items.knowledge_list&&items.knowledge_list.length>0)||items.chooseDisabled||!webSocket.isFinish" class="edit-again-btn" @click="resend(index)">-->
-                  <!--                      <IconAgain></IconAgain>-->
-                  <!--                      {{ t ('again') }}-->
-                  <!--                    </el-button>-->
-                  <!--                  </div>-->
-                </div>
               </template>
             </template>
           </div>
@@ -97,6 +65,9 @@
       </el-input>
       <div class="chat-input-bottom">
         <div class="chat-input-button">
+          <el-select v-model="value" placeholder="Select" style="width: 150px;margin-right: 710px;">
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
           <!--        todo 上传             -->
           <!--          <el-tooltip class="item" effect="light" :content="t('fileSuggest')" placement="top">-->
           <!--            <div class="file-icon" @click="triggerFileUpload">-->
@@ -124,8 +95,8 @@ import useWebSocketStore from '@/store';
 import { useRoute } from 'vue-router';
 import { ElMessage } from 'element-plus'
 import { changeFilechat } from '@/utils/minio.js';
+import { getknowledgeList } from '@/api/knowledgebaseMange';
 import { getHistoryMessage, handleThumbsUp, historySaveList, getKnowledgeList } from "@/api/chat";
-import { verifyToken } from "@/api/index";
 import iconAi from '@/assets/icon-ai.png'
 import IconSend from '@/assets/icon-send.svg'
 import iconCopy from '@/assets/icon-copy.png'
@@ -141,8 +112,32 @@ import IconDownFill from '@/assets/icon-down-fill.svg'
 import IconAgain from '@/assets/icon-again.svg'
 import IconQuestion from '@/assets/icon-question.svg'
 import iconAnalysis from '@/assets/icon-analysis.png'
-import iconSearch from '@/assets/icon-search.gif'
+import iconSearch from '@/assets/icon-search.svg'
 import { useI18n } from "vue-i18n";
+const value = ref('')
+
+const options = [
+  {
+    value: 'Option1',
+    label: 'Option1',
+  },
+  {
+    value: 'Option2',
+    label: 'Option2',
+  },
+  {
+    value: 'Option3',
+    label: 'Option3',
+  },
+  {
+    value: 'Option4',
+    label: 'Option4',
+  },
+  {
+    value: 'Option5',
+    label: 'Option5',
+  },
+]
 
 const { t } = useI18n();
 import { newline, filterObj, formatObj } from '@/utils'
@@ -173,23 +168,56 @@ const chatId = ref()
 const oldMsgLength = ref(0)
 const $route = useRoute();
 
+const mockResponse = {
+  "message": [
+    {
+      "role": "user",
+      "content": "hello",
+      "time": "2025-06-03 09:48:55"
+    },
+    {
+      "role": "ai",
+      "content": "balbal",
+      "time": "2025-06-03 09:48:55",
+      "source": "xxxxxx"
+    },
+    {
+      "role": "user",
+      "content": "11111",
+      "time": "2025-06-03 09:48:55"
+    },
+    {
+      "role": "ai",
+      "content": "45555",
+      "time": "2025-06-03 09:48:55",
+      "source": "xxxxxx"
+    },
+
+  ]
+}
+
+
 onMounted(async () => {
   webSocket.inputMessage = '';
   webSocket.messageQueue = [];
   webSocket.isFinish = true;
-  chatId.value = $route.query.id
+  chatId.value = $route.query.id;
   if ($route.query.id) {
     // 调用历史记录接口
-    const res = await getHistoryMessage({ id: chatId.value })
-    if (res.data.status_code == '200') {
-      oldMsgLength.value = JSON.parse(res.data.message)?.length
-      webSocket.messageQueue = JSON.parse(res.data.message);
-      await nextTick(() => {
-        scrollToBottom();
-      });
-    }
+    // const res = await getHistoryMessage({ id: chatId.value });
+    // if (res.data.status_code == '200') {
+    // oldMsgLength.value = JSON.parse(res.data.message)?.length;
+    // webSocket.messageQueue = JSON.parse(res.data.message);
+    oldMsgLength.value = mockResponse.message.length; // 直接获取数组长度
+
+    // 将mockResponse.message转换为符合webSocket.messageQueue期望的格式
+    webSocket.messageQueue = mockResponse.message;
+    await nextTick(() => {
+      scrollToBottom();
+    });
+    // }
   }
-})
+});
 import useMenuStore from "@/store";
 
 const { useMenu } = useMenuStore();
@@ -326,7 +354,7 @@ async function sendMessageButton(socket) {
       const doubleMessage = webSocket.doubleMessages;
       const history: { role: string; content: string; stop?: boolean | undefined; showFlag?: boolean | undefined; source?: string | undefined; time?: any; }[] = [];
       // 判断 doubleMessage 长度，取最后6条或全部
-      const messagesToUse = doubleMessage.filter(msg => ['user', 'any'].includes(msg.role)) //新增过滤条件，只保留user/any角色
+      const messagesToUse = doubleMessage.filter(msg => ['user', 'ai'].includes(msg.role)) //新增过滤条件，只保留user/any角色
         .slice(-6); //  直接取最后6条（无需判断长度，slice(-n)会自动处理）
 
       messagesToUse.forEach(msg => {
@@ -347,7 +375,7 @@ async function sendMessageButton(socket) {
       }
       //AI消息框架  AI消息再0.5s之后再添加
       const messgesAny = {
-        role: "any",
+        role: "ai",
         content: '',
         showChoose: !(selectKnowledge.value && selectKnowledge.value.length > 0),
         time: webSocket.formatDate(new Date().getTime()),
@@ -369,29 +397,7 @@ async function sendMessageButton(socket) {
   // }
 };
 const selectKnowledge = ref()
-//重新发送按钮
-function resend(index: number, name: string) {
-  if (webSocket.messageQueue[index].chooseDisabled) {
-    return false;
-  }
-  const selectList = [name];//webSocket.messageQueue[index].knowledge_list
-  if (selectList && selectList.length > 0) {
-    const question = webSocket.doubleMessages[findLastUserIndex(index)];
-    //问题
-    sendMsg.value = question.content
-    //所选知识库
-    selectKnowledge.value = selectList
-    const socket = `${import.meta.env.VITE_NODE_WS + '/knowledge/qa_again/' + uuidv4()}`
-    sendMessageButton(socket)
-    webSocket.messageQueue[index].chooseDisabled = true;
-  } else {
-    ElMessage({
-      message: '请选择知识库',
-      type: 'warning',
-    })
-  }
 
-}
 //点击发送按钮
 function firstSend() {
   //发送消息重新赋值，再清空
@@ -411,7 +417,6 @@ watch(() => webSocket.isConnected, (newVal) => {
 
 //发送消息的构建
 function handleDialogWebsocket(history: any) {
-
   const message = {
     question: sendMsg.value,
     history,
@@ -425,7 +430,6 @@ function handleDialogWebsocket(history: any) {
 
 //文件上传
 function handleFileChange(event: Event) {
-
   const target = event.target as HTMLInputElement;
   if (target.files && target.files.length > 0) {
     const file = target.files[0];
@@ -483,23 +487,6 @@ function removeFirstAndLastPTags(content: any) {
   return md.render(result);
 }
 
-//点击点赞/踩
-async function clickThumbsUp(type: string, index: number) {
-  const question = webSocket.doubleMessages[findLastUserIndex(index)];
-  const answer = webSocket.doubleMessages[index]
-  const params = {
-    Q: question.content,
-    A: answer.content,
-    type: type,
-    knowledge_name: answer.knowledge_name
-  }
-  const res = await handleThumbsUp(params)
-  if (res.data.status_code == '200') {
-    //更改点赞状态
-    webSocket.messageQueue[index].thumbsUp = type
-    saveHistory(false)
-  }
-}
 function findLastUserIndex(index: number) {
   const arr = webSocket.messageQueue;
   for (let i = index - 1; i >= 0; i--) {
@@ -516,41 +503,10 @@ const vFocus = {
   }
 }
 
-//选择重写库 name：点击的知识库名称 ;index：对话索引
-function checkBase(id: string, index: number) {
-  if (webSocket.messageQueue[index].chooseDisabled) {
-    return false;
-  }
-  const obj = webSocket.messageQueue[index]
-  if (!obj.knowledge_list) {
-    obj.knowledge_list = []
-  }
-  const kIndex = obj.knowledge_list.indexOf(id);
-  if (kIndex !== - 1) {
-    // 存在则删除第一个匹配项
-    obj.knowledge_list.splice(kIndex, 1)
-  } else {
-    // 不存在则新增
-    obj.knowledge_list.push(id)
-  }
-}
-//点击其他知识库，再次提问
-function handleOtherBase(name: string, index: number) {
-  const obj = webSocket.messageQueue[index]
-  if (!obj.knowledge_name_list) {
-    obj.knowledge_name_list = []
-  }
-  //点击知识库之后，移除该知识库
-  const kIndex = obj.knowledge_name_list.indexOf(name);
-  // 存在则删除第一个匹配项
-  webSocket.messageQueue[index].knowledge_name_list.splice(kIndex, 1)
-  resend(index, name)
-}
-
 </script>
 
 <style lang='scss' scoped>
 @import './../../style/components/chat.scss';
-/* 你可以添加highlight.js的样式 */
+
 @import 'highlight.js/styles/github.css';
 </style>

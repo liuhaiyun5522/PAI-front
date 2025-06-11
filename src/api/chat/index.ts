@@ -1,17 +1,18 @@
 import request8009 from '@/utils/request8009'
-import type {get_file} from './type'
 
-//文件对话上传文件接口
-export const fileUpload = (data:get_file)=>request8009.post<any>('/file_chat/upload',data, {timeout: 999999999,})
 
-//历史记录
-export const historyGetList = ()=>request8009.post<any>('/history/get_list')
-
-//存储历史记录
-export const historySaveList = (data:any)=>request8009.post<any>('/history/insert_qa',data)
+//获取历史对话列表
+export const historyGetList = (data:any)=>request8009.post<any>('/knowledge//get_talk_history_list',data)
 
 //根据id获取历史记录
-export const getHistoryMessage = (data:any)=>request8009.post<any>('/history/get_json',data)
+export const getHistoryMessage = (data:any)=>request8009.post<any>('/knowledge/get_talkid_history',data)
+
+
+
+
+
+// //存储历史记录
+export const historySaveList = (data:any)=>request8009.post<any>('/history/insert_qa',data)
 
 //根据id删除历史记录
 export const deleteHistory = (data:any)=>request8009.post<any>('/history/delete',data)

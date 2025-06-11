@@ -107,7 +107,8 @@ const iconSrc = computed(() =>
 const handleLogout = async () => {
   try {
     const res = await logout();
-    if (res?.message === 'Logout successful') {
+    if (res) {
+      console.log(res)
       localStorage.removeItem('token');
       ElMessage.success(t('settings.logoutSuccess'));
       $router.push({ name: 'login' });

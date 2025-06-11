@@ -1,4 +1,4 @@
-import request11451 from '@/utils/request'
+import request11451 from '@/utils/request11451'
 //获取用户列表
 export const getuserList = (data:any)=>request11451.get<any>('/admin/users',{params:data})
 

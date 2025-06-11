@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia'
 import {ref} from 'vue';
 //接口
-import {fileUpload} from '@/api/chat'
+// import {fileUpload} from '@/api/chat'
 // 引入数据类型
 import {get_file} from '@/api/chat/type'
 export const useWebSocketStore = defineStore ('webSocket', {
@@ -25,10 +25,11 @@ export const useWebSocketStore = defineStore ('webSocket', {
     【chooseDisabled】重选按钮是否禁用
     【knowledge_name_list】问题匹配到的知识库
     */
-    messageQueue: [] as Array<{ role: string; content: string; stop?: boolean; showFlag?: boolean;
-      source?: string; time?: any; knowledge_name?: any; thumbsUp?: string; loading?: boolean;
-      knowledge_list?:any;loadingIndex?:number;showChoose?:boolean;chooseDisabled?:boolean;
-      knowledge_name_list?:any}>,
+    // messageQueue: [] as Array<{ role: string; content: string; stop?: boolean; showFlag?: boolean;
+    //   source?: string; time?: any; knowledge_name?: any; thumbsUp?: string; loading?: boolean;
+    //   knowledge_list?:any;loadingIndex?:number;showChoose?:boolean;chooseDisabled?:boolean;
+    //   knowledge_name_list?:any}>,
+      messageQueue: [] as Array<{ role: string; content: string; source?: string; time?: any; }>,
     //对话是否结束
     isFinish: ref (true),
     //输入框发送内容

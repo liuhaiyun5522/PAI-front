@@ -1,6 +1,7 @@
 
 // 引入axios封装
 import axios from 'axios'
+import router from '@/router' // 引入router实例
 
 // 创建axios实例
 const request8009 = axios.create({
@@ -30,10 +31,11 @@ request8009.interceptors.response.use(
         return response
     },
     (error) => {
-        // if(error.status == 401){
-        //   localStorage.removeItem("token")
+        if(error.status == 401){
+          localStorage.removeItem("token")
+          router.push({ name: 'login' });
         //    window.location.href = import.meta.env.VITE_LOGIN_URL
-        // }
+        }
         return Promise.reject(error)
     }
 )

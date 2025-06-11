@@ -5,6 +5,16 @@
   "knowledgebaseManagement": "ナレッジベース管理",
   "BasefileManagement": "ナレッジベース管理--",
   "setpage": "設定",
+  "aside": {
+    "upgrade": "プラン",
+    "today": "今日",
+    "yesterday": "昨日",
+    "week": "今週",
+    "month": "今月"
+  },
+  "chat": {
+    "loading": "問題の意図を識別中……"
+  },
   "login": {
     "title": "ログイン",
     "prompt": "メールとパスワードを入力してください",
@@ -17,7 +27,8 @@
     "userOrPasswordIncorrect": "ユーザー名またはパスワードが存在しません",
     "loginError": "ログインエラー",
     "networkError": "ネットワーク接続に失敗しました。設定を確認してください。",
-    "loginSuccessMessage": "ログインに成功しました。リダイレクトしています..."
+    "loginSuccessMessage": "ログインに成功しました。リダイレクトしています...",
+    "logoutSuccess": "ログアウトしました"
   },
   "settings": {
     "logout": "ログアウト",
@@ -25,6 +36,7 @@
     "save": "保 存",
     "language": "UI言語",
     "idLabel": "ID",
+    "enterIDPlaceholder": "IDを入力してください",
     "enterUsernamePlaceholder": "ユーザー名を入力してください",
     "enterPasswordPlaceholder": "パスワードを入力してください",
     "enterEmailPlaceholder": "メールアドレスを入力してください",
@@ -47,7 +59,14 @@
     "filesize": "サイズ",
     "updatetime": "更新日時",
     "filestatus": "状態",
-    "tool": "操作"
+    "tool": "操作",
+    "all": "全部",
+    "already": "アップロード済",
+    "uploading": "アップロード中",
+    "queuing": "順番待ち",
+    "failed": "アップロード失敗",
+    "selectStatusPlaceholder": "状態を選択してください",
+    "inputTip": "検索する内容を入力してください"
   },
   "usermng": {
     "add": "新規",
@@ -73,7 +92,9 @@
     "emailPlaceHolder": "メールを入力してください",
     "passwordPlaceHolder": "パスワードを入力してください",
     "userlist":"ユーザーリスト",
-    "enterIDPlaceholder": "ユーザーIDを入力してください"
+    "enterIDPlaceholder": "ユーザーIDを入力してください",
+    "deleteConfirmTitle": "削除してもよろしいですか？",
+    "deleteConfirmSubtitle": "一度削除すると復元できません。"
   },
   "fileSuggest": "最大100MBまでのファイルをサポート",
   "enterQuestion": "ごを入力してください。Shift+Enterで改行...",

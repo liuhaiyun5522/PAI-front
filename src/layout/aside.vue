@@ -51,10 +51,23 @@
         </div>
 
 
-        <div class="layout-user-info">
+        <!-- <div class="layout-user-info">
           <div class="user-info-button">
             <Iconuser />
             <span>{{ useMenu.userInfo.userName }}</span>
+            <div class="user-tool" @click="goPage('setpage')">
+              <Icontool />
+            </div>
+          </div>
+        </div> -->
+         <div class="layout-user-info">
+          <div class="user-info-button">
+            <Iconuser class="user-avatar-icon" />
+            <span>{{ useMenu.userInfo.userName }}</span>
+            <div class="upgrade-button">
+              {{ t('aside.upgrade') }}
+            </div>
+
             <div class="user-tool" @click="goPage('setpage')">
               <Icontool />
             </div>
@@ -244,6 +257,14 @@ onMounted(() => {
         align-items: center;
         justify-content: center;
 
+        .layout-user-info {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          bottom: 10px;
+          /* 如果您不希望它绝对定位，可以移除此行 */
+        }
+
         .user-info-button {
           background-color: #79BFEE;
           width: 210px;
@@ -251,34 +272,77 @@ onMounted(() => {
           border-radius: 100px;
           display: flex;
           align-items: center;
+          /* 确保所有子元素垂直居中 */
           color: #fff;
-          position: relative;
-          padding: 0px 20px;
+          padding: 0 15px;
+          box-sizing: border-box;
+        }
 
-          span {
-            margin-left: 10px;
-            font-size: 14px;
-          }
+        /* 用户头像图标 */
+        .user-info-button> :deep(.user-avatar-icon) {
+          width: 24px;
+          height: 24px;
+          flex-shrink: 0;
+          transform: translateY(4.0px);
+        }
 
-          .user-tool {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 30px;
-            height: 30px;
-            background-color: transparent;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* 用户名 */
+        .user-info-button>span {
+          min-width: 0;
+          /* 允许被无限压缩以显示省略号 */
+          font-size: 14px;
+          font-weight: 400;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          line-height: 24px;
+          margin-right: 4px;
+        }
 
-            &:hover,
-            &:active {
-              background-color: #62A3CF;
-            }
-          }
+        /* 升级按钮 */
+        .upgrade-button {
+          height: 24px;
+          padding: 0 12px 0 24px;
+          font-size: 10px;
+          font-weight: bold;
+          color: #008d64;
+          border-radius: 20px;
+          background-image: url('@/assets/icon-upgrade.svg');
+          background-size: 100% 100%;
+          background-repeat: no-repeat;
+          background-position: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-sizing: border-box;
+          flex-shrink: 0;
+          /* 防止被压缩 */
+          white-space: nowrap;
+          cursor: pointer;
+          transition: transform 0.2s;
+        }
+
+        .upgrade-button:hover {
+          transform: scale(1.05);
+        }
+
+        /* 设置工具图标的样式 */
+        .user-tool {
+          flex-shrink: 0;
+          /* 防止被压缩 */
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-left: auto; 
+        }
+
+        .user-tool:hover,
+        .user-tool:active {
+          background-color: #62A3CF;
         }
       }
     }

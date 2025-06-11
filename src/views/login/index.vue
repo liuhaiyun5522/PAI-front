@@ -1,12 +1,10 @@
 <template>
     <div class="main">
         <div class="container">
-            <!-- 左侧图片（绑定动态语言图片） -->
             <div class="left-panel">
                 <img :src="loginImage" />
             </div>
 
-            <!-- 右侧登录面板 -->
             <div class="right-panel">
                 <div class="language-switch">
                     <el-select v-model="currentLocale" @change="changeLanguage">
@@ -15,7 +13,7 @@
                     </el-select>
                 </div>
 
-                <div class="login-form">
+                <form class="login-form" @submit.prevent="handleLogin">
                     <span class="span-title">{{ t('login.title') }}</span>
                     <span class="span-prompt">{{ t('login.prompt') }}</span>
 
@@ -52,11 +50,10 @@
                         </div>
                     </div>
 
-                    <button class="login-button" @click="handleLogin">
+                    <button class="login-button" type="submit">
                         {{ t('start') }}
                     </button>
-                </div>
-
+                </form>
                 <div class="version-info">version:v1.0.0</div>
             </div>
         </div>
@@ -104,11 +101,6 @@ const togglePassword = () => {
 const handleLogin = async () => {
     try {
         const langParam = locale.value === 'zh-CN' ? 'zh' : locale.value
-        // const res = await login({
-        //     userid: userId.value,
-        //     password: password.value,
-        //     language: langParam
-        // })
         const res = await login({
             email: userId.value,
             password: password.value

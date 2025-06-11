@@ -5,6 +5,16 @@
   "knowledgebaseManagement": "知识库管理",
   "BasefileManagement": "知识库管理--",
   "setpage": "设置",
+  "aside": {
+    "upgrade": "升级",
+    "today": "今日",
+    "yesterday": "昨日",
+    "week": "本周",
+    "month": "本月"
+  },
+  "chat": {
+    "loading": "正在识别问题的意图……"
+  },
   "login": {
     "title": "登录",
     "prompt": "请输入您的Email和密码",
@@ -17,7 +27,8 @@
     "networkError": "网络连接失败，请检查您的网络设置。",
     "userIdPlaceholder": "用户Email", 
     "loginSuccessMessage": "登录成功，正在跳转...",
-    "passwordPlaceholder": "密码" 
+    "passwordPlaceholder": "密码",
+    "logoutSuccess":"退出成功"
   },
   "settings": {
     "logout": "退出登录",
@@ -25,6 +36,7 @@
     "save": "保 存",
     "language": "界面语言",
     "idLabel": "ID",
+    "enterIDPlaceholder": "请输入ID",
     "enterUsernamePlaceholder": "请输入用户名",
     "enterPasswordPlaceholder": "请输入密码",
     "enterEmailPlaceholder": "请输入邮箱",
@@ -39,7 +51,7 @@
     "rename": "重命名",
     "delete": "删除",
     "addDatabase": "新建知识库",
-  "renameDatabase": "重命名知识库"
+    "renameDatabase": "重命名知识库"
   },
   "Basetable": {
     "upload": "上传文件",
@@ -47,7 +59,12 @@
     "filesize": "文件大小",
     "updatetime": "更新时间",
     "filestatus": "状态",
-    "tool": "操作"
+    "tool": "操作",
+    "all": "全部",
+    "already": "已上传",
+    "uploading": "上传中",
+    "queuing": "正在排队",
+    "failed": "上传失败"
   },
   "usermng": {
     "add": "添 加",
@@ -73,8 +90,9 @@
     "emailPlaceHolder": "请输入邮箱",
     "passwordPlaceHolder": "请输入密码",
     "userlist":"用户列表",
-    "enterIDPlaceholder": "请输入用户ID"
-    
+    "enterIDPlaceholder": "请输入用户ID",
+    "deleteConfirmTitle": "确定删除吗？",
+    "deleteConfirmSubtitle": "删除后不可恢复！" 
   },
   "fileSuggest": "支持100MB以内的文件",
   "enterQuestion": "输入您的问题，shift+Enter换行...",
@@ -93,7 +111,7 @@
   "databaseTitle": "缓存管理",
   "update": "最新更新",
   
-  "confirm": "确定",
+  "confirm": "确 定",
   "formName": "知识库名称",
   "formDesc": "说明",
   "namePlaceholder": "请输入知识库名称",

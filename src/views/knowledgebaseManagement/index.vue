@@ -74,7 +74,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { getknowledgeList, createknowledgeabse, dropknowledgeabse  } from '@/api/knowledgebaseMange';
+import { getknowledgeList, createknowledgeabse, dropknowledgebase  } from '@/api/knowledgebaseMange';
 import Delete from '@/components/Delete.vue';
 import RenameIcon from '@/assets/icon-rename.svg?component';
 import DeleteIcon from '@/assets/icon-delete2.svg?component';
@@ -120,6 +120,7 @@ const openDialog = (isRenameFlag, item) => {
   dialogVisible.value = true;
 };
 
+//对话框，确认键
 const handleConfirm = async () => {
   if (!createName.value.trim()) {
     ElMessage.error(t('knowledgeNameRequired') || "知识库名称为必填项");
@@ -132,7 +133,6 @@ const handleConfirm = async () => {
       id: renameItem.value.id,
       name: createName.value,
       description: createIntro.value,
-      userid: "1"
     };
     // await updateknowledgeabse(payload);
     console.log(payload)
@@ -141,7 +141,6 @@ const handleConfirm = async () => {
     const payload = {
       name: createName.value,
       description: createIntro.value,
-      userid: "1"
     };
     await createknowledgeabse(payload);
   }
@@ -149,8 +148,8 @@ const handleConfirm = async () => {
   init();
 };
 
+//跳转库内文件
 const goToCardDetail = (item) => {
-  useMenu.currentActivePage = "BasefileManagement";
   $router.push({
     name: "BasefileManagement",
     query: {
@@ -179,9 +178,8 @@ const deleteItem = async (item) => {
   try {
     const payload = {
       name: item.name,
-      userid: "1"
     };
-    const response = await dropknowledgeabse(payload);
+    const response = await dropknowledgebase(payload);
     console.log('删除知识库成功:', response.data);
     await init();
   } catch (error) {

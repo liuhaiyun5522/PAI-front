@@ -69,7 +69,7 @@ const activeTab = ref(0);
 // 卡片数据
 const cardList = ref([
   { content: '这是第一个分割结果的内容，用于展示卡片的样式和布局效果。' },
-  { content: '第二个分割结果，包含更多的文本内容来测试高度为20ch的效果。' },
+  { content: '第二个分割结果，包含更多的文本内容来测试高度为20ch的效果。第二个分割结果，包含更多的文本内容来测试高度为20ch的效果。第二个分割结果，包含更多的文本内容来测试高度为20ch的效果。第二个分割结果，包含更多的文本内容来测试高度为20ch的效果。第二个分割结果，包含更多的文本内容来测试高度为20ch的效果。第二个分割结果，包含更多的文本内容来测试高度为20ch的效果。第二个分割结果，包含更多的文本内容来测试高度为20ch的效果。第二个分割结果，包含更多的文本内容来测试高度为20ch的效果。第二个分割结果，包含更多的文本内容来测试高度为20ch的效果。第二个分割结果，包含更多的文本内容来测试高度为20ch的效果。第二个分割结果，包含更多的文本内容来测试高度为20ch的效果。第二个分割结果，包含更多的文本内容来测试高度为20ch的效果。第二个分割结果，包含更多的文本内容来测试高度为20ch的效果。第二个分割结果，包含更多的文本内容来测试高度为20ch的效果。第二个分割结果，包含更多的文本内容来测试高度为20ch的效果。' },
   { content: '第三个分割结果' },
   { content: '第四个分割结果，这里有更长的文本内容用于测试换行和高度限制的效果。' },
   { content: '第五个分割结果' },
@@ -84,11 +84,13 @@ const goBack = () => {
 };
 
 const init = async () => {
-  // const response = await listFile({
-  //   knowledge_name: route.query.base,
-  //   file_name: route.query.header
-  // });
-  // console.log(response)
+  const data = {
+    knowledge_name: route.query.base,
+    file_name: route.query.header
+  }
+  console.log(data)
+  const response = await listFile(data);
+  console.log(response)
 };
 
 // 生命周期挂载时调用接口
@@ -147,6 +149,7 @@ onMounted(() => {
   .left {
     display: flex;
     width: 75%;
+    height: calc(90vh - 20px);
     background-color: #FFFFFF;
     border-radius: 10px;
 
@@ -175,12 +178,14 @@ onMounted(() => {
         grid-template-columns: 1fr 1fr;
         gap: 10px;
         align-content: start;
+        // background-color: #1D5276;
+        height: 10px;
 
         .card-item {
           background-color: #F1F4F7;
           padding: 15px;
           border-radius: 8px;
-          height: 20ch;
+          height: 25vh;
           overflow: hidden;
           text-overflow: ellipsis;
           word-break: break-word;
@@ -194,6 +199,7 @@ onMounted(() => {
 
   .right {
     width: 25%;
+    height: calc(90vh - 20px);
     background-color: #FFFFFF;
     border-radius: 10px;
 
@@ -239,5 +245,4 @@ onMounted(() => {
     }
   }
 }
-
 </style>

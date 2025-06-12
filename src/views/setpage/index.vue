@@ -67,12 +67,12 @@
 </template>
 
 <script setup>
-import Edit2Icon from '@/assets/icon-edit2.svg'
-import LogoutIcon from '@/assets/logout.svg'
-import { ref, computed, watch } from 'vue';
+import Edit2Icon from '@/assets/icon-edit2.svg';
+import LogoutIcon from '@/assets/logout.svg';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
-import { logout } from '@/api/index';
+import { logout, profile } from '@/api/index'; // 确保 profile 已正确导入
 import { useI18n } from 'vue-i18n';
 
 const { t, locale } = useI18n();
@@ -81,10 +81,9 @@ const $router = useRouter();
 const userInfo = ref({
   id: '',
   username: '',
-  password: '',
+  password: '', 
   email: '',
-  position: '',
-  department: ''
+  permissionLevel: '', 
 });
 
 const selectedLang = ref(localStorage.getItem('user-lang') || 'zh-CN');
@@ -103,7 +102,7 @@ const handleLogout = async () => {
   try {
     const res = await logout();
     if (res) {
-      console.log(res)
+      console.log(res);
       localStorage.removeItem('token');
       ElMessage.success(t('settings.logoutSuccess'));
       $router.push({ name: 'login' });
@@ -115,6 +114,28 @@ const handleLogout = async () => {
     ElMessage.error(t('settings.logoutError'));
   }
 };
+
+const init = async () => {
+  try {
+    const res = await profile();
+    if (res && res.data) {
+      userInfo.value.id = res.data.userId || '';
+      userInfo.value.username = res.data.userName || '';
+      userInfo.value.password = res.data.password || ''; // 如果接口返回密码
+      userInfo.value.email = res.data.email || ''; // 如果接口返回邮箱
+      userInfo.value.permissionLevel = res.data.permissionLevel || ''; // 新增赋值
+    } else {
+      ElMessage.error(t('settings.profileFailed'));
+    }
+  } catch (error) {
+    console.error(error);
+    ElMessage.error(t('settings.profileError'));
+  }
+};
+
+onMounted(() => {
+  init();
+});
 </script>
 
 <style scoped>

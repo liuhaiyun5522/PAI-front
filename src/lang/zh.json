@@ -53,7 +53,8 @@
     "rename": "重命名",
     "delete": "删除",
     "addDatabase": "新建知识库",
-    "renameDatabase": "重命名知识库"
+    "renameDatabase": "重命名知识库",
+    "knowledgeNameRequired": "知识库名称为必填项 "
   },
   "Basetable": {
     "upload": "上传文件",

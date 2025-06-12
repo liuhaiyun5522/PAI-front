@@ -33,7 +33,7 @@
 <script setup>
 import { useI18n } from "vue-i18n";
 import { defineProps, computed, defineEmits } from "vue";
-import Imgdelete from '@/assets/icon-delete2.svg?url'; 
+import Imgdelete from '@/assets/dialog-delete.svg?url'; 
 
 const { t } = useI18n();
 

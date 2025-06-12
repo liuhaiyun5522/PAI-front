@@ -18,27 +18,21 @@ let router = createRouter({
     scrollBehavior:()=>({left:0,top:0})
 })
 
-// // 路由守卫
-// router.beforeEach((to, from, next) => {
-//     let isUserLoggedIn = false;
-//     let userId = localStorage.getItem("userId");
-//     if (userId) {
-//         isUserLoggedIn = true;
-//     }
-//     if (to.path !== '/login') {
-//         next('/login');
-//     } else {
-//         // 否则，继续导航
-//         next();
-//     }
-
-//     let token = localStorage.getItem("TOKEN")
-//     if (to.path === '/login' && token) {
-//         next('/dialog');
-//     }else{
-//         next();
-//     }
-// })
+// 路由守卫
+router.beforeEach((to, from, next) => {
+    let isUserLoggedIn = false;
+    let token = localStorage.getItem("TOKEN")
+    // let userId = localStorage.getItem("userId");
+    if (token) {
+        isUserLoggedIn = true;
+    }
+    // if (to.path !== '/login') {
+    //     next('/login');
+    // } 
+    else {
+        next();
+    }
+})
 
 
 export default router;

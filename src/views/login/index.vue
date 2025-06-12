@@ -106,7 +106,7 @@ const handleLogin = async () => {
             password: password.value
         })
 
-        if (res && res.data?.userId) {
+        if (res ) {
             localStorage.setItem('token', res.data.token)
             localStorage.setItem('userInfo', JSON.stringify({
                 userId: res.data.userId,
@@ -121,9 +121,9 @@ const handleLogin = async () => {
                 userEmail:res.data.userName,
                 userPermissionLevel:res.data.permissionLevel
             }
-
+            router.push({ name: 'dialog' })
             ElMessage.success(t('login.loginSuccessMessage'))
-            setTimeout(() => router.push({ name: 'dialog' }), 1000)
+            // setTimeout(() => router.push({ name: 'dialog' }), 1000)
         } else {
             ElMessage.error(t('login.loginFailed'))
         }

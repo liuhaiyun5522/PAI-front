@@ -7,7 +7,7 @@
       {{ t('add') }}
     </el-button>
     <!-- 弹窗 -->
-    <el-dialog v-model="dialogVisible" :title="isRename ? t('knowledgemng.renameDatabase') : t('knowledgemng.addDatabase')" width="900px" :show-close="true" class="custom-dialog">
+    <el-dialog v-model="dialogVisible" :title="isRename ? t('knowledgemng.renameDatabase') : t('knowledgemng.addDatabase')" width="800px" :show-close="true" class="custom-dialog">
       <div class="dialog-body">
         <div class="line"></div>
         <div class="form-section">
@@ -51,15 +51,15 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item @click="openDialog(true, item)">
-                    <el-icon>
-                      <RenameIcon />
-                    </el-icon>
+                 
+                      <RenameIcon  />
+                   
                     <span style="margin-left: 5px;"> {{ t('rename') }}</span>
                   </el-dropdown-item>
                   <el-dropdown-item @click="showDeleteDialog(item)" divided>
-                    <el-icon>
+                  
                       <DeleteIcon />
-                    </el-icon>
+                   
                     <span style="margin-left: 5px;"> {{ t('delete') }}</span>
                   </el-dropdown-item>
                 </el-dropdown-menu>
@@ -91,8 +91,8 @@ const createIntro = ref('');
 const $router = useRouter();
 const deleteDialogVisible = ref(false);
 const currentDeleteItem = ref(null);
-const isRename = ref(false); // 标识是否是重命名操作
-const renameItem = ref(null); // 用于存储当前要重命名的项目
+const isRename = ref(false); 
+const renameItem = ref(null); 
 
 
 const init = async () => {
@@ -219,53 +219,77 @@ onMounted(() => {
     width: 100%;
     border-bottom: 1px solid #AFBCCD;
     margin-bottom: 20px;
+    margin-top: -5px;
   }
+  :deep(.el-dialog__title) {
+    color: #1D5276 !important;
+    font-weight: 900 !important;
+    font-family: inherit !important;
+  }
+  
   .el-dialog__body {
     padding: 30px 0;
-    height: 300px;
+    height: 400px;
     box-sizing: border-box;
   }
+  
   .form-section {
-    width: 800px;
+    width: 700px;
     margin: 0 auto 30px auto;
     display: flex;
     flex-direction: column;
   }
+  
   .form-label {
     font-size: 16px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     text-align: left;
     font-weight: bold;
     color: #000000;
   }
+  
   .custom-input {
-    background-color: #f1f4f7;
-    border-radius: 8px;
-    &.short .el-input__wrapper {
-      height: 150px;
-      display: flex;
-      align-items: center;
-      background-color: #f1f4f7;
-      border-radius: 8px;
+    &.short {
+      :deep(.el-input__wrapper) {
+        height: 60px !important;
+        display: flex;
+        align-items: center;
+        background-color: #F1F4F7 !important;
+        border: 1px solid rgba(1, 42, 45, 0.2) !important;
+        border-radius: 8px !important;
+        box-shadow: none !important;
+      }
+      
+      :deep(.el-input__inner) {
+        background-color: #F1F4F7 !important;
+      }
     }
-    &.long .el-textarea__inner {
-      height: 200px !important;
-      background-color: #f1f4f7;
-      border-radius: 8px;
+    
+    &.long {
+      :deep(.el-textarea__inner) {
+        height: 200px !important;
+        background-color: #F1F4F7 !important;
+        border: 1px solid rgba(1, 42, 45, 0.2) !important;
+        border-radius: 8px !important;
+        box-shadow: none !important;
+      }
     }
   }
+  
   .dialog-footer {
     padding: 0px 30px;
     margin-top: -20px;
   }
+  
   .dialog-footer-container {
-    width: 800px;
+    width: 700px;
     margin: 0 auto;
     display: flex;
     justify-content: flex-end;
     margin-top: -10px;
     margin-bottom: 20px;
   }
+  
   .confirm-button {
     background-color: #34A0E9;
     color: #FFFFFF;
@@ -328,7 +352,7 @@ onMounted(() => {
     flex-grow: 1;
     overflow: hidden;
     color: #1D5276;
-    padding: 8px;
+    padding: 5px;
     .card-title {
       font-size: 18px;
       font-weight: bold;
@@ -357,6 +381,10 @@ onMounted(() => {
   .card-time {
     font-size: 12px;
     color: #AFBCCD;
+    svg{
+width: 140px;
+height: auto;
+    }
   }
 }
 </style>

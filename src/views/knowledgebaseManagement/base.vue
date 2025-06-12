@@ -1,15 +1,10 @@
 <template>
-  
-   <el-header class="header"  >
-    <div class="title">  
-      <img
-        class="back"
-        :src="backIcon"
-        @mouseover="backIcon = backIconHover"
-        @mouseleave="backIcon = backIconDefault"
-        @click="goBack"
-      />
-      <span>{{t('knowledgebaseManagement')}}--{{ route.query.name }}</span>
+
+  <el-header class="header">
+    <div class="title">
+      <img class="back" :src="backIcon" @mouseover="backIcon = backIconHover" @mouseleave="backIcon = backIconDefault"
+        @click="goBack" />
+      <span>{{ t('knowledgebaseManagement') }}--{{ route.query.name }}</span>
     </div>
   </el-header>
 
@@ -73,7 +68,7 @@
 
     <!-- 表格区域 -->
     <el-table :data="filteredTableData" style="width: 100%" v-loading="loading" class="table-section"
-    @row-click="handleRowClick">
+      @row-click="handleRowClick">
       <el-table-column prop="name" :label="t('Basetable.filename')" min-width="40">
         <template #default="scope">
           <!-- 修复文件图标不显示的问题 -->
@@ -177,7 +172,12 @@ const cardInfo = {
 const fetchTableData = async () => {
   try {
     loading.value = true;
-    const response = await getknowledgeFiles({ knowledge_name: cardInfo.name });
+    const data = {
+      knowledge_name: cardInfo.name, 
+      page: "1",
+      page_size: "10"
+    }
+    const response = await getknowledgeFiles(data);
     console.log('接口返回数据：', response);
 
     if (Array.isArray(response.data.message)) {
@@ -371,7 +371,7 @@ const handleRowClick = (row) => {
     name: "listfileManagement",
     query: {
       header: row.name[0],
-      base:route.query.name
+      base: route.query.name
     }
   });
 };
@@ -379,7 +379,7 @@ const handleRowClick = (row) => {
 // 返回上一页
 const goBack = () => {
   $router.back();
-  
+
 };
 
 </script>
@@ -391,8 +391,9 @@ const goBack = () => {
   display: flex;
   position: absolute;
   height: 10vh;
-  width: 100% ;
+  width: 100%;
   top: 0;
+
   .back {
     width: 28px;
     height: 28px;
@@ -425,6 +426,7 @@ const goBack = () => {
     border-color: #34A0E9;
   }
 }
+
 .container {
   padding: 4px 20px;
 }
